@@ -45,6 +45,7 @@ public class Resources {
 	HashMap<String, TextureRegion> textureRegions = new HashMap<String, TextureRegion>(10);
 	HashMap<String, PolygonShape> polys = new HashMap<String, PolygonShape>(10);
 	HashMap<String, Sprite> sprites = new HashMap<String, Sprite>(32);
+	HashMap<String, AnimatedSprite> animatedSprites = new HashMap<String, AnimatedSprite>(32);
 	HashMap<String, ParticleEffect> particleEffects = new HashMap<String, ParticleEffect>(10);
 	//HashMap<String, ShaderProgram> shaders = new HashMap<String, ShaderProgram>(10);
 	
@@ -253,8 +254,15 @@ public class Resources {
 			}
 		}
 		
-		
-		
+		return this;
+	}
+	
+	// TODO: rework this so no intermediary sprite is needed
+	public Resources createAnimatedSprite(String spriteSheetName, int x0, int y0,
+			int width, int height, String name) {
+		createSprites(spriteSheetName, x0, y0, width, height, new String[] { name });
+		animatedSprites.put(name, spriteAsAnimatedSprite(name));
+		sprites.remove(name);
 		return this;
 	}
 	
@@ -334,6 +342,10 @@ public class Resources {
 		return particleEffects.get(name);
 	}
 	
+	public AnimatedSprite animatedSprite(String name) {
+		return animatedSprites.get(name);
+	}
+	
 	public Sprite sprite(String name) {
 		return sprites.get(name);
 	}
@@ -342,7 +354,7 @@ public class Resources {
 	 * Just conveniently returns an animated sprite instead of a regular
 	 * sprite.
 	 */
-	public AnimatedSprite animatedSprite(String name) {
+	public AnimatedSprite spriteAsAnimatedSprite(String name) {
 		return new AnimatedSprite(sprites.get(name));
 	}
 	

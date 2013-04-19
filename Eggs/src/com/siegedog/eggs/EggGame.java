@@ -2,6 +2,7 @@ package com.siegedog.eggs;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.utils.Logger;
 import com.siegedog.eggs.screens.GameScreen;
 import com.siegedog.eggs.screens.LoadingScreen;
@@ -39,6 +40,7 @@ public class EggGame implements ApplicationListener {
         
         @Override
     	public void render () {
+        	Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
     		if (activeScreen != null) {
     			activeScreen.render(Gdx.graphics.getDeltaTime());
     		}

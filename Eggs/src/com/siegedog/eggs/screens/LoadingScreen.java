@@ -1,5 +1,6 @@
 package com.siegedog.eggs.screens;
 
+import com.siegedog.eggs.AnimatedSprite;
 import com.siegedog.eggs.EggGame;
 
 public class LoadingScreen extends GameScreen {
@@ -9,7 +10,6 @@ public class LoadingScreen extends GameScreen {
 			.loadTex("warmup_sheet.gif", "sheet")
 			.onLoadFinish(new Runnable() {			
 				public void run() {
-					EggGame.R.createSprite("sheet", 0, 0, 48, 48, "enemy");
 					EggGame.R.createSprite("sheet", 48, 0, 48, 48, "redScarab");
 					EggGame.R.createSprites("sheet", 96, 0, 32, 32, new String[] {
 							"laser",
@@ -18,8 +18,15 @@ public class LoadingScreen extends GameScreen {
 							"smoke",
 							"shipExhaust"
 					});
-					EggGame.R.createSprite("sheet", 0, 48, 48, 48 * 7, "explosion");
-					EggGame.R.animatedSprite("explosion").addAnimationByFrameCount("default", 7, 0.15f);
+					// FIXME: maybe make a laarge wide sprite, and THEN divide it into frames
+					// and not just make a small sprite than move right with the coords
+					EggGame.R.createAnimatedSprite("sheet", 0, 48, 48, 48, "explosion");
+					AnimatedSprite as = EggGame.R.animatedSprite("explosion");
+					as.addAnimationByFrameCount("explode", 7, 0.07f);
+					
+					EggGame.R.createAnimatedSprite("sheet", 0, 96, 48, 48, "enemy");
+					as = EggGame.R.animatedSprite("enemy");
+					as.addAnimationByFrameCount("wobble", 9, 1.20f);
 					
 					game.setScreen(new GameplayScreen());
 				}

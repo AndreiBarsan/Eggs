@@ -2,9 +2,11 @@ package com.siegedog.eggs;
 
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -92,8 +94,8 @@ public class AnimatedSprite extends Sprite {
 		Array<TextureRegion> keyFrames = new Array<TextureRegion>();
 		
 		this.delay = delay;
-		int w = getRegionWidth();
-		int h = getRegionHeight();
+		int w = (int) getWidth();
+		int h = (int) getHeight();
 		Texture texture = getTexture();
 		
 		for(int i = 0; i<frames; i++) {
@@ -124,17 +126,19 @@ public class AnimatedSprite extends Sprite {
 	public void setPosition(Vector2 p) {
 		setPosition(p.x, p.y);
 	}
-	
-	public boolean isLooping() {
-		return looping;
-	}
 
-	public void setLooping(boolean looping) {
-		this.looping = looping;
+	public void setPlayMode(int mode) {
+		activeAnimation.setPlayMode(mode);
 	}
 
 	public void onLoop(Runnable onLoop) {
 		this.onLoop = onLoop;
+	}
+	
+	@Override
+	public void draw(SpriteBatch spriteBatch) {
+		update(Gdx.graphics.getDeltaTime());
+		super.draw(spriteBatch);
 	}
 
 	public void update(float delta) {
@@ -146,16 +150,9 @@ public class AnimatedSprite extends Sprite {
 			
 			if (activeAnimation != null) {
 				TextureRegion tr = new TextureRegion(activeAnimation.getKeyFrame(time, true));			
-				//if(flipped) tr.flip(true, false);
+
+				// TODO: reimplement on loop event
 				setRegion(tr);
-				
-				if(activeAnimation.isAnimationFinished(time) && activeAnimation.getFrameCount() > 1) {
-					time -= activeAnimation.frameDuration * activeAnimation.getFrameCount();
-					activeDelay = delay;
-					if(onLoop != null) {
-						onLoop.run();
-					}
-				}
 			}
 		}
 	}
