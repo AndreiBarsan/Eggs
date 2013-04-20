@@ -12,6 +12,12 @@ public class Log {
 	
 	public static void E(String message) {
 		errorLog.error(message);
+		StackTraceElement[] el = Thread.currentThread().getStackTrace();
+		for(int i = 2; i < el.length; ++i) {
+			errorLog.error(el[i].toString());
+		}
+		System.exit(-1);
+		
 	}
 	
 	

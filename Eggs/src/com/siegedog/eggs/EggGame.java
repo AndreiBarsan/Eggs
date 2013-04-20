@@ -40,6 +40,7 @@ public class EggGame implements ApplicationListener {
         
         @Override
     	public void render () {
+        	Gdx.gl.glClearColor(0.33f, 0.33f, 0.33f, 1.0f);
         	Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
     		if (activeScreen != null) {
     			activeScreen.render(Gdx.graphics.getDeltaTime());

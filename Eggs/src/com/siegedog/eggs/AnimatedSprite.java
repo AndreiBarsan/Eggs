@@ -2,7 +2,6 @@ package com.siegedog.eggs;
 
 import java.util.HashMap;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -10,13 +9,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.siegedog.eggs.util.Log;
 
 public class AnimatedSprite extends Sprite {
 
 	private float delay, activeDelay;
-	
-	/// Whether the current animation should be looping
-	private boolean looping = false;
 	
 	/// Action to be executed when the animation finishes
 	private Runnable onLoop;
@@ -52,10 +49,13 @@ public class AnimatedSprite extends Sprite {
 		
 	}
 	
+	
+	public AnimatedSprite(AnimatedSprite sprite) {
+		set(sprite);
+	}
 
 	public AnimatedSprite(Sprite sprite) {
 		super(sprite);
-		// TODO Auto-generated constructor stub
 	}
 
 	public AnimatedSprite(Texture texture, int srcX, int srcY, int srcWidth,
@@ -104,6 +104,18 @@ public class AnimatedSprite extends Sprite {
 		
 		animations.put(name, new DAnimation(frameTime, keyFrames));
 	}
+	
+	public void set(AnimatedSprite sprite) {
+		super.set(sprite);
+		
+		animations = sprite.animations;
+		activeAnimation = sprite.activeAnimation;
+		delay = sprite.delay;
+		activeDelay = sprite.activeDelay;
+		onLoop = sprite.onLoop;
+		flipped = sprite.flipped;
+		time = sprite.time;
+	}
 
 	public void addAnimation(String name, DAnimation animation) {
 		animations.put(name, animation);
@@ -116,6 +128,8 @@ public class AnimatedSprite extends Sprite {
 				time = 0f;
 				activeAnimation = animations.get(name);
 			}
+		} else {
+			Log.D("Dude, no animation named " + name +  " available...");
 		}
 	}
 	
@@ -128,7 +142,9 @@ public class AnimatedSprite extends Sprite {
 	}
 
 	public void setPlayMode(int mode) {
-		activeAnimation.setPlayMode(mode);
+		if(activeAnimation != null) {
+			activeAnimation.setPlayMode(mode);
+		}
 	}
 
 	public void onLoop(Runnable onLoop) {
@@ -137,13 +153,12 @@ public class AnimatedSprite extends Sprite {
 	
 	@Override
 	public void draw(SpriteBatch spriteBatch) {
-		update(Gdx.graphics.getDeltaTime());
 		super.draw(spriteBatch);
 	}
 
 	public void update(float delta) {
 		
-		activeDelay-=delta;
+		activeDelay -= delta;
 		
 		if(activeDelay <= 0f) {
 			time += delta;
@@ -151,7 +166,16 @@ public class AnimatedSprite extends Sprite {
 			if (activeAnimation != null) {
 				TextureRegion tr = new TextureRegion(activeAnimation.getKeyFrame(time, true));			
 
-				// TODO: reimplement on loop event
+				if(activeAnimation.getFrameCount() == activeAnimation.getKeyFrameIndex(time) + 1) {
+					if(onLoop != null) {
+						onLoop.run();
+					}
+					
+					if(delay != 0.0f) {
+						activeDelay = delay;
+					}
+				}
+				
 				setRegion(tr);
 			}
 		}

@@ -26,7 +26,7 @@ public class LoadingScreen extends GameScreen {
 					
 					EggGame.R.createAnimatedSprite("sheet", 0, 96, 48, 48, "enemy");
 					as = EggGame.R.animatedSprite("enemy");
-					as.addAnimationByFrameCount("wobble", 9, 1.20f);
+					as.addAnimationByFrameCount("wobble", 10, 0.05f);
 					
 					game.setScreen(new GameplayScreen());
 				}
