@@ -1,11 +1,14 @@
 package com.siegedog.eggs.screens;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.siegedog.eggs.EggGame;
-import com.siegedog.eggs.screens.GameplayScreen.Dude;
 import com.siegedog.eggs.util.Log;
 
 public class GameScreen implements Screen {
@@ -82,4 +85,22 @@ public class GameScreen implements Screen {
 	}
 	
 	/* PHYSICS */
+	public boolean dudeVSDude(Dude a, Dude b) {
+		if(a.getX() + a.getWidth() < b.getX() || a.getX() > b.getX() + b.getWidth()) return false;
+		if(a.getY() + a.getHeight() < b.getY() || a.getY() > b.getY() + b.getHeight()) return false;
+		
+		return true;
+	}
+	
+	public void checkCollisions() {
+		Array<Actor> actors = stage.getActors();
+		for(int i = 0; i < actors.size - 1; ++i) {
+			for(int j = i + 1; j < actors.size; ++j) {
+				Dude d1 = (Dude)actors.get(i);
+				Dude d2 = (Dude)actors.get(j);
+				
+				
+			}
+		}
+	}
 }

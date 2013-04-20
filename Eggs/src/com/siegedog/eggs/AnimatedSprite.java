@@ -89,21 +89,27 @@ public class AnimatedSprite extends Sprite {
 		addAnimationByFrameCount(name, frames, frameTime, 0f);
 	}
 	
-	// most animations are just subsequent texture coords of the current one
-	public void addAnimationByFrameCount(String name, int frames, float frameTime, float delay) {
+	public void addAnimation(String name, int x0, int y0, int w, int h, int frames, float frameTime) {
+		addAnimation(name, x0, y0, w, h, frames, frameTime, 0.0f);
+	}
+	
+	public void addAnimation(String name, int x0, int y0, int w, int h, int frames, float frameTime, float delay) {
 		Array<TextureRegion> keyFrames = new Array<TextureRegion>();
-		
 		this.delay = delay;
-		int w = (int) getWidth();
-		int h = (int) getHeight();
-		Texture texture = getTexture();
 		
-		for(int i = 0; i<frames; i++) {
-			keyFrames.add(new TextureRegion(texture, getRegionX() + i * w, getRegionY() , w, h));
+		Texture texture = getTexture();
+		for(int i = 0; i < frames; i++) {
+			keyFrames.add(new TextureRegion(texture, x0 + i * w, y0 , w, h));
 		}
 		
 		animations.put(name, new DAnimation(frameTime, keyFrames));
 	}
+	
+	// most animations are just subsequent texture coords of the current one
+	public void addAnimationByFrameCount(String name, int frames, float frameTime, float delay) {
+		addAnimation(name, getRegionX(), getRegionY(), (int) getWidth(), (int) getHeight(), frames, frameTime, delay);
+	}
+	
 	
 	public void set(AnimatedSprite sprite) {
 		super.set(sprite);

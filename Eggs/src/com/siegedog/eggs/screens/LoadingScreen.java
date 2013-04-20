@@ -16,17 +16,19 @@ public class LoadingScreen extends GameScreen {
 							"rocketLauncher",
 							"rocket",
 							"smoke",
-							"shipExhaust"
+							"shipExhaust",
+							"crate"
 					});
 					// FIXME: maybe make a laarge wide sprite, and THEN divide it into frames
 					// and not just make a small sprite than move right with the coords
 					EggGame.R.createAnimatedSprite("sheet", 0, 48, 48, 48, "explosion");
 					AnimatedSprite as = EggGame.R.animatedSprite("explosion");
-					as.addAnimationByFrameCount("explode", 7, 0.07f);
-					
+					as.addAnimationByFrameCount("explode", 10, 0.06f);
+
 					EggGame.R.createAnimatedSprite("sheet", 0, 96, 48, 48, "enemy");
 					as = EggGame.R.animatedSprite("enemy");
 					as.addAnimationByFrameCount("wobble", 10, 0.05f);
+					as.addAnimation("dead", 0, 144, 48, 48, 2, 0.60f);
 					
 					game.setScreen(new GameplayScreen());
 				}
