@@ -26,10 +26,7 @@ class Dude extends Actor {
 		setOrigin(other.getOriginX(), other.getOriginY());
 		setWidth(other.getWidth());
 		setHeight(other.getHeight());
-		setZIndex(100);
 		this.sprite = new AnimatedSprite(sprite);
-		
-		System.out.println(other);
 	}
 	
 	public void init(GameScreen screen) {

@@ -82,7 +82,7 @@ public class GameplayScreen extends GameScreen {
 			@Override
 			public boolean keyDown(int keycode) {
 				if(keycode > klimit) {
-					System.out.println("Whoops");
+					Log.E("Invalid keycode. Plz fix me.");
 				}
 				keys[keycode] = true;
 				return super.keyDown(keycode);
@@ -91,7 +91,7 @@ public class GameplayScreen extends GameScreen {
 			@Override
 			public boolean keyUp(int keycode) {
 				if(keycode > klimit) {
-					System.out.println("Whoops");
+					Log.E("Invalid keycode. Plz fix me.");
 				}
 				
 				if(keycode == Keys.SPACE) {
@@ -111,9 +111,6 @@ public class GameplayScreen extends GameScreen {
 				keys[keycode] = false;
 				return super.keyUp(keycode);
 			}
-			
-			
-			
 		});
 	}
 	
@@ -138,9 +135,10 @@ public class GameplayScreen extends GameScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
+		
 		SpriteBatch sb = stage.getSpriteBatch();
 		sb.begin();
-		bf.draw(sb, "Derp: " + stage.getActors().size, 20, 20);
+		bf.draw(sb, "Entities: " + stage.getActors().size, 16, 16);
 		sb.end();
 	}
 }
