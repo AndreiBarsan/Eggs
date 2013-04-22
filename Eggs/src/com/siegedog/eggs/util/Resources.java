@@ -25,14 +25,14 @@ import com.siegedog.eggs.AnimatedSprite;
 // Originally written for the Minogear game, LD24 
 public class Resources {
 	
-	private static final String ASS_FOLDER = "../Eggs/res";
+	private static final String ASS_FOLDER = "";
 	
-	String sfxRoot = ASS_FOLDER + "/sfx/";
-	String texRoot = ASS_FOLDER + "/img/";
-	String effectRoot = ASS_FOLDER + "/particleEffects/";
-	String effectImgRoot = ASS_FOLDER + "/img/particles/";
-	String shaderRoot = ASS_FOLDER + "/shaders/";
-	String fontRoot = ASS_FOLDER + "/font/";
+	String sfxRoot = ASS_FOLDER + "sfx/";
+	String texRoot = ASS_FOLDER + "img/";
+	String effectRoot = ASS_FOLDER + "particleEffects/";
+	String effectImgRoot = ASS_FOLDER + "img/particles/";
+	String shaderRoot = ASS_FOLDER + "shaders/";
+	String fontRoot = ASS_FOLDER + "font/";
 	
 	AssetManager assetManager = new AssetManager();
 	private boolean done = false;
