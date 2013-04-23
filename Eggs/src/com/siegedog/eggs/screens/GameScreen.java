@@ -1,13 +1,12 @@
 package com.siegedog.eggs.screens;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+import com.siegedog.eggs.Dude;
 import com.siegedog.eggs.EggGame;
 import com.siegedog.eggs.util.Log;
 
@@ -16,6 +15,7 @@ public class GameScreen implements Screen {
 	protected EggGame game;
 	protected Stage stage = new Stage();
 	private ArrayList<Dude> deadDudes = new ArrayList<Dude>();
+	protected final int scale = 2;
 	
 	public void init(EggGame game) {
 		this.game = game;
@@ -23,11 +23,11 @@ public class GameScreen implements Screen {
 	
 	@Override
 	public void render(float delta) {
-		stage.act(delta);
-		stage.draw();
+		getStage().act(delta);
+		getStage().draw();
 		
 		for(Dude d : deadDudes) {
-			if(!stage.getActors().removeValue(d, true)) {
+			if(!getStage().getActors().removeValue(d, true)) {
 				Log.E("Failed removing a dude");
 			}
 		}
@@ -37,6 +37,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
+		stage.setViewport(width / scale, height / scale, false);
 	}
 
 	@Override
@@ -50,19 +51,16 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -76,7 +74,7 @@ public class GameScreen implements Screen {
 	}
 	
 	public void addDude(Dude dude) {
-		stage.addActor(dude);
+		getStage().addActor(dude);
 		dude.init(this);
 	}
 	
@@ -84,6 +82,10 @@ public class GameScreen implements Screen {
 		return game;
 	}
 	
+	public Stage getStage() {
+		return stage;
+	}
+
 	/* PHYSICS */
 	public boolean dudeVSDude(Dude a, Dude b) {
 		if(a.getX() + a.getWidth() < b.getX() || a.getX() > b.getX() + b.getWidth()) return false;
@@ -93,7 +95,7 @@ public class GameScreen implements Screen {
 	}
 	
 	public void checkCollisions() {
-		Array<Actor> actors = stage.getActors();
+		Array<Actor> actors = getStage().getActors();
 		for(int i = 0; i < actors.size - 1; ++i) {
 			for(int j = i + 1; j < actors.size; ++j) {
 				Dude d1 = (Dude)actors.get(i);

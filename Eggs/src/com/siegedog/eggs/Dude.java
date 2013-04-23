@@ -1,13 +1,14 @@
-package com.siegedog.eggs.screens;
+package com.siegedog.eggs;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.siegedog.eggs.AnimatedSprite;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.siegedog.eggs.screens.GameScreen;
 import com.siegedog.eggs.util.Log;
 
-class Dude extends Actor {
+public class Dude extends Actor {
 	protected AnimatedSprite sprite;
 	protected GameScreen screen;
 	protected String label = null;
@@ -16,17 +17,20 @@ class Dude extends Actor {
 	
 	public Vector2 speed = new Vector2();
 	
-	public Dude(AnimatedSprite sprite) {
-		this.sprite = new AnimatedSprite(sprite);
-	}
+	public Runnable onDeath = null;
 	
 	public Dude(Actor other, AnimatedSprite sprite) {
+		this(sprite);
 		setX(other.getX());
 		setY(other.getY());
 		setOrigin(other.getOriginX(), other.getOriginY());
 		setWidth(other.getWidth());
 		setHeight(other.getHeight());
+	}
+	
+	public Dude(AnimatedSprite sprite) {
 		this.sprite = new AnimatedSprite(sprite);
+		setTouchable(Touchable.disabled);
 	}
 	
 	public void init(GameScreen screen) {
@@ -52,6 +56,9 @@ class Dude extends Actor {
 			Log.E("Killed enemy twice. Look for bugs!");
 		}
 		dead = true;
+		if(onDeath != null) {
+			onDeath.run();
+		}
 		screen.signalDead(this);
 	}
 	
