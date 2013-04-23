@@ -3,6 +3,7 @@ package com.siegedog.eggs.util;
 
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
@@ -16,6 +17,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.tiled.TiledLoader;
+import com.badlogic.gdx.graphics.g2d.tiled.TiledMap;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -29,6 +32,7 @@ public class Resources {
 	
 	String sfxRoot = ASS_FOLDER + "sfx/";
 	String texRoot = ASS_FOLDER + "img/";
+	String levelRoot = ASS_FOLDER + "lvl/";
 	String effectRoot = ASS_FOLDER + "particleEffects/";
 	String effectImgRoot = ASS_FOLDER + "img/particles/";
 	String shaderRoot = ASS_FOLDER + "shaders/";
@@ -47,6 +51,7 @@ public class Resources {
 	HashMap<String, Sprite> sprites = new HashMap<String, Sprite>(32);
 	HashMap<String, AnimatedSprite> animatedSprites = new HashMap<String, AnimatedSprite>(32);
 	HashMap<String, ParticleEffect> particleEffects = new HashMap<String, ParticleEffect>(10);
+	HashMap<String, TiledMap> tileMaps = new HashMap<String, TiledMap>();
 	//HashMap<String, ShaderProgram> shaders = new HashMap<String, ShaderProgram>(10);
 	
 	// Save friendly names for the loaded assets
@@ -123,7 +128,7 @@ public class Resources {
 	}
 
 	public boolean isLoaded(String file) {
-		return assetManager.isLoaded("assets/" + file);
+		return assetManager.isLoaded(ASS_FOLDER + file);
 	}
 	
 	public Resources loadTex(String fileName, String name) {
@@ -132,16 +137,17 @@ public class Resources {
 		return this;
 	}
 	
-	// Loads the central tex. atlas
-	// Note: prefer using this instead of custom-made texture sheets
-	public Resources loadAtlas() {
-		assetManager.load(texRoot + "pack", TextureAtlas.class);
+	public Resources loadAtlas(String folderName) {
+		assetManager.load(ASS_FOLDER + folderName, TextureAtlas.class);
+		return this;
+	}
+	
+	public Resources loadTileMap(String fileName, String name) {
+		tileMaps.put(name, TiledLoader.createMap(Gdx.files.internal(levelRoot + fileName)));
 		return this;
 	}
 
-	// TODO: more standard
 	public Resources loadSfx(String fileName, String name) {
-		// FileHandle file = new FileHandle(sfxRoot + "Powerup21" + extension);
 		assetManager.load(sfxRoot + fileName, Sound.class);
 		sNames.put(name, sfxRoot + fileName); 
 		return this;
@@ -350,6 +356,10 @@ public class Resources {
 		return sprites.get(name);
 	}
 	
+	public TiledMap tileMap(String name) {
+		return tileMaps.get(name);
+	}
+	
 	/**
 	 * Just conveniently returns an animated sprite instead of a regular
 	 * sprite.
@@ -366,6 +376,10 @@ public class Resources {
 	
 	public ShaderProgram shader(String name) {
 		return assetManager.get(shaderRoot + name, ShaderProgram.class);
+	}
+	
+	public AssetManager getInternal() {
+		return assetManager;
 	}
 
 	public void dispose() {

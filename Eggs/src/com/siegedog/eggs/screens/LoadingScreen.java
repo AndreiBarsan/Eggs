@@ -8,7 +8,10 @@ public class LoadingScreen extends GameScreen {
 	public LoadingScreen() {
 		EggGame.R
 			.loadTex("warmup_sheet.gif", "sheet")
-			.loadSfx("MaybePowerUpRandomize144.wav", "enemySound")
+			.loadSfx("explosion42.wav", "enemySound01")
+			.loadSfx("explosion43.wav", "enemySound02")
+			.loadSfx("explosion44.wav", "enemySound03")
+			//.loadSfx("MaybePowerUpRandomize144.wav", "enemySound")
 			.onLoadFinish(new Runnable() {			
 				public void run() {
 					EggGame.R.createSprite("sheet", 48, 0, 48, 48, "redScarab");

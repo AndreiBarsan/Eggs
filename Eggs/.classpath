@@ -7,5 +7,7 @@
 	<classpathentry kind="lib" path="/Eggs-Desktop/libs/gdx-backend-lwjgl-natives.jar"/>
 	<classpathentry kind="lib" path="/Eggs-Desktop/libs/gdx-backend-lwjgl.jar"/>
 	<classpathentry kind="lib" path="/Eggs-Desktop/libs/gdx-natives.jar"/>
+	<classpathentry kind="lib" path="C:/Users/SiegeDog/Documents/java_workspace/libgdx/gdx-tools/gdx-tools.jar"/>
+	<classpathentry kind="lib" path="C:/Users/SiegeDog/Documents/java_workspace/libgdx/gdx-tiled-preprocessor/gdx-tiled-preprocessor.jar" sourcepath="C:/Users/SiegeDog/Documents/java_workspace/libgdx/gdx-tiled-preprocessor/sources/gdx-tiled-preprocessor-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

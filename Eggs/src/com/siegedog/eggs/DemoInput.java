@@ -15,6 +15,9 @@ public class DemoInput extends InputAdapter {
 	int lastX = -1;
 	int lastY = -1;
 	long lastTap;
+	
+	/** Measured in milliseconds */
+	public final int TAP_TIME = 200;
 		
 	public DemoInput(GameplayScreen toMonitor) {
 		screen = toMonitor;
@@ -37,7 +40,7 @@ public class DemoInput extends InputAdapter {
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		long now = System.currentTimeMillis();
-		if(now - lastTap < 200) {
+		if(now - lastTap < TAP_TIME) {
 			killRandomGuy(screenX, screenY);
 		}
 		lastTap = now;
@@ -53,15 +56,15 @@ public class DemoInput extends InputAdapter {
 	
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		int dx = screenX - lastX;
-		int dy = screenY - lastY;
+		int dx = (screenX - lastX) / screen.getScale();
+		int dy = (screenY - lastY) / screen.getScale();
 		Camera cam = screen.getStage().getCamera();
 		cam.position.x -= dx;
 		cam.position.y += dy;
 		
 		cam.position.x = MathUtils.clamp(cam.position.x, screen.x0 + cam.viewportWidth / 2, screen.x1 - cam.viewportWidth / 2);
 		cam.position.y = MathUtils.clamp(cam.position.y, screen.y0 + cam.viewportHeight / 2, screen.y1 - cam.viewportHeight / 2);
-		System.out.println(cam.position.x + ", " + cam.position.y);
+		
 		lastX = screenX;
 		lastY = screenY;
 		
@@ -79,9 +82,6 @@ public class DemoInput extends InputAdapter {
 	}
 	
 	private void killRandomGuy(int tapX, int tapY) {
-		Camera cam = screen.getStage().getCamera();
-		int stapX = (int) (cam.position.x - cam.viewportWidth / 2 + tapX);
-		int stapY = (int) (cam.position.y + cam.viewportHeight / 2 - tapY);
 		Vector2 coords = screen.getStage().screenToStageCoordinates(new Vector2(tapX, tapY));
 		Dude result = (Dude)screen.getStage().hit(coords.x, coords.y, true);
 		if(result != null) {

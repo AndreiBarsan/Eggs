@@ -9,7 +9,7 @@ public class AndroidGame extends AndroidApplication {
                 super.onCreate(savedInstanceState);
                 AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
                 config.hideStatusBar = true;
-                config.numSamples = 4;
+                config.numSamples = 1;
                 config.useGL20 = false;
                 initialize(new EggGame(), config);
         }

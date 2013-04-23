@@ -13,6 +13,9 @@ Eggs-Desktop/bin/
 Eggs/libs/
 Eggs-Desktop/lib/
 
+gdx-tools/
+gdx-tiled-preprocessor/
+
 
 *.dat
 *.psd

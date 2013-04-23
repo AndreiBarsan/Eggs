@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><map height="32" orientation="orthogonal" tileheight="16" tilewidth="16" version="1.0" width="32"><properties><property name="blended tiles" value="1,2,3,7,8,9,11,14,15,16,17,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64"/></properties>
+ <tileset firstgid="1" name="tileset" tileheight="16" tilewidth="16">
+  <image height="128" source="../img/tileset.gif" width="128"/>
+ </tileset>
+ <layer height="32" name="Tile Layer 1" width="32">
+  <data compression="zlib" encoding="base64">
+   eJzlVjsOQzEIe0O65f7n7fKGCPlHkk4dkKoWYjAGOp7nGX9sn9duvVON/ebilO3G7by15vkLvqbxm685zFnemsbWPJQf4gJxVr9zvDIM5ldzQPWg+pw5nhB+0o+b+BUb8XGCj3qC+nKj3i7+KNisB2pmT/BVHuh9NCc3+FdxJzl06ndxTNdKP7v4qq41n2Rvp3cixV/rSTTKfFwOiTacPtC+TvhRHKy9Y7pDmIi3+egcUD4Vf/2M7qniW9VRc+hwlOivcqnu+AAx6c5WnKobreZ+B5tpSd3FBMPhJ/9D2H46xU+1sLujUrzOzLs57mCz2J36Ul82o2gGdvhVvlVPjpMEn/XP+TINdzXWmY1aP4vtaD7FR/P8BT6aFhc=
+  </data>
+ </layer>
+ <layer height="32" name="overlay" width="32">
+  <data compression="zlib" encoding="base64">
+   eJzNlcEKwkAMRFctgvXWDxFP4kn8/69yeygOITNJii0GAu2m3TdJ082taTsTx3jG7Huz3bs/iu94z2T51p4JvqcHdWX4LA/FH5pfZ8Zn34nlgHz7zBDsGfFYTaxm5K91xfBy9/iYt8p9iau6VjR7fLYXrg8ibk3VS/Vf5rtbvZk90Fn+yzWrh6fDepR7C/j2vvovNOda8S0bNXj5YFz1Iq6t4aMG7Duly8s5wx/geq1V/kPW/14vsb0zWthaNH+ivarr0fkT8TPalB5ryK+cmxkdGbP8ve1f+Hux2fzZg6/m35Z81ZOMf+h+dPz0I27Ev3QfjU/dr0V+ZBX+WORnNG3FZ/NP8TE286f2rXuFnz1/1fyz+S8asvyMVfjV/KN4NP+x/r/gsxk281+Ev0X/W3t3/wBcwxaN
+  </data>
+ </layer>
+ <layer height="32" name="edge" width="32">
+  <data compression="zlib" encoding="base64">
+   eJztw0ENAAAIBKBrZAT7t3Km8CFsJEkdBQAAgE/66BrG8Azl
+  </data>
+ </layer>
+</map>

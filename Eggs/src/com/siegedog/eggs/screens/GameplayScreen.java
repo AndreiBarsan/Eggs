@@ -1,10 +1,15 @@
 package com.siegedog.eggs.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.loaders.TileMapRendererLoader;
+import com.badlogic.gdx.assets.loaders.TileMapRendererLoader.TileMapParameter;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.tiled.TileMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -19,10 +24,12 @@ public class GameplayScreen extends GameScreen {
 
 	private int left;
 	BitmapFont bf = new BitmapFont();
-	public int x0 = -200;
-	public int y0 = -200;
-	public int x1 =  250;
-	public int y1 =  250;
+	public int x0 = 0;
+	public int y0 = 0;
+	public int x1 = 512;
+	public int y1 = 512;
+	
+	TileMapRenderer tmr;
 	
 	class Blob extends Dude {
 		public Blob() {
@@ -82,7 +89,20 @@ public class GameplayScreen extends GameScreen {
 			deadBody.getSprite().play("dead");
 			screen.addDude(deadBody);
 			screen.addDude(explosion);
-			EggGame.R.play("enemySound");
+			switch(MathUtils.random(0, 2)) {
+			case 0:
+				EggGame.R.play("enemySound01");
+				break;
+				
+			case 1:
+				EggGame.R.play("enemySound02");
+				break;
+				
+			case 2:
+				EggGame.R.play("enemySound03");
+				break;
+			}
+			
 		}
 	}
 	
@@ -90,13 +110,17 @@ public class GameplayScreen extends GameScreen {
 	public void init(EggGame game) {
 		super.init(game);
 		Gdx.input.setInputProcessor(new DemoInput(this));
+		
+		TileMapRendererLoader loader = new TileMapRendererLoader(new InternalFileHandleResolver());
+		TileMapParameter param = new TileMapParameter("lvl/img", 1, 1);
+		tmr = loader.load(EggGame.R.getInternal(), "lvl/baked/testLevel.tmx", param);
 	}
 	
 	@Override
 	public void show() {
 		super.show();
 		
-		left = 25;
+		left = 100;
 		
 		for(int i = 0; i < left; ++i) {
 
@@ -108,7 +132,7 @@ public class GameplayScreen extends GameScreen {
 				
 				@Override
 				public void run() {
-					left --;
+					left--;
 				}
 			};
 			addDude(e);
@@ -119,6 +143,8 @@ public class GameplayScreen extends GameScreen {
 	
 	@Override
 	public void render(float delta) {
+		tmr.render((OrthographicCamera) stage.getCamera());
+		
 		super.render(delta);
 		
 		if(left == 0) {
@@ -136,6 +162,13 @@ public class GameplayScreen extends GameScreen {
 		sb.begin();
 		bf.draw(sb, "Blobs left: " + left, 
 				cam.position.x - cam.viewportWidth / 2 + 4, cam.position.y - cam.viewportHeight / 2 + 16);
+		
+		bf.draw(sb, "FPS " + Gdx.graphics.getFramesPerSecond(), 
+				cam.position.x + cam.viewportWidth / 2 - 50, cam.position.y - cam.viewportHeight / 2 + 16);
 		sb.end();
+	}
+	
+	public int getScale() {
+		return scale;
 	}
 }
