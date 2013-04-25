@@ -7,11 +7,16 @@
 *.o
 *.so
 
-Eggs/bins/
+Eggs/bin/
+Eggs-Android/bin/
 Eggs-Desktop/bin/
 
 Eggs/libs/
+Eggs-Android/lib/
 Eggs-Desktop/lib/
+
+Eggs/assets/data/lvl/baked
+Eggs/assets/data/lvl/img
 
 gdx-tools/
 gdx-tiled-preprocessor/

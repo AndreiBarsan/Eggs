@@ -28,7 +28,7 @@ import com.siegedog.eggs.AnimatedSprite;
 // Originally written for the Minogear game, LD24 
 public class Resources {
 	
-	private static final String ASS_FOLDER = "";
+	private static final String ASS_FOLDER = "assets/data/";
 	
 	String sfxRoot = ASS_FOLDER + "sfx/";
 	String texRoot = ASS_FOLDER + "img/";
@@ -133,6 +133,7 @@ public class Resources {
 	
 	public Resources loadTex(String fileName, String name) {
 		assetManager.load(texRoot + fileName, Texture.class);
+		System.out.println(Gdx.files.internal(texRoot + fileName).file().getAbsolutePath());
 		tNames.put(name, texRoot + fileName);		
 		return this;
 	}

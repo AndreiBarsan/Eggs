@@ -112,30 +112,30 @@ public class GameplayScreen extends GameScreen {
 		Gdx.input.setInputProcessor(new DemoInput(this));
 		
 		TileMapRendererLoader loader = new TileMapRendererLoader(new InternalFileHandleResolver());
-		TileMapParameter param = new TileMapParameter("lvl/img", 1, 1);
-		tmr = loader.load(EggGame.R.getInternal(), "lvl/baked/testLevel.tmx", param);
+		TileMapParameter param = new TileMapParameter("assets/data/lvl/img", 1, 1);
+		
+		tmr = loader.load(EggGame.R.getInternal(), "assets/data/lvl/baked/testLevel.tmx", param);
 	}
 	
 	@Override
 	public void show() {
 		super.show();
 		
-		left = 100;
+		left = 25;
 		
 		for(int i = 0; i < left; ++i) {
 
-			Blob e = new Blob();
-			e.setX(MathUtils.random(x0, x1));
-			e.setY(MathUtils.random(y0, y1));
-			e.speed = new Vector2(MathUtils.random(-50.0f, 50.0f), MathUtils.random(-50.0f, 50.0f));
-			e.onDeath = new Runnable() {
-				
+			Blob blob = new Blob();
+			blob.setX(MathUtils.random(x0, x1));
+			blob.setY(MathUtils.random(y0, y1));
+			blob.speed = new Vector2(MathUtils.random(-50.0f, 50.0f), MathUtils.random(-50.0f, 50.0f));
+			blob.onDeath = new Runnable() {
 				@Override
 				public void run() {
 					left--;
 				}
 			};
-			addDude(e);
+			addDude(blob);
 		}
 		
 		Log.D("Entered Gameplay with the resources loaded well!");

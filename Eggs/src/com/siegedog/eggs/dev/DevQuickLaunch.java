@@ -2,10 +2,14 @@ package com.siegedog.eggs.dev;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.tiledmappacker.TiledMapPacker;
 import com.siegedog.eggs.EggGame;
 
 public class DevQuickLaunch {
         public static void main (String[] args) {
+        	
+        	BakeTileMaps.main(args);
+        	
         	LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         	config.fullscreen = false;
         	config.width = 800;
