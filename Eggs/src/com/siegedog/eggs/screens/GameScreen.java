@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.siegedog.eggs.Dude;
 import com.siegedog.eggs.EggGame;
+import com.siegedog.eggs.physics.Collision;
 import com.siegedog.eggs.util.Log;
 
 public class GameScreen implements Screen {
@@ -23,6 +24,7 @@ public class GameScreen implements Screen {
 	
 	@Override
 	public void render(float delta) {
+		checkCollisions();
 		getStage().act(delta);
 		getStage().draw();
 		
@@ -101,7 +103,10 @@ public class GameScreen implements Screen {
 				Dude d1 = (Dude)actors.get(i);
 				Dude d2 = (Dude)actors.get(j);
 				
-				
+				Collision c = d1.physics.intersect(d2.physics);
+				if(null != c) {
+					d1.physics.resolveCollision(c, d2.physics);
+				}
 			}
 		}
 	}

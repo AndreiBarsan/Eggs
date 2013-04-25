@@ -20,6 +20,31 @@ public class AABB extends Shape {
 		return new Vector2(min.x + (max.x - min.x) / 2, min.y + (max.y - min.y) / 2);
 	}
 	
+	public Vector2 getPosition() {
+		return getCenter();
+	}
+	
+	@Override
+	public void setX(float x) {
+		min.x = x;
+		// FIXME: just use position and dimension
+	}
+	
+	@Override
+	public void setY(float y) {
+		min.y = y;
+	}
+	
+	@Override
+	public float getX() {
+		return min.x;
+	}
+	
+	@Override
+	public float getY() {
+		return min.y;
+	}
+	
 	@Override
 	protected Collision intersectsAABB(AABB other) {
 		

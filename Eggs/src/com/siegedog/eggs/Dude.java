@@ -1,10 +1,11 @@
 package com.siegedog.eggs;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.siegedog.eggs.physics.Circle;
+import com.siegedog.eggs.physics.PhysicsNode;
 import com.siegedog.eggs.screens.GameScreen;
 import com.siegedog.eggs.util.Log;
 
@@ -15,7 +16,7 @@ public class Dude extends Actor {
 	
 	private boolean dead = false;
 	
-	public Vector2 speed = new Vector2();
+	public PhysicsNode physics;
 	
 	public Runnable onDeath = null;
 	
@@ -29,8 +30,11 @@ public class Dude extends Actor {
 	}
 	
 	public Dude(AnimatedSprite sprite) {
+		super();
 		this.sprite = new AnimatedSprite(sprite);
 		setTouchable(Touchable.disabled);
+		
+		physics = new PhysicsNode(new Circle(new Vector2(0, 0), 8.0f));
 	}
 	
 	public void init(GameScreen screen) {
@@ -45,10 +49,8 @@ public class Dude extends Actor {
 		
 		super.act(delta);
 
-		sprite.update(Gdx.graphics.getDeltaTime());
-		
-		setX(getX() + delta * speed.x);
-		setY(getY() + delta * speed.y);
+		sprite.update(delta);
+		physics.update(delta);
 	}
 	
 	public void kill() {
@@ -76,6 +78,36 @@ public class Dude extends Actor {
 			sprite.setRotation(getRotation());
 			sprite.draw(batch);
 		}
+	}
+	
+	public float getX() {
+		return physics.getX();
+	}
+	
+	public float getY() {
+		return physics.getY();
+	}
+	
+	@Override
+	public void setX(float x) {
+		physics.setX(x);
+	}
+	
+	@Override
+	public void setY(float y) {
+		physics.setY(y);
+	}
+	
+	@Override
+	public void setBounds(float x, float y, float width, float height) {
+		// TODO Auto-generated method stub
+		super.setBounds(x, y, width, height);
+	}
+	
+	@Override
+	public void setPosition(float x, float y) {
+		// TODO Auto-generated method stub
+		super.setPosition(x, y);
 	}
 	
 	public boolean isDead() {

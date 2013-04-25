@@ -51,22 +51,22 @@ public class GameplayScreen extends GameScreen {
 			
 			if(getX() < x0) {
 				setX(x0);
-				speed.x = -speed.x;
+				physics.velocity.x = -physics.velocity.x;
 			}
 			
 			if(getRight() > x1) {
 				setX(x1 - getWidth());
-				speed.x = -speed.x;
+				physics.velocity.x = -physics.velocity.x;
 			}
 			
 			if(getY() < y0) {
 				setY(y0);
-				speed.y = -speed.y;
+				physics.velocity.y = -physics.velocity.y;
 			}
 			
 			if(getTop() > y1) {
 				setY(y1 - getHeight());
-				speed.y = -speed.y;
+				physics.velocity.y = -physics.velocity.y;
 			}
 			
 			// System.out.println(getX() + ", " + getY() + " --" + getWidth() + " " + getHeight());
@@ -123,12 +123,13 @@ public class GameplayScreen extends GameScreen {
 		
 		left = 25;
 		
+		//*
 		for(int i = 0; i < left; ++i) {
-
+			
 			Blob blob = new Blob();
 			blob.setX(MathUtils.random(x0, x1));
 			blob.setY(MathUtils.random(y0, y1));
-			blob.speed = new Vector2(MathUtils.random(-50.0f, 50.0f), MathUtils.random(-50.0f, 50.0f));
+			blob.physics.velocity = new Vector2(MathUtils.random(-50.0f, 50.0f), MathUtils.random(-50.0f, 50.0f));
 			blob.onDeath = new Runnable() {
 				@Override
 				public void run() {
@@ -137,6 +138,7 @@ public class GameplayScreen extends GameScreen {
 			};
 			addDude(blob);
 		}
+		//*/
 		
 		Log.D("Entered Gameplay with the resources loaded well!");
 	}
