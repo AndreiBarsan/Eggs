@@ -28,15 +28,18 @@ import com.siegedog.eggs.AnimatedSprite;
 // Originally written for the Minogear game, LD24 
 public class Resources {
 	
-	private static final String ASS_FOLDER = "assets/data/";
+	public static String ASS_FOLDER = "assets/";
 	
-	String sfxRoot = ASS_FOLDER + "sfx/";
-	String texRoot = ASS_FOLDER + "img/";
-	String levelRoot = ASS_FOLDER + "lvl/";
-	String effectRoot = ASS_FOLDER + "particleEffects/";
-	String effectImgRoot = ASS_FOLDER + "img/particles/";
-	String shaderRoot = ASS_FOLDER + "shaders/";
-	String fontRoot = ASS_FOLDER + "font/";
+	public final static String sfxRoot = 			ASS_FOLDER + "sfx/";
+	public final static String texRoot = 			ASS_FOLDER + "img/";
+	public final static String effectImgRoot = 		ASS_FOLDER + "img/particles/";
+	public final static String levelRootRaw = 		ASS_FOLDER + "lvl/";
+	public final static String levelImageRoot = 	levelRootRaw + "img/";
+	public final static String levelRootBaked = 	levelRootRaw + "baked/";
+	public final static String effectRoot = 		ASS_FOLDER + "particleEffects/";
+	public final static String shaderRoot = 		ASS_FOLDER + "shaders/";
+	public final static String fontRoot = 			ASS_FOLDER + "font/";
+	
 	
 	AssetManager assetManager = new AssetManager();
 	private boolean done = false;
@@ -143,10 +146,11 @@ public class Resources {
 		return this;
 	}
 	
+	/*
 	public Resources loadTileMap(String fileName, String name) {
-		tileMaps.put(name, TiledLoader.createMap(Gdx.files.internal(levelRoot + fileName)));
+		//tileMaps.put(name, TiledLoader.createMap(Gdx.files.internal(levelRoot + fileName)));
 		return this;
-	}
+	}*/
 
 	public Resources loadSfx(String fileName, String name) {
 		assetManager.load(sfxRoot + fileName, Sound.class);

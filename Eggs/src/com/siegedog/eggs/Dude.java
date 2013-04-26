@@ -1,11 +1,11 @@
 package com.siegedog.eggs;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.siegedog.eggs.physics.Circle;
 import com.siegedog.eggs.physics.PhysicsNode;
+import com.siegedog.eggs.physics.PointShape;
+import com.siegedog.eggs.physics.Shape;
 import com.siegedog.eggs.screens.GameScreen;
 import com.siegedog.eggs.util.Log;
 
@@ -21,7 +21,11 @@ public class Dude extends Actor {
 	public Runnable onDeath = null;
 	
 	public Dude(Actor other, AnimatedSprite sprite) {
-		this(sprite);
+		this(other, sprite, new PointShape());
+	}
+	
+	public Dude(Actor other, AnimatedSprite sprite, Shape shape) {
+		this(sprite, shape);
 		setX(other.getX());
 		setY(other.getY());
 		setOrigin(other.getOriginX(), other.getOriginY());
@@ -29,12 +33,12 @@ public class Dude extends Actor {
 		setHeight(other.getHeight());
 	}
 	
-	public Dude(AnimatedSprite sprite) {
-		super();
+	public Dude(AnimatedSprite sprite, Shape shape) {
 		this.sprite = new AnimatedSprite(sprite);
 		setTouchable(Touchable.disabled);
 		
-		physics = new PhysicsNode(new Circle(new Vector2(0, 0), 8.0f));
+		physics = new PhysicsNode(shape);
+		physics.interactive = false;
 	}
 	
 	public void init(GameScreen screen) {
@@ -100,14 +104,15 @@ public class Dude extends Actor {
 	
 	@Override
 	public void setBounds(float x, float y, float width, float height) {
-		// TODO Auto-generated method stub
-		super.setBounds(x, y, width, height);
+		physics.setX(x);
+		physics.setY(y);
+		physics.setDimensions(width, height);
 	}
 	
 	@Override
 	public void setPosition(float x, float y) {
-		// TODO Auto-generated method stub
-		super.setPosition(x, y);
+		physics.setX(x);
+		physics.setY(y);
 	}
 	
 	public boolean isDead() {

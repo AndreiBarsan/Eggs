@@ -99,9 +99,11 @@ public class GameScreen implements Screen {
 	public void checkCollisions() {
 		Array<Actor> actors = getStage().getActors();
 		for(int i = 0; i < actors.size - 1; ++i) {
+			Dude d1 = (Dude)actors.get(i);
+			if( ! d1.physics.interactive) continue;
 			for(int j = i + 1; j < actors.size; ++j) {
-				Dude d1 = (Dude)actors.get(i);
 				Dude d2 = (Dude)actors.get(j);
+				if( ! d2.physics.interactive) continue;
 				
 				Collision c = d1.physics.intersect(d2.physics);
 				if(null != c) {

@@ -65,4 +65,14 @@ public class AABB extends Shape {
 	protected Collision intersectsCircle(Circle other) {
 		throw new Error("Circle vs AABB not supported yet");
 	}
+
+	@Override
+	public Vector2 getDimensions() {
+		return new Vector2(max.x - min.x, max.y - min.y);
+	}
+
+	@Override
+	public void setDimensions(float w, float h) {
+		throw new Error("Need a bit of refactoring until this starts working right!");
+	}
 }

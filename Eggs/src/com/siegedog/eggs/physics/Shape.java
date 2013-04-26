@@ -22,6 +22,9 @@ public abstract class Shape {
 	public abstract void setX(float x);
 	public abstract void setY(float y);
 	
+	public abstract Vector2 getDimensions();
+	public abstract void setDimensions(float w, float h);
+	
 	protected abstract Collision intersectsCircle(Circle circle);
 	protected abstract Collision intersectsAABB(AABB aabb);
 }

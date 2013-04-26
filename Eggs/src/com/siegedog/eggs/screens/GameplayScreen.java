@@ -18,7 +18,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.siegedog.eggs.DemoInput;
 import com.siegedog.eggs.Dude;
 import com.siegedog.eggs.EggGame;
+import com.siegedog.eggs.physics.Circle;
 import com.siegedog.eggs.util.Log;
+import com.siegedog.eggs.util.Resources;
 
 public class GameplayScreen extends GameScreen {
 
@@ -33,12 +35,13 @@ public class GameplayScreen extends GameScreen {
 	
 	class Blob extends Dude {
 		public Blob() {
-			super(EggGame.R.animatedSprite("enemy"));
+			super(EggGame.R.animatedSprite("enemy"), new Circle(new Vector2(0, 0), 8.0f));
 			sprite.play("wobble");
 			sprite.setPlayMode(Animation.LOOP_PINGPONG);
 			setName("enemy");
 			
 			setTouchable(Touchable.enabled);
+			physics.interactive = true;
 		}
 		
 		@Override
@@ -112,9 +115,9 @@ public class GameplayScreen extends GameScreen {
 		Gdx.input.setInputProcessor(new DemoInput(this));
 		
 		TileMapRendererLoader loader = new TileMapRendererLoader(new InternalFileHandleResolver());
-		TileMapParameter param = new TileMapParameter("assets/data/lvl/img", 1, 1);
+		TileMapParameter param = new TileMapParameter(Resources.levelImageRoot, 1, 1);
 		
-		tmr = loader.load(EggGame.R.getInternal(), "assets/data/lvl/baked/testLevel.tmx", param);
+		tmr = loader.load(EggGame.R.getInternal(), Resources.levelRootBaked + "testLevel.tmx", param);
 	}
 	
 	@Override

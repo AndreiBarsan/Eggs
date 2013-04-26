@@ -7,12 +7,14 @@ import com.badlogic.gdx.math.Vector2;
 public class PhysicsNode {
 
 	private Shape shape;
+	
 	public Vector2 velocity = new Vector2();
 	
 	public float restitution = 1.0f;
-	private float mass = 1.0f;
+	public boolean interactive = true;
 	
-	public float invMass = 1 / mass;
+	private float mass = 1.0f;
+	private float invMass = 1 / mass;
 	
 	public PhysicsNode(Shape shape) {
 		this.shape = shape;
@@ -28,7 +30,6 @@ public class PhysicsNode {
 	}
 	
 	public void resolveCollision(Collision col, PhysicsNode other) {
-		
 		Vector2 relativeVelocity = other.velocity.cpy().sub(velocity);
 		float velAlongNormal = relativeVelocity.dot(col.normal);
 		
@@ -62,5 +63,30 @@ public class PhysicsNode {
 	
 	public float getY() {
 		return shape.getY();
+	}
+	
+	public Vector2 getDimensions() {
+		return shape.getDimensions();
+	}
+	
+	public void setDimensions(Vector2 dim) {
+		setDimensions(dim.x, dim.y);
+	}
+	
+	public void setDimensions(float x, float y) {
+		shape.setDimensions(x, y);
+	}
+	
+	public float getMass() {
+		return mass;
+	}
+	
+	public float getInvMass() {
+		return invMass;
+	}
+	
+	public void setMass(float value) {
+		this.mass = value;
+		this.invMass = 1 / this.mass;
 	}
 }

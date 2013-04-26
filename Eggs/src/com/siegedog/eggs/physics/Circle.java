@@ -58,4 +58,15 @@ public class Circle extends Shape {
 	public float getY() {
 		return y;
 	}
+
+	@Override
+	public Vector2 getDimensions() {
+		return new Vector2(radius, radius);
+	}
+
+	@Override
+	public void setDimensions(float w, float h) {
+		assert w == h : "Width and height must always be the same for circles - ellipses not supported.";
+		radius = w;
+	}
 }
