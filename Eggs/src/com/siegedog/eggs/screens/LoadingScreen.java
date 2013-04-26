@@ -21,7 +21,8 @@ public class LoadingScreen extends GameScreen {
 							"rocket",
 							"smoke",
 							"shipExhaust",
-							"crate"
+							"crate",
+							"circle"
 					});
 					// FIXME: maybe make a laarge wide sprite, and THEN divide it into frames
 					// and not just make a small sprite than move right with the coords

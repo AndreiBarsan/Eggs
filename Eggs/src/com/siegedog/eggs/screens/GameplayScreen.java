@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.tiled.TileMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -15,9 +16,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.siegedog.eggs.Block;
 import com.siegedog.eggs.DemoInput;
 import com.siegedog.eggs.Dude;
 import com.siegedog.eggs.EggGame;
+import com.siegedog.eggs.physics.AABB;
 import com.siegedog.eggs.physics.Circle;
 import com.siegedog.eggs.util.Log;
 import com.siegedog.eggs.util.Resources;
@@ -35,9 +38,9 @@ public class GameplayScreen extends GameScreen {
 	
 	class Blob extends Dude {
 		public Blob() {
-			super(EggGame.R.animatedSprite("enemy"), new Circle(new Vector2(0, 0), 8.0f));
-			sprite.play("wobble");
-			sprite.setPlayMode(Animation.LOOP_PINGPONG);
+			super(EggGame.R.spriteAsAnimatedSprite("crate"), new AABB(0, 0, MathUtils.random(20, 40), MathUtils.random(20, 40)));
+			//sprite.play("wobble");
+			//sprite.setPlayMode(Animation.LOOP_PINGPONG);
 			setName("enemy");
 			
 			setTouchable(Touchable.enabled);
@@ -48,9 +51,9 @@ public class GameplayScreen extends GameScreen {
 		public void act(float delta) {
 			super.act(delta);
 			
-			setWidth(sprite.getWidth());
-			setHeight(sprite.getHeight());
-			setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+			setWidth(physics.getDimensions().x);
+			setHeight(physics.getDimensions().y);
+			//setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
 			
 			if(getX() < x0) {
 				setX(x0);
@@ -62,10 +65,12 @@ public class GameplayScreen extends GameScreen {
 				physics.velocity.x = -physics.velocity.x;
 			}
 			
+			//*
 			if(getY() < y0) {
 				setY(y0);
 				physics.velocity.y = -physics.velocity.y;
 			}
+			//*/
 			
 			if(getTop() > y1) {
 				setY(y1 - getHeight());
@@ -107,6 +112,23 @@ public class GameplayScreen extends GameScreen {
 			}
 			
 		}
+		
+		// NOTE: pos is actual center for circles, but bottom left for AABBs
+		// keep that in mind when drawing sprites
+		
+		@Override
+		public void draw(SpriteBatch batch, float parentAlpha) {
+			//super.draw(batch, parentAlpha);
+			sprite.setPosition(getX()
+					//- physics.getDimensions().x / 2.0f
+					,
+					getY()
+					//- physics.getDimensions().y / 2.0f
+					);
+			sprite.setOrigin(0.0f, 0.0f);
+			sprite.setSize(physics.getDimensions().x, physics.getDimensions().y);
+			sprite.draw(batch);
+		}
 	}
 	
 	@Override
@@ -130,8 +152,8 @@ public class GameplayScreen extends GameScreen {
 		for(int i = 0; i < left; ++i) {
 			
 			Blob blob = new Blob();
-			blob.setX(MathUtils.random(x0, x1));
-			blob.setY(MathUtils.random(y0, y1));
+			blob.setX(MathUtils.random(x0 + 250, x1));
+			blob.setY(MathUtils.random(y0 + 180, y1));
 			blob.physics.velocity = new Vector2(MathUtils.random(-50.0f, 50.0f), MathUtils.random(-50.0f, 50.0f));
 			blob.onDeath = new Runnable() {
 				@Override
@@ -142,6 +164,20 @@ public class GameplayScreen extends GameScreen {
 			addDude(blob);
 		}
 		//*/
+		
+		Block b = new Block(EggGame.R.spriteAsAnimatedSprite("crate"), new Vector2(120, 220), new Vector2(64, 64));
+		//addDude(b);
+		
+		float csize = 128;
+		Block floor = new Block(
+				EggGame.R.spriteAsAnimatedSprite("crate"),
+				new Vector2(120, 240), new Vector2(csize, csize));
+		addDude(floor);
+		
+		Dude box = new Dude(EggGame.R.spriteAsAnimatedSprite("crate"), new AABB(300, 230, 32, 32));
+		box.physics.velocity.x = -80.0f;
+		box.physics.interactive = true;
+		addDude(box);
 		
 		Log.D("Entered Gameplay with the resources loaded well!");
 	}

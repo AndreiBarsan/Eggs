@@ -25,20 +25,28 @@ public class Circle extends Shape {
 	@Override
 	protected Collision intersectsCircle(Circle other) {
 		float r = radius + other.radius;
-		r *= r;
-		if(  r < ((x - other.x) * (x - other.x) + (y - other.y) * (y - other.y))) {
+		float d2 = ((x - other.x) * (x - other.x) + (y - other.y) * (y - other.y));
+		float r2 = r * r;
+		if(r2 < d2) {
 			return null;
 		}
 		
 		Vector2 v = new Vector2(other.x - x, other.y - y);
-		float penetration = v.len();
 		
-		return new Collision(v.nor(), penetration);				
+		float d = (float)Math.sqrt(d2); 
+		if(Math.abs(d) < 0.0001) {
+			// Circles are overlapping
+			return new Collision(new Vector2(1.0f, 0.0f), radius);
+		}
+		else {
+			Vector2 normal = new Vector2(v).div(d);
+			return new Collision(normal, r - d);
+		}				
 	}
 
 	@Override
 	protected Collision intersectsAABB(AABB other) {
-		throw new Error("No Circle vs AABB yet");
+		return Shape.AABBvsCircle(other, this);
 	}
 	
 	public void setX(float x) {
@@ -61,7 +69,7 @@ public class Circle extends Shape {
 
 	@Override
 	public Vector2 getDimensions() {
-		return new Vector2(radius, radius);
+		return new Vector2(radius * 2, radius * 2);
 	}
 
 	@Override

@@ -28,13 +28,16 @@ public class Dude extends Actor {
 		this(sprite, shape);
 		setX(other.getX());
 		setY(other.getY());
-		setOrigin(other.getOriginX(), other.getOriginY());
+		//setOrigin(other.getOriginX(), other.getOriginY());
+		
 		setWidth(other.getWidth());
 		setHeight(other.getHeight());
 	}
 	
 	public Dude(AnimatedSprite sprite, Shape shape) {
-		this.sprite = new AnimatedSprite(sprite);
+		if(sprite != null) {
+			this.sprite = new AnimatedSprite(sprite);
+		}
 		setTouchable(Touchable.disabled);
 		
 		physics = new PhysicsNode(shape);
@@ -53,13 +56,18 @@ public class Dude extends Actor {
 		
 		super.act(delta);
 
-		sprite.update(delta);
+		//setOrigin(physics.getDimensions().x / 2.0f, physics.getDimensions().y / 2.0f);
+		
+		if(sprite != null) {
+			sprite.update(delta);
+		}
+		
 		physics.update(delta);
 	}
 	
 	public void kill() {
 		if(isDead()) {
-			Log.E("Killed enemy twice. Look for bugs!");
+			Log.E("Killed an enemy twice. Look for bugs!");
 		}
 		dead = true;
 		if(onDeath != null) {
@@ -78,7 +86,8 @@ public class Dude extends Actor {
 
 		if(sprite != null) {
 			sprite.setPosition(getX(), getY());
-			sprite.setOrigin(getOriginX(), getOriginY());
+			sprite.setSize(physics.getDimensions().x, physics.getDimensions().y);
+			//sprite.setOrigin(getOriginX(), getOriginY());
 			sprite.setRotation(getRotation());
 			sprite.draw(batch);
 		}

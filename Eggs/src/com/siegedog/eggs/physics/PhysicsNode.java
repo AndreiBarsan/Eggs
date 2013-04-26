@@ -44,9 +44,18 @@ public class PhysicsNode {
 		Vector2 impulse = col.normal.cpy().mul(j);
 		Vector2 thisSpd = impulse.cpy().mul(this.invMass);
 		Vector2 otherSpd = impulse.cpy().mul(other.invMass);
-		
+	
 		this.velocity.sub(thisSpd);
 		other.velocity.add(otherSpd);
+		
+		// Positional correction
+		float percent = 0.2f; // usually 20% to 80%
+		float slop = 0.01f; // usually 0.01 to 0.1
+		Vector2 correction = new Vector2(col.normal).mul(Math.max( col.penetration - slop, 0.0f ) 
+				/ (this.getInvMass() + other.getInvMass()) * percent);
+		
+		this.velocity.sub(new Vector2(correction).mul(this.getInvMass()));
+		other.velocity.add(new Vector2(correction).mul(other.getInvMass()));
 	}
 	
 	public void setX(float x) {
@@ -87,6 +96,11 @@ public class PhysicsNode {
 	
 	public void setMass(float value) {
 		this.mass = value;
-		this.invMass = 1 / this.mass;
+		if(this.mass != 0.0f) {
+			this.invMass = 1 / this.mass;
+		}
+		else {
+			this.invMass = 0.0f;
+		}
 	}
 }

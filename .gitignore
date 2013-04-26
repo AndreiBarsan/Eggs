@@ -18,6 +18,9 @@ Eggs-Desktop/lib/
 Eggs/assets/data/lvl/baked
 Eggs/assets/data/lvl/img
 
+Eggs/assets/lvl/baked
+Eggs/assets/lvl/img
+
 gdx-tools/
 gdx-tiled-preprocessor/
 

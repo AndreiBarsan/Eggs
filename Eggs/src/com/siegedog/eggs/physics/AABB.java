@@ -4,30 +4,29 @@ import com.badlogic.gdx.math.Vector2;
 
 public class AABB extends Shape {
 	public Vector2 min;
-	public Vector2 max;
+	public Vector2 dimensions;
 	
-	public AABB(Vector2 min, Vector2 max) {
+	public AABB(Vector2 min, Vector2 dimensions) {
 		this.min = min;
-		this.max = max;
+		this.dimensions = dimensions;
 	}
 	
-	public AABB(float xmin, float ymin, float xmax, float ymax) {
+	public AABB(float xmin, float ymin, float width, float height) {
 		min = new Vector2(xmin, ymin);
-		max = new Vector2(xmax, ymax);
+		dimensions = new Vector2(width, height);
 	}
 	
 	public Vector2 getCenter() {
-		return new Vector2(min.x + (max.x - min.x) / 2, min.y + (max.y - min.y) / 2);
+		return new Vector2(min.x + dimensions.x / 2.0f, min.y + dimensions.y / 2.0f);
 	}
 	
 	public Vector2 getPosition() {
-		return getCenter();
+		return min;
 	}
 	
 	@Override
 	public void setX(float x) {
 		min.x = x;
-		// FIXME: just use position and dimension
 	}
 	
 	@Override
@@ -47,32 +46,61 @@ public class AABB extends Shape {
 	
 	@Override
 	protected Collision intersectsAABB(AABB other) {
-		
-	 if(	this.max.x < other.min.x || this.min.x > other.max.x
-		|| 	this.max.y < other.min.y || this.min.y > other.max.y) 
-	 {
-		 return null;
-	 }
+	 Vector2 n = new Vector2(other.getCenter()).sub(this.getCenter());
+	 Vector2 normal = new Vector2();
+	 float aex = this.dimensions.x / 2.0f;
+	 float bex = other.dimensions.x / 2.0f;
 	 
-	 Vector2 normal = new Vector2(
-			 other.getCenter().x - this.getCenter().x,
-			 other.getCenter().y - this.getCenter().y);
-	 float penetration = normal.len();
-	 return new Collision(normal.nor(), penetration);
+	 float x_overlap = aex + bex - Math.abs(n.x);
+	 if(x_overlap > 0.0f) {
+		 float aey = this.dimensions.y / 2.0f;
+		 float bey = other.dimensions.y / 2.0f;
+		 
+		 float y_overlap = aey + bey - Math.abs(n.y);
+		 
+		 if(y_overlap > 0.0f) {
+			 if(x_overlap < y_overlap) {
+				 if(n.x < 0.0f) {
+					 normal.set(-1.0f, 0.0f);
+				 } else {
+					 normal.set(1.0f, 0.0f);
+				 }
+				 
+				 float penetration = x_overlap;
+				 return new Collision(normal, penetration);
+			 }
+			 else {
+				 if(n.y < 0.0f) {
+					 normal.set(0.0f, -1.0f);
+				 } else {
+					 normal.set(0.0f, 1.0f);
+				 }
+				 
+				 float penetration = y_overlap;
+				 return new Collision(normal, penetration);
+			 }
+		 }
+	 }
+	
+	 return null;
 	}
 	
 	@Override
 	protected Collision intersectsCircle(Circle other) {
-		throw new Error("Circle vs AABB not supported yet");
+		return Shape.AABBvsCircle(this, other);
 	}
 
 	@Override
 	public Vector2 getDimensions() {
-		return new Vector2(max.x - min.x, max.y - min.y);
+		return dimensions;
 	}
 
 	@Override
 	public void setDimensions(float w, float h) {
-		throw new Error("Need a bit of refactoring until this starts working right!");
+		dimensions.set(w, h);
+	}
+	
+	public void setDimensions(Vector2 dim) {
+		dimensions.set(dim);
 	}
 }

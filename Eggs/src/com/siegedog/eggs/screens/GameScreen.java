@@ -16,7 +16,7 @@ public class GameScreen implements Screen {
 	protected EggGame game;
 	protected Stage stage = new Stage();
 	private ArrayList<Dude> deadDudes = new ArrayList<Dude>();
-	protected final int scale = 2;
+	protected final int scale = 1;
 	
 	public void init(EggGame game) {
 		this.game = game;
