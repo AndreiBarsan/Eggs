@@ -61,6 +61,8 @@ public class Resources {
 	HashMap<String, String> tNames = new HashMap<String, String>(10);
 	HashMap<String, String> sNames = new HashMap<String, String>(10);
 	
+	private String atlasName;
+	
 	public Resources () {
 		this(new InternalFileHandleResolver());
 	}
@@ -93,11 +95,12 @@ public class Resources {
 				Log.D("Skipping advanced resource processing due to an earlier resource loading error.");
 				return;
 			}
-
-			if(assetManager.containsAsset(TextureAtlas.class)) {
+						
+			if(atlasName != null) {
 				// Prepare sprites from the atlas
-				TextureAtlas atlas = assetManager.get(texRoot + "pack", TextureAtlas.class);
+				TextureAtlas atlas = assetManager.get(atlasName, TextureAtlas.class);
 				for(AtlasRegion tr : atlas.getRegions()) {
+					System.out.println("Putting sprite in sprites: " + tr.name);
 					sprites.put(tr.name, new Sprite(tr));
 				}
 			}
@@ -142,7 +145,8 @@ public class Resources {
 	}
 	
 	public Resources loadAtlas(String folderName) {
-		assetManager.load(ASS_FOLDER + folderName, TextureAtlas.class);
+		atlasName = ASS_FOLDER + folderName;
+		assetManager.load(atlasName, TextureAtlas.class);
 		return this;
 	}
 	

@@ -1,9 +1,11 @@
 package com.siegedog.eggs.screens;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.siegedog.eggs.EggGame;
@@ -21,6 +23,9 @@ public class GameScreen implements Screen {
 	
 	public void init(EggGame game) {
 		this.game = game;
+		
+		addLayer("main");
+		addLayer("overlay");
 	}
 	
 	@Override
@@ -77,8 +82,25 @@ public class GameScreen implements Screen {
 	}
 	
 	public void addDude(Dude dude) {
-		getStage().addActor(dude);
+		addDude("main", dude);
+	}
+
+	private HashMap<String, Group> layers = new HashMap<String, Group>();
+	
+	public void addDude(String layer, Dude dude) {
+		if(!layers.containsKey(layer)) {
+			addLayer(layer);
+		} 
+		
+		layers.get(layer).addActor(dude);
 		dude.init(this);
+	}
+	
+	private void addLayer(String name) {
+		Group lg = new Group();
+		lg.setName(name);
+		layers.put(name, lg);
+		stage.addActor(lg);
 	}
 	
 	public EggGame getGame() {
@@ -88,24 +110,24 @@ public class GameScreen implements Screen {
 	public Stage getStage() {
 		return stage;
 	}
-
-	/* PHYSICS */
-	public boolean dudeVSDude(Dude a, Dude b) {
-		if(a.getX() + a.getWidth() < b.getX() || a.getX() > b.getX() + b.getWidth()) return false;
-		if(a.getY() + a.getHeight() < b.getY() || a.getY() > b.getY() + b.getHeight()) return false;
-		
-		return true;
-	}
 	
 	public void checkCollisions() {
 		Array<Actor> actors = getStage().getActors();
-		for(int i = 0; i < actors.size - 1; ++i) {
-			Dude d1 = (Dude)actors.get(i);
-			if( ! d1.physics.interactive) continue;
-			for(int j = i + 1; j < actors.size; ++j) {
-				Dude d2 = (Dude)actors.get(j);
-				if( ! d2.physics.interactive) continue;
+		Array<Dude> dudes = new Array<Dude>();
+		for(Actor a : actors) {
+			if(a instanceof Group) {
+				dudes.addAll(((Group) a).getChildren());
+			} else {
+				// don't add non-dudes - they're guaranteed not to have physics
+			}
+		}
 				
+		for(int i = 0; i < dudes.size; ++i) {
+			Dude d1 = dudes.get(i);
+			if( ! d1.physics.interactive) continue;
+			for(int j = i + 1; j < dudes.size; ++j) {
+				Dude d2 = dudes.get(j);
+				if( ! d2.physics.interactive) continue;
 				Collision c = d1.physics.intersect(d2.physics);
 				if(null != c) {
 					d1.physics.resolveCollision(c, d2.physics);

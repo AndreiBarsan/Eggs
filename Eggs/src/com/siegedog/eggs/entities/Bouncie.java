@@ -1,13 +1,14 @@
 package com.siegedog.eggs.entities;
 
 import com.badlogic.gdx.math.Vector2;
-import com.siegedog.eggs.EggGame;
+import com.siegedog.eggs.AnimatedSprite;
 import com.siegedog.eggs.physics.Circle;
 
-public abstract class Particle extends Dude {
+public abstract class Bouncie extends Dude {
 	
-	public Particle(Vector2 pos, float radius) {
-		super(EggGame.R.spriteAsAnimatedSprite("circle"), new Circle(pos, radius));
+	public Bouncie(AnimatedSprite sprite, Vector2 pos, float radius) {
+		super(sprite, new Circle(pos, radius));
+		physics.interactive = true;
 	}
 	
 	@Override

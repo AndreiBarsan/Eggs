@@ -12,8 +12,10 @@ public class LoadingScreen extends GameScreen {
 		EggGame.R
 			.loadTex("warmup_sheet.gif", "sheet")
 			.loadFont("motorwerk16")
+			.loadFont("motorwerk24")
 			.loadFont("motorwerk32")
 			.loadFont("motorwerk128")
+			.loadAtlas("img/atlas/pack.atlas")
 			.onLoadFinish(new Runnable() {			
 				public void run() {
 					EggGame.R.createSprites("sheet", 96, 0, 32, 32, new String[] {

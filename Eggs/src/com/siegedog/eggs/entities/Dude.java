@@ -87,9 +87,10 @@ public class Dude extends Actor {
 		super.draw(batch, parentAlpha);
 
 		if(sprite != null) {
-			sprite.setPosition(getX() - physics.getDimensions().x / 2.0f, getY() - physics.getDimensions().x / 2.0f);
+			//sprite.setPosition(getX() - physics.getDimensions().x / 2.0f, getY() - physics.getDimensions().x / 2.0f);
+			sprite.setPosition(getX(), getY());
 			//sprite.setOrigin(getOriginX(), getOriginY());
-			sprite.setRotation(getRotation());
+			//sprite.setRotation(getRotation());
 			sprite.draw(batch);
 		}
 	}
@@ -123,6 +124,18 @@ public class Dude extends Actor {
 	public void setPosition(float x, float y) {
 		physics.setX(x);
 		physics.setY(y);
+	}
+	
+	public void setDimensions(Vector2 dim) {
+		physics.setDimensions(dim);
+	}
+	
+	public float getWidth() {
+		return physics.getDimensions().x;
+	}
+	
+	public float getHeight() {
+		return physics.getDimensions().y;
 	}
 	
 	public boolean isDead() {

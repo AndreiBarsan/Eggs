@@ -2,13 +2,19 @@ package com.siegedog.eggs.dev;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.badlogic.gdx.tiledmappacker.TiledMapPacker;
+import com.badlogic.gdx.tools.imagepacker.TexturePacker2;
 import com.siegedog.eggs.EggGame;
+import com.siegedog.eggs.util.Resources;
 
 public class DevQuickLaunch {
-        public static void main (String[] args) {
+        public static void main (String[] args) throws Exception {
         	
         	BakeTileMaps.main(args);
+        	
+        	TexturePacker2.main(new String[] {
+        		Resources.texRoot,
+        		Resources.texRoot + "atlas/"
+        	});
         	
         	LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         	config.fullscreen = false;
