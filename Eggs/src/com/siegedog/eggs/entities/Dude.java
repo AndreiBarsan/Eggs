@@ -1,8 +1,10 @@
-package com.siegedog.eggs;
+package com.siegedog.eggs.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.siegedog.eggs.AnimatedSprite;
 import com.siegedog.eggs.physics.PhysicsNode;
 import com.siegedog.eggs.physics.PointShape;
 import com.siegedog.eggs.physics.Shape;
@@ -21,7 +23,7 @@ public class Dude extends Actor {
 	public Runnable onDeath = null;
 	
 	public Dude(Actor other, AnimatedSprite sprite) {
-		this(other, sprite, new PointShape());
+		this(other, sprite, new PointShape(new Vector2()));
 	}
 	
 	public Dude(Actor other, AnimatedSprite sprite, Shape shape) {
@@ -85,8 +87,7 @@ public class Dude extends Actor {
 		super.draw(batch, parentAlpha);
 
 		if(sprite != null) {
-			sprite.setPosition(getX(), getY());
-			sprite.setSize(physics.getDimensions().x, physics.getDimensions().y);
+			sprite.setPosition(getX() - physics.getDimensions().x / 2.0f, getY() - physics.getDimensions().x / 2.0f);
 			//sprite.setOrigin(getOriginX(), getOriginY());
 			sprite.setRotation(getRotation());
 			sprite.draw(batch);

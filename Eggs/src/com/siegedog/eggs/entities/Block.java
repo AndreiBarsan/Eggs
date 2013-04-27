@@ -1,7 +1,8 @@
-package com.siegedog.eggs;
+package com.siegedog.eggs.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.siegedog.eggs.AnimatedSprite;
 import com.siegedog.eggs.physics.AABB;
 
 public class Block extends Dude {

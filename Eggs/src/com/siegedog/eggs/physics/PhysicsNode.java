@@ -103,4 +103,16 @@ public class PhysicsNode {
 			this.invMass = 0.0f;
 		}
 	}
+	
+	public Shape getShape() {
+		return shape;
+	}
+	
+	public AABB getAABB() {
+		return (AABB) shape;
+	}
+	
+	public Circle getCircle() {
+		return (Circle) shape;
+	}
 }

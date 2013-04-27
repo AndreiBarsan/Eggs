@@ -4,6 +4,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.siegedog.eggs.entities.Dude;
 import com.siegedog.eggs.screens.GameplayScreen;
 import com.siegedog.eggs.util.Log;
 

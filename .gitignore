@@ -11,6 +11,9 @@ Eggs/bin/
 Eggs-Android/bin/
 Eggs-Desktop/bin/
 
+# The libgdx repo itself (examples and whatnot)
+libgdx/
+
 Eggs/libs/
 Eggs-Android/lib/
 Eggs-Desktop/lib/

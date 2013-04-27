@@ -6,8 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import com.siegedog.eggs.Dude;
 import com.siegedog.eggs.EggGame;
+import com.siegedog.eggs.entities.Dude;
 import com.siegedog.eggs.physics.Collision;
 import com.siegedog.eggs.util.Log;
 
@@ -16,6 +16,7 @@ public class GameScreen implements Screen {
 	protected EggGame game;
 	protected Stage stage = new Stage();
 	private ArrayList<Dude> deadDudes = new ArrayList<Dude>();
+	/* Rendering scale - >1 induces a retro effect */
 	protected final int scale = 1;
 	
 	public void init(EggGame game) {

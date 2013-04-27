@@ -6,6 +6,11 @@ public class AABB extends Shape {
 	public Vector2 min;
 	public Vector2 dimensions;
 	
+	public AABB(AABB other) {
+		this.min = new Vector2(other.min);
+		this.dimensions = new Vector2(other.dimensions);
+	}
+	
 	public AABB(Vector2 min, Vector2 dimensions) {
 		this.min = min;
 		this.dimensions = dimensions;

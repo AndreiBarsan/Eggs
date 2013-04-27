@@ -6,6 +6,14 @@ public class PointShape extends Shape {
 
 	public Vector2 position = new Vector2();
 	
+	public PointShape(float x, float y) {
+		position.set(x, y);
+	}
+	
+	public PointShape(Vector2 vec) {
+		position.set(vec);
+	}
+	
 	@Override
 	public Vector2 getPosition() {
 		return position;
