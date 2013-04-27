@@ -132,14 +132,28 @@ public class Title1953 extends GameScreen {
 	}
 	
 	public void hideStats() {
-		
+		continueEnabled = false;
+		Camera cam = stage.getCamera();
+		float sry = cam.position.y + cam.viewportHeight / 2.0f - 150;
+		statReport.addAction(Actions.moveTo(cam.position.x - cam.viewportWidth * 1.5f, sry, 1.0f, Interpolation.exp10In));
+		continueLabel.addAction(Actions.sequence(
+				Actions.fadeOut(1.0f, Interpolation.exp10),
+				Actions.delay(0.5f, 
+				new Action() {
+					public boolean act(float delta) {
+						beginLevel();
+						return true;
+					}
+				})));
 	}
 	
 	public void hideRetry() {
-		
+		continueEnabled = false;
+		Camera cam = stage.getCamera();
 	}
 	
 	public void hideTitle() {
+		continueEnabled = false;
 		splash.addAction(Actions.moveTo(0.0f,  Gdx.graphics.getHeight() + 100, 1.0f, Interpolation.exp10));
 		tap.addAction(Actions.moveTo(-1000.0f, 350, 1.0f, Interpolation.exp10));
 		al.addAction(Actions.moveTo(1000.0f, 60, 1.0f, Interpolation.exp10));

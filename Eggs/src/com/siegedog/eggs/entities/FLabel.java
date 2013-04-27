@@ -3,7 +3,10 @@ package com.siegedog.eggs.entities;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.siegedog.eggs.physics.AABB;
 import com.siegedog.eggs.physics.PointShape;
 
@@ -53,18 +56,21 @@ public class FLabel extends Dude {
 		}
 		
 		this.wrapWidth = width;
-		this.velocity = velocity;
-	}
-
-	@Override
-	public void act(float delta) {
-		super.act(delta);
-		
-		if(timed) {
-			lifespanLeft -= delta;
-			if(lifespanLeft <= 0.0f) {
-				kill();
-			}
+		if(lifespan != 0.0f) {
+			addAction(Actions.moveBy(0.0f, velocity.len() * lifespan, lifespan, Interpolation.exp5Out));
+			addAction(Actions.sequence(
+					Actions.delay(0.33f * lifespan),
+					Actions.fadeOut(0.66f * lifespan),
+					new Action() {
+						
+						@Override
+						public boolean act(float delta) {
+							kill();
+							return true;
+						}
+					}));
+		} else {
+			addAction(Actions.moveBy(0.0f, velocity.len() * 5.0f));
 		}
 	}
 	
@@ -72,6 +78,10 @@ public class FLabel extends Dude {
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		font.setColor(getColor());
 		if(wrapWidth != 0.0f) {
+			if(message.equals("+0")) {
+				System.out.println(getY());
+				System.out.println(velocity);
+			}
 			font.drawWrapped(batch, message, getX(), getY(), wrapWidth, HAlignment.CENTER);
 		}
 		else {

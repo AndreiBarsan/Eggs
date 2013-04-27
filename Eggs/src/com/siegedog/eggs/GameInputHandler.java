@@ -2,14 +2,16 @@ package com.siegedog.eggs;
 
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.siegedog.eggs.entities.Bouncie;
+import com.siegedog.eggs.entities.FLabel;
 import com.siegedog.eggs.entities.MainParticle;
-import com.siegedog.eggs.screens.GameScreen;
 import com.siegedog.eggs.screens.Title1953;
+import com.siegedog.eggs.screens.Title1953.State;
 
 public class GameInputHandler extends InputAdapter {
 
@@ -25,6 +27,8 @@ public class GameInputHandler extends InputAdapter {
 	
 	static final int GESTURE_THRESHOLD2 = 80 * 80;
 	
+	BitmapFont guiFont = EggGame.R.font("motorwerk32");
+	
 	public GameInputHandler(Title1953 scr) {
 		screen = scr;
 		stage = scr.getStage();
@@ -32,20 +36,23 @@ public class GameInputHandler extends InputAdapter {
 	
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		lastX = screenX;
-		lastY = screenY;
 		
-		swipeStartX = screenX;
-		swipeStartY = screenY;
-		
-		Vector2 coords = stage.screenToStageCoordinates(new Vector2(screenX, screenY));
-		Actor result = stage.hit(coords.x, coords.y, true);
-		System.out.println("TOUCH DOWN (" + coords.x + ", " + coords.y + "): " + result);
-		if(null != result) {
-			if(result instanceof Bouncie) {
-				swipeStartDude = (Bouncie) result;
-			} else {
-				System.out.println(result.getClass());
+		if(screen.state == State.Gameplay) {
+			lastX = screenX;
+			lastY = screenY;
+			
+			swipeStartX = screenX;
+			swipeStartY = screenY;
+			
+			Vector2 coords = stage.screenToStageCoordinates(new Vector2(screenX, screenY));
+			Actor result = stage.hit(coords.x, coords.y, true);
+			System.out.println("TOUCH DOWN (" + coords.x + ", " + coords.y + "): " + result);
+			if(null != result) {
+				if(result instanceof Bouncie) {
+					swipeStartDude = (Bouncie) result;
+				} else {
+					System.out.println(result.getClass());
+				}
 			}
 		}
 		
@@ -73,7 +80,17 @@ public class GameInputHandler extends InputAdapter {
 						if(swipeStartDude instanceof MainParticle && bestMatch instanceof MainParticle) {
 							MainParticle sp = (MainParticle)swipeStartDude;
 							MainParticle ep = (MainParticle)bestMatch;
-							sp.setValue(sp.getValue() + ep.getValue());
+							int dif = Math.abs(sp.getValue() - ep.getValue());
+							// TODO: only change the particles' internal state here,
+							// and do the merge once they actually collide
+							//  -> non-interactive & speed one towards other
+							// -> set a goal for one of them - when it detects it's almost in the exact
+							// same place as the goal Particle, perform the merge
+							sp.setValue( (sp.getValue() + ep.getValue()) / 2);
+							Vector2 labelPos = new Vector2(sp.getX() + (ep.getX() - sp.getX()) / 2,
+									sp.getY() + (ep.getY() - sp.getY() / 2));
+							screen.addDude("overlay", new FLabel("+" + dif, guiFont, labelPos, 
+									new Vector2(0.0f, -20.0f), 100, 1.2f));
 						}
 						bestMatch.kill();
 					}
@@ -106,27 +123,21 @@ public class GameInputHandler extends InputAdapter {
 	
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		int dx = (screenX - lastX);
-		int dy = (screenY - lastY);
-		Camera cam = screen.getStage().getCamera();
-		cam.position.x -= dx;
-		cam.position.y += dy;
+		if(screen.state == State.Gameplay) {
+			int dx = (screenX - lastX);
+			int dy = (screenY - lastY);
+			Camera cam = screen.getStage().getCamera();
+			cam.position.x -= dx;
+			cam.position.y += dy;
+			
+			cam.position.x = MathUtils.clamp(cam.position.x, screen.x0 + cam.viewportWidth / 2, screen.x1 - cam.viewportWidth / 2);
+			cam.position.y = MathUtils.clamp(cam.position.y, screen.y0 + cam.viewportHeight / 2, screen.y1 - cam.viewportHeight / 2);
+			
+			lastX = screenX;
+			lastY = screenY;
+		}
 		
-		cam.position.x = MathUtils.clamp(cam.position.x, screen.x0 + cam.viewportWidth / 2, screen.x1 - cam.viewportWidth / 2);
-		cam.position.y = MathUtils.clamp(cam.position.y, screen.y0 + cam.viewportHeight / 2, screen.y1 - cam.viewportHeight / 2);
-		
-		lastX = screenX;
-		lastY = screenY;
-		
-		
-		// remember - screenXY = 0, 0 is TOP left
-		//System.out.println("SWIPE STARTED: " + swipeStartX + ", " + swipeStartY);
-		//System.out.println("Current: " + screenX + ", " + screenY);
-		//totalDelta.y *= -1;
-		
-		
-		
-		return super.touchDragged(screenX, screenY, pointer);
+		return true;
 	}
 
 }
