@@ -8,12 +8,12 @@ public class Levels {
 	public static LevelData[] levels = new LevelData[5];
 	static {
 		LevelData l;
-		l = new LevelData(1, 1, 100);
+		l = new LevelData(1, 1, 100, 90.0f);
 		l.add(new MainParticle(new Vector2(100, 200), new Vector2(40.0f, -10.0f), 32));
 		l.add(new MainParticle(new Vector2(300, 200), new Vector2(-5.0f, -8.0f), 32));
 		levels[1] = l;
 		
-		l = new LevelData(2, 2, 100);
+		l = new LevelData(2, 2, 100, 90.0f);
 		l.add(new MainParticle(new Vector2(30, 120), randDir(50.0f), 15));
 		l.add(new MainParticle(new Vector2(70, 150), randDir(50.0f), 13));
 		l.add(new MainParticle(new Vector2(15, 55), randDir(50.0f), 18));

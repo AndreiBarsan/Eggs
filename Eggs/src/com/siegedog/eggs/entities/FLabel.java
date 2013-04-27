@@ -19,6 +19,8 @@ public class FLabel extends Dude {
 	public BitmapFont font;
 	public Vector2 velocity;
 	
+	public HAlignment alignment = HAlignment.CENTER;
+	
 	private boolean timed;
 	private float lifespan;
 	private float lifespanLeft;
@@ -78,11 +80,7 @@ public class FLabel extends Dude {
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		font.setColor(getColor());
 		if(wrapWidth != 0.0f) {
-			if(message.equals("+0")) {
-				System.out.println(getY());
-				System.out.println(velocity);
-			}
-			font.drawWrapped(batch, message, getX(), getY(), wrapWidth, HAlignment.CENTER);
+			font.drawWrapped(batch, message, getX(), getY(), wrapWidth, alignment);
 		}
 		else {
 			font.drawMultiLine(batch, message, getX(), getY());

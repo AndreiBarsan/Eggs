@@ -16,11 +16,13 @@ public class LevelData {
 	public int levelNumber;
 	public int winCondition;
 	public int meltdownThreshold;
+	public float time;
 	
-	public LevelData(int levelNumber, int winCondition, int meltdownThreshold) {
+	public LevelData(int levelNumber, int winCondition, int meltdownThreshold, float time) {
 		this.levelNumber = levelNumber;
 		this.winCondition = winCondition;
 		this.meltdownThreshold = meltdownThreshold;
+		this.time = time;
 	}
 
 	public void add(Bouncie b) {

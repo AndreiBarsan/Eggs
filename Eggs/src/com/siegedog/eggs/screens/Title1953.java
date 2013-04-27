@@ -1,11 +1,13 @@
 package com.siegedog.eggs.screens;
 
+import java.text.Format;
+
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -17,7 +19,6 @@ import com.siegedog.eggs.entities.Background;
 import com.siegedog.eggs.entities.Bouncie;
 import com.siegedog.eggs.entities.Dude;
 import com.siegedog.eggs.entities.FLabel;
-import com.siegedog.eggs.entities.MainParticle;
 import com.siegedog.eggs.entities.Ray;
 import com.siegedog.eggs.math.Segment;
 
@@ -40,6 +41,7 @@ public class Title1953 extends GameScreen {
 	BitmapFont small = EggGame.R.font("motorwerk24");
 	
 	FLabel instabilityIndicator;
+	FLabel timeIndicator;
 	
 	FLabel splash;
 	FLabel tap;
@@ -54,19 +56,23 @@ public class Title1953 extends GameScreen {
 	
 	public int instability;
 	public int currentLevel = 0;
+	public float timeLeft;
 	public LevelData levelData;
+	
+	String action;
 	
 	public boolean continueEnabled = false;
 	
 	public void beginLevel() {
-		state = State.Gameplay;
 		currentLevel++;
 		restartLevel();
 	}
 	
 	public void restartLevel() {
+		state = State.Gameplay;
 		levelData = Levels.levels[currentLevel];
 		instability = 0;
+		timeLeft = levelData.time;
 		layers.get("main").clear();
 		for(Bouncie b : levelData.entities) {
 			addDude(b.copy());
@@ -86,8 +92,9 @@ public class Title1953 extends GameScreen {
 	
 	public void loseLevel() {
 		state = State.EndingLevel;
-		stage.addAction(Actions.delay(0.5f, new Action() {
+		stage.addAction(Actions.delay(1.0f, new Action() {
 			public boolean act(float delta) {
+				// TODO: make screen go white like an explosion
 				showRetry();
 				return true;
 			}
@@ -103,6 +110,27 @@ public class Title1953 extends GameScreen {
 		statReport.addAction(Actions.moveTo(cam.position.x - cam.viewportWidth / 2.0f, sry, 1.0f, Interpolation.exp10In));
 		statReport.message = "Stats: \nLevel: " + currentLevel + "\nRank: Whatevs";
 		
+		continueLabel.message = action + " to continue";
+		prepareContinueLabel();
+		// And await click / tap
+	}
+	
+	public void showRetry() {
+		state = State.GameOver;
+		continueEnabled = false;
+		Camera cam = stage.getCamera();
+		float sry = cam.position.y + cam.viewportHeight / 2.0f - 150;
+		loseMessage.setPosition(cam.position.x - Gdx.graphics.getWidth() * 1.5f, sry);
+		loseMessage.addAction(Actions.moveTo(cam.position.x - cam.viewportWidth / 2.0f, sry, 1.0f, Interpolation.exp10In));
+		
+		continueLabel.message = action + " to retry";
+		prepareContinueLabel();
+		// And await click / tap
+	}
+	
+	private void prepareContinueLabel() {
+		Camera cam = stage.getCamera();
+		float sry = cam.position.y + cam.viewportHeight / 2.0f - 150;
 		continueLabel.setPosition(cam.position.x - Gdx.graphics.getWidth() / 2, sry - 250);
 		continueLabel.getColor().a = 0.0f;
 		continueLabel.addAction(Actions.sequence(
@@ -115,20 +143,6 @@ public class Title1953 extends GameScreen {
 					}
 				}
 				));
-		
-		// And await click / tap
-	}
-	
-	public void showRetry() {
-		state = State.GameOver;
-		Camera cam = stage.getCamera();
-		float sry = 100 + cam.position.y - cam.viewportHeight / 2.0f;
-		loseMessage.setPosition(cam.position.x - Gdx.graphics.getWidth(), sry);
-		statReport.addAction(Actions.moveTo(cam.position.x - cam.viewportWidth / 2.0f, sry, 1.0f, Interpolation.exp10In));
-		
-		// TODO: delay 1.0f then show click to retry
-		
-		// Await click / tap
 	}
 	
 	public void hideStats() {
@@ -150,6 +164,17 @@ public class Title1953 extends GameScreen {
 	public void hideRetry() {
 		continueEnabled = false;
 		Camera cam = stage.getCamera();
+		float sry = 100 + cam.position.y - cam.viewportHeight / 2.0f;
+		loseMessage.addAction(Actions.moveTo(cam.position.x - Gdx.graphics.getWidth() * 1.5f, sry, 1.0f, Interpolation.exp10In));
+		continueLabel.addAction(Actions.sequence(
+				Actions.fadeOut(1.0f, Interpolation.exp10),
+				Actions.delay(0.5f, 
+				new Action() {
+					public boolean act(float delta) {
+						restartLevel();
+						return true;
+					}
+				})));
 	}
 	
 	public void hideTitle() {
@@ -194,7 +219,7 @@ public class Title1953 extends GameScreen {
 		addDude("background", new Background(EggGame.R.sprite("background")));
 		addDude("overlay", splash = new FLabel("1953", splashFont, new Vector2(0, Gdx.graphics.getHeight() + 100), Gdx.graphics.getWidth()));
 		
-		String action = (Gdx.app.getType() == ApplicationType.Desktop) ? "Click" : "Tap";
+		action = (Gdx.app.getType() == ApplicationType.Desktop) ? "Click" : "Tap";
 		tap = new FLabel(action + " to start", guiFont, new Vector2(0, 320), Gdx.graphics.getWidth());
 		addDude("overlay", tap);
 		
@@ -211,8 +236,13 @@ public class Title1953 extends GameScreen {
 		statReport = new FLabel("Stats: ", guiFont, new Vector2(-1500f, -1500f), Gdx.graphics.getWidth());
 		addDude("overlay", statReport);
 		
-		instabilityIndicator = new FLabel("", guiFont, new Vector2(10.0f, 10.0f), 150);
+		instabilityIndicator = new FLabel("", guiFont, new Vector2(10.0f, 10.0f), Gdx.graphics.getWidth());
+		instabilityIndicator.alignment = HAlignment.LEFT;
 		addDude("overlay", instabilityIndicator);
+		
+		timeIndicator = new FLabel("", guiFont, new Vector2(), Gdx.graphics.getWidth());
+		timeIndicator.alignment = HAlignment.RIGHT;
+		addDude("overlay", timeIndicator);
 		
 		continueLabel = new FLabel(action + " to continue", guiFont, new Vector2(-1500f, -1500f), Gdx.graphics.getWidth());
 		addDude("overlay", continueLabel);
@@ -248,15 +278,47 @@ public class Title1953 extends GameScreen {
 	public void render(float delta) {
 		super.render(delta);
 		layers.get("rays").clear();
-		
+		Camera cam = stage.getCamera();
 		if(state == State.Gameplay) {
-			if(layers.get("main").getChildren().size <= levelData.winCondition) {
+			
+			timeLeft -= delta;
+			
+			timeIndicator.setVisible(true);
+			timeIndicator.message = String.format("Time: %.0f''", timeLeft);
+			timeIndicator.setPosition(cornerLeftX() - 20, cornerLeftY() + 32);			
+			
+			instabilityIndicator.setVisible(true);
+			instabilityIndicator.message = "Instability: " + instability + " / " + levelData.meltdownThreshold;
+			instabilityIndicator.setPosition(cornerLeftX() + 8, cornerLeftY() + 32);
+			
+			if(instability >= levelData.meltdownThreshold || timeLeft <= 0) {
+				loseLevel();
+			} else if(layers.get("main").getChildren().size <= levelData.winCondition) {
 				winLevel();
 			}
-			
-			if(instability >= levelData.meltdownThreshold) {
-				loseLevel();
-			}
+		} else {
+			timeIndicator.setVisible(false);
+			instabilityIndicator.setVisible(false);
 		}
+	}
+	
+	private float cornerLeftX() {
+		Camera cam = stage.getCamera();
+		return cam.position.x - cam.viewportWidth / 2.0f;
+	}
+	
+	private float cornerRightX() {
+		Camera cam = stage.getCamera();
+		return cam.position.x + cam.viewportWidth / 2.0f;
+	}
+	
+	private float cornerLeftY() {
+		Camera cam = stage.getCamera();
+		return cam.position.y - cam.viewportHeight / 2.0f;
+	}
+
+	private float cornerRightY() {
+		Camera cam = stage.getCamera();
+		return cam.position.y + cam.viewportHeight / 2.0f;
 	}
 }

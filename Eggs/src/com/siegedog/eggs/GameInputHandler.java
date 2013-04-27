@@ -86,9 +86,10 @@ public class GameInputHandler extends InputAdapter {
 							//  -> non-interactive & speed one towards other
 							// -> set a goal for one of them - when it detects it's almost in the exact
 							// same place as the goal Particle, perform the merge
+							screen.instability += dif;
 							sp.setValue( (sp.getValue() + ep.getValue()) / 2);
-							Vector2 labelPos = new Vector2(sp.getX() + (ep.getX() - sp.getX()) / 2,
-									sp.getY() + (ep.getY() - sp.getY() / 2));
+							Vector2 labelPos = new Vector2(Math.min(sp.getX(), ep.getX()) + Math.abs(ep.getX() - sp.getX()) / 2,
+									Math.min(sp.getY(), ep.getY()) + Math.abs(ep.getY() - sp.getY()) / 2 + 20.0f);
 							screen.addDude("overlay", new FLabel("+" + dif, guiFont, labelPos, 
 									new Vector2(0.0f, -20.0f), 100, 1.2f));
 						}
