@@ -5,15 +5,22 @@ filter: Nearest,Nearest
 repeat: none
 background
   rotate: false
-  xy: 1, 1
+  xy: 1, 4
   size: 200, 200
   orig: 200, 200
   offset: 0, 0
   index: -1
 mainParticle
   rotate: false
-  xy: 203, 137
+  xy: 203, 140
   size: 64, 64
   orig: 64, 64
+  offset: 0, 0
+  index: -1
+ray
+  rotate: false
+  xy: 1, 1
+  size: 3, 1
+  orig: 3, 1
   offset: 0, 0
   index: -1

@@ -56,6 +56,12 @@ public class Dude extends Actor {
 			return;
 		}
 		
+		// I... am... deeply sorry, ye mighty gods of programming
+		super.setX(physics.getX() - physics.getDimensions().x / 2.0f);
+		super.setY(physics.getY() - physics.getDimensions().y / 2.0f);
+		super.setWidth(physics.getDimensions().x);
+		super.setHeight(physics.getDimensions().y);
+		
 		super.act(delta);
 
 		//setOrigin(physics.getDimensions().x / 2.0f, physics.getDimensions().y / 2.0f);
@@ -78,6 +84,10 @@ public class Dude extends Actor {
 		screen.signalDead(this);
 	}
 	
+	public void beforeCollision() {
+		// TODO: maybe remove the need for this hook
+	}
+	
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		if(dead) {
@@ -87,20 +97,12 @@ public class Dude extends Actor {
 		super.draw(batch, parentAlpha);
 
 		if(sprite != null) {
-			//sprite.setPosition(getX() - physics.getDimensions().x / 2.0f, getY() - physics.getDimensions().x / 2.0f);
 			sprite.setPosition(getX(), getY());
+			//sprite.setPosition(getX(), getY());
 			//sprite.setOrigin(getOriginX(), getOriginY());
-			//sprite.setRotation(getRotation());
+			sprite.setRotation(getRotation());
 			sprite.draw(batch);
 		}
-	}
-	
-	public float getX() {
-		return physics.getX();
-	}
-	
-	public float getY() {
-		return physics.getY();
 	}
 	
 	@Override
@@ -138,6 +140,16 @@ public class Dude extends Actor {
 		return physics.getDimensions().y;
 	}
 	
+	@Override
+	public float getRight() {
+		return getX() + getWidth();
+	}
+	
+	@Override
+	public float getTop() {
+		return getY() + getHeight();
+	}
+		
 	public boolean isDead() {
 		return dead;
 	}

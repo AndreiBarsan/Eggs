@@ -3,10 +3,12 @@ package com.siegedog.eggs.screens;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
 import com.siegedog.eggs.EggGame;
 import com.siegedog.eggs.entities.Dude;
@@ -21,9 +23,16 @@ public class GameScreen implements Screen {
 	/* Rendering scale - >1 induces a retro effect */
 	protected final int scale = 1;
 	
+	public int x0 = 0;
+	public int y0 = 0;
+	public int x1 = Gdx.graphics.getWidth();
+	public int y1 = Gdx.graphics.getHeight();
+	
 	public void init(EggGame game) {
 		this.game = game;
 		
+		addLayer("background");
+		addLayer("rays");
 		addLayer("main");
 		addLayer("overlay");
 	}
@@ -35,7 +44,7 @@ public class GameScreen implements Screen {
 		getStage().draw();
 		
 		for(Dude d : deadDudes) {
-			if(!getStage().getActors().removeValue(d, true)) {
+			if(! d.remove()) {
 				Log.E("Failed removing a dude");
 			}
 		}
@@ -85,7 +94,7 @@ public class GameScreen implements Screen {
 		addDude("main", dude);
 	}
 
-	private HashMap<String, Group> layers = new HashMap<String, Group>();
+	protected HashMap<String, Group> layers = new HashMap<String, Group>();
 	
 	public void addDude(String layer, Dude dude) {
 		if(!layers.containsKey(layer)) {
@@ -98,9 +107,14 @@ public class GameScreen implements Screen {
 	
 	private void addLayer(String name) {
 		Group lg = new Group();
+		lg.setTouchable(Touchable.enabled);
 		lg.setName(name);
 		layers.put(name, lg);
 		stage.addActor(lg);
+	}
+	
+	public void removeDude(String layer, Dude dude) {
+		layers.get(layer).removeActor(dude);
 	}
 	
 	public EggGame getGame() {
@@ -109,6 +123,10 @@ public class GameScreen implements Screen {
 	
 	public Stage getStage() {
 		return stage;
+	}
+	
+	protected void pairwiseCheck(Dude d1, Dude d2) {
+		
 	}
 	
 	public void checkCollisions() {
@@ -121,6 +139,10 @@ public class GameScreen implements Screen {
 				// don't add non-dudes - they're guaranteed not to have physics
 			}
 		}
+		
+		for(int i = 0; i < dudes.size; ++i) {
+			dudes.get(i).beforeCollision();
+		}
 				
 		for(int i = 0; i < dudes.size; ++i) {
 			Dude d1 = dudes.get(i);
@@ -128,6 +150,7 @@ public class GameScreen implements Screen {
 			for(int j = i + 1; j < dudes.size; ++j) {
 				Dude d2 = dudes.get(j);
 				if( ! d2.physics.interactive) continue;
+				pairwiseCheck(d1, d2);
 				Collision c = d1.physics.intersect(d2.physics);
 				if(null != c) {
 					d1.physics.resolveCollision(c, d2.physics);

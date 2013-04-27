@@ -94,6 +94,11 @@ public class AABB extends Shape {
 	protected Collision intersectsCircle(Circle other) {
 		return Shape.AABBvsCircle(this, other);
 	}
+	
+	@Override
+	public AABB copy() {
+		return new AABB(this);
+	}
 
 	@Override
 	public Vector2 getDimensions() {

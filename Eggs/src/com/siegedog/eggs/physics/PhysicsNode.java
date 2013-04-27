@@ -115,4 +115,8 @@ public class PhysicsNode {
 	public Circle getCircle() {
 		return (Circle) shape;
 	}
+	
+	public Vector2 getPosition() {
+		return shape.getPosition();
+	}
 }

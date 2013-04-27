@@ -6,6 +6,10 @@ public class PointShape extends Shape {
 
 	public Vector2 position = new Vector2();
 	
+	public PointShape(PointShape other) {
+		this(other.position);
+	}
+	
 	public PointShape(float x, float y) {
 		position.set(x, y);
 	}
@@ -60,4 +64,8 @@ public class PointShape extends Shape {
 		return null;
 	}
 
+	@Override
+	public PointShape copy() {
+		return new PointShape(this);
+	}
 }

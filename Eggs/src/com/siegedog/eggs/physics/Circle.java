@@ -6,7 +6,13 @@ public class Circle extends Shape {
 	public float radius;
 	public float x;
 	public float y;
-		
+	
+	public Circle(Circle other) {
+		x = other.x;
+		y = other.y;
+		radius = other.radius;
+	}
+	
 	public Circle(Vector2 pos, float radius) {
 		this(pos.x, pos.y, radius);
 	}
@@ -76,5 +82,10 @@ public class Circle extends Shape {
 	public void setDimensions(float w, float h) {
 		assert w == h : "Width and height must always be the same for circles - ellipses not supported.";
 		radius = w;
+	}
+	
+	@Override
+	public Circle copy() {
+		return new Circle(this);
 	}
 }

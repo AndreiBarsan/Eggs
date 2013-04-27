@@ -3,20 +3,21 @@ package com.siegedog.eggs.entities;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.siegedog.eggs.AnimatedSprite;
+import com.siegedog.eggs.physics.PointShape;
+import com.siegedog.eggs.physics.Shape;
 
-public class Background extends Actor {
+public class Background extends Dude {
 
 	private Sprite sprite;
 	
 	public Background(Sprite sprite) {
+		super((AnimatedSprite)null, new PointShape(0.0f, 0.0f));
 		this.sprite = sprite;
 	}
 	
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
-		
 		Camera cam = getStage().getCamera();
 		float cx = cam.position.x;
 		float cy = cam.position.y;
@@ -33,9 +34,11 @@ public class Background extends Actor {
 		int y1 = (int) (cy + ch / 2);
 		
 		
-		for(int i = (x0 / sw) * sw; i < (x1 / sw) * sw; i+= sw ) {
-			sprite.setPosition(i, 10);
-			sprite.draw(batch);
+		for(int i = (x0 / sw) * sw; i < (x1 / sw) * sw; i += sw ) {
+			for(int j = (y0 / sh) * sh; j < (y1 / sh + 1) * sh; j += sh) {
+				sprite.setPosition(i, j);
+				sprite.draw(batch);
+			}
 		}
 	}
 }

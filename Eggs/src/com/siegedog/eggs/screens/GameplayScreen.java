@@ -29,10 +29,6 @@ public class GameplayScreen extends GameScreen {
 
 	private int left;
 	BitmapFont bf;
-	public int x0 = 0;
-	public int y0 = 0;
-	public int x1 = 512;
-	public int y1 = 512;
 	
 	TileMapRenderer tmr;
 	

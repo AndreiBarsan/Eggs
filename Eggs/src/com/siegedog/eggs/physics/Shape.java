@@ -29,6 +29,8 @@ public abstract class Shape {
 	protected abstract Collision intersectsCircle(Circle circle);
 	protected abstract Collision intersectsAABB(AABB aabb);
 	
+	public abstract Shape copy();
+	
 	protected static Collision AABBvsCircle(AABB A, Circle B) {
 		
 		Vector2 AtoB = B.getPosition().cpy().sub(A.getCenter());

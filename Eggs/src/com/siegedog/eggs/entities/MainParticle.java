@@ -14,13 +14,18 @@ public class MainParticle extends Bouncie {
 	private int value;
 	private BitmapFont valueFont;
 	
-	public MainParticle(Vector2 position, int value) {
+	public MainParticle(MainParticle other) {
+		this(other.physics.getPosition(), other.physics.velocity, other.value);
+	}
+	
+	public MainParticle(Vector2 position, Vector2 velocity, int value) {
 		super(EggGame.R.spriteAsAnimatedSprite("mainParticle"), position, RADIUS);
 		this.value = value;
+		this.physics.velocity.set(velocity);
 		valueFont = EggGame.R.font("motorwerk24");
 	}
 
-	public float getValue() {
+	public int getValue() {
 		return value;
 	}
 
@@ -34,6 +39,11 @@ public class MainParticle extends Bouncie {
 		sprite.setColor(tint);
 		super.draw(batch, parentAlpha);
 		valueFont.setColor(getColor());		
-		valueFont.drawWrapped(batch, String.valueOf(value), getX(), getY() + getHeight() / 2.0f + 12, getWidth(), HAlignment.CENTER);
+		valueFont.drawWrapped(batch, String.valueOf(value), getX(), getY() + getHeight() / 2 + 12, getWidth(), HAlignment.CENTER);
+	}
+	
+	@Override
+	public MainParticle copy() {
+		return new MainParticle(this);
 	}
 }
