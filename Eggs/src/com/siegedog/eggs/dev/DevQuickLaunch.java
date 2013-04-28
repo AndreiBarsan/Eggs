@@ -23,7 +23,7 @@ public class DevQuickLaunch {
         	config.width = 800;
         	config.height = 480;
         	config.samples = 4;
-        	config.title = "Eggs";
+        	config.title = "1951";
         	config.useGL20 = false;
             new LwjglApplication(new EggGame(), config);
         }

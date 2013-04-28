@@ -20,6 +20,7 @@ import com.siegedog.eggs.entities.Background;
 import com.siegedog.eggs.entities.Bouncie;
 import com.siegedog.eggs.entities.Dude;
 import com.siegedog.eggs.entities.FLabel;
+import com.siegedog.eggs.entities.MainParticle;
 import com.siegedog.eggs.entities.Ray;
 import com.siegedog.eggs.entities.TutorialMessage;
 import com.siegedog.eggs.math.Segment;
@@ -72,7 +73,7 @@ public class Title1951 extends GameScreen {
 	FLabel goal;
 	
 	public int instability;
-	public int currentLevel = 5;
+	public int currentLevel = 6;
 	public float timeLeft;
 	public LevelData levelData;
 	
@@ -151,7 +152,7 @@ public class Title1951 extends GameScreen {
 				));
 		stage.addAction(Actions.delay(0.5f, new Action() {
 			public boolean act(float delta) {
-				// TODO: make screen go white like an explosion
+				layers.get("main").clear();
 				showRetry();
 				return true;
 			}
@@ -332,7 +333,7 @@ public class Title1951 extends GameScreen {
 	public void finishedGame() {
 		continueEnabled = false;
 		state = State.FinishedGame;
-		beatGameMessage.setPosition(cornerLeftX(), topY());
+		beatGameMessage.setPosition(cornerLeftX(), topY() + 30.0f);
 		beatGameMessage.addAction(Actions.moveTo(cornerLeftX(), topY() - 30.0f, 1.0f, Interpolation.exp10));
 		
 		beatGameStats.getColor().a = 0.0f;
@@ -416,7 +417,7 @@ public class Title1951 extends GameScreen {
 		al = new FLabel(about, tiny, new Vector2(), Gdx.graphics.getWidth());
 		addDude("overlay", al);
 		
-		winner = new FLabel("Level complete!", guiFont, new Vector2(-1500f, -1500f), Gdx.graphics.getWidth());
+		winner = new FLabel("Reactor stable!", guiFont, new Vector2(-1500f, -1500f), Gdx.graphics.getWidth());
 		addDude("overlay", winner);
 		
 		loseMessage = new FLabel("Level failed!", splashFont, new Vector2(-1500f, -1500f), Gdx.graphics.getWidth());
@@ -460,10 +461,12 @@ public class Title1951 extends GameScreen {
 		if(dir.len2() < LIM2) {
 			addDude("rays", new Ray(new Segment(d1.physics.getPosition(), d2.physics.getPosition())));
 			if(d1 instanceof Bouncie && d2 instanceof Bouncie) {
-				float rangle = 180.0f + dir.angle();
-				if(rangle > 360.0f) rangle -= 360.0f;
-				((Bouncie) d1).addNeighbor((Bouncie) d2, rangle);
-				((Bouncie) d2).addNeighbor((Bouncie) d1, dir.angle()); // The opposite angle
+				if(d1 instanceof MainParticle || d2 instanceof MainParticle) {
+					float rangle = 180.0f + dir.angle();
+					if(rangle > 360.0f) rangle -= 360.0f;
+					((Bouncie) d1).addNeighbor((Bouncie) d2, rangle);
+					((Bouncie) d2).addNeighbor((Bouncie) d1, dir.angle()); // The opposite angle
+				}
 			}
 		}
 	}
@@ -517,7 +520,7 @@ public class Title1951 extends GameScreen {
 	
 	/** The hackyness is strong in this one */
 	public void createPulse(float x, float y) {
-		if(currentLevel < 3) return;
+		// if(currentLevel < 3) return;
 		
 		final float PULSERADIUS = 300;
 		final float PR2 = PULSERADIUS * PULSERADIUS;

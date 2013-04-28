@@ -106,7 +106,6 @@ public abstract class Bouncie extends Dude {
 	}
 	
 	protected void onMergeComplete() {
-		mergeTarget.kill();
 		physics.velocity.mul(0.45f);
 	}
 	

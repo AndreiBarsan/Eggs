@@ -15,13 +15,13 @@ General
   - positron / negatron powerups for changing a particle's value without affecting the overall instability
   [v] [-t-i-m-e- -b-a-r-] & instability bar
   
-  - levels 3 & 4 normal
-  - 5 & 6 positrons
-  - 7 & 8 with negatrons
-  - small logo -> stand out in list (better than just a screenshot)
+  [v] levels 3 & 4 normal
+  [v] 5 & 6 positrons
+  [v] 7 & 8 with negatrons
+  [v] small logo -> stand out in list (better than just a screenshot)
   [v-ish] larger levels - sweep to move around (+tutorial hint message - or maybe not - should be straightforward)
-  - final game stats (average of ranks or something)
-  - something slightly rewarding @ end
+  [?] final game stats (average of ranks or something)
+  [?-ish] something slightly rewarding @ end
   
   [v] potato
   

@@ -20,6 +20,9 @@ public class Tron extends Bouncie {
 	static final float RADIUS = 24.0f; 
 	public int value;
 	
+	private Color posColor = new Color(0.2f, 0.95f, 0.2f, 1.0f);
+	private Color negColor = new Color(0.2f, 0.1f, 0.69f, 1.0f);
+	
 	/** To be used only when defining levels */
 	public Tron(Vector2 pos, Vector2 vel, int val) {
 		this(new PhysicsNode(new Circle(pos.x, pos.y, RADIUS)), val);
@@ -39,6 +42,12 @@ public class Tron extends Bouncie {
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
+		
+		if(value > 0) {
+			setColor(posColor);
+		} else {
+			setColor(negColor);
+		}
 		
 		smallValueFont.setColor(Color.WHITE);	
 		String sgn = value > 0 ? "+" : "";

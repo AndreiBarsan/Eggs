@@ -47,7 +47,7 @@ public class MainParticle extends Bouncie {
 		if(potato) {
 			setColor(Color.WHITE.cpy());
 		} else {
-			Color tint = new Color((value * 2) / 255.0f, 0.0f, 0.0f, getColor().a);
+			Color tint = new Color((50.0f + (value * 1.5f)) / 255.0f, 0.0f, 0.0f, getColor().a);
 			setColor(tint);
 		}
 		super.draw(batch, parentAlpha);
@@ -78,15 +78,24 @@ public class MainParticle extends Bouncie {
 		{
 			Tron neg = (Tron)mergeTarget;
 			value += neg.value;
+			if(value < 1) value = 1;
 			
 			Vector2 labelPos = new Vector2(getX(), getY() + 20.0f);
 			
 			Vector2 fspeed = new Vector2(0.0f, -20.0f);
-			FLabel label = new FLabel("+" + neg.value, guiFont, labelPos, fspeed, 100, 1.2f);
+			String sgn = neg.value > 0 ? "+" : "";
+			FLabel label = new FLabel(sgn + neg.value, guiFont, labelPos, fspeed, 100, 1.2f);
 			screen.addDude("overlay", label);
-			label.setColor(Color.GREEN.cpy());
+			
+			if(neg.value > 0) {
+				label.setColor(Color.GREEN.cpy());
+			}
+			else {
+				label.setColor(Color.BLUE.cpy());
+			}
 		}
 		
+		mergeTarget.kill();
 		freshlyMerged();
 	}
 	
