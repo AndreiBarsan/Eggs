@@ -40,6 +40,21 @@ public class Resources {
 	public static String shaderRoot;
 	public static String fontRoot;
 	
+	static {
+		refreshPaths();
+	}
+	
+	public static void refreshPaths() {
+		sfxRoot = 			ASS_FOLDER + "sfx/";
+		texRoot = 			ASS_FOLDER + "img/";
+		effectImgRoot = 	ASS_FOLDER + "img/particles/";
+		levelRootRaw = 		ASS_FOLDER + "lvl/";
+		levelImageRoot = 	levelRootRaw + "img/";
+		levelRootBaked = 	levelRootRaw + "baked/";
+		effectRoot = 		ASS_FOLDER + "particleEffects/";
+		shaderRoot = 		ASS_FOLDER + "shaders/";
+		fontRoot = 			ASS_FOLDER + "font/";
+	}
 	
 	AssetManager assetManager = new AssetManager();
 	private boolean done = false;
@@ -65,17 +80,6 @@ public class Resources {
 	
 	public Resources () {
 		this(new InternalFileHandleResolver());
-		
-		sfxRoot = 			ASS_FOLDER + "sfx/";
-		texRoot = 			ASS_FOLDER + "img/";
-		effectImgRoot = 	ASS_FOLDER + "img/particles/";
-		levelRootRaw = 		ASS_FOLDER + "lvl/";
-		levelImageRoot = 	levelRootRaw + "img/";
-		levelRootBaked = 	levelRootRaw + "baked/";
-		effectRoot = 		ASS_FOLDER + "particleEffects/";
-		shaderRoot = 		ASS_FOLDER + "shaders/";
-		fontRoot = 			ASS_FOLDER + "font/";
-		
 	}
 	
 	public Resources(FileHandleResolver resolver) {

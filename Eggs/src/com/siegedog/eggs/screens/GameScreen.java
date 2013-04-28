@@ -112,7 +112,7 @@ public class GameScreen implements Screen {
 		layers.put(name, lg);
 		stage.addActor(lg);
 	}
-	
+		
 	public void removeDude(String layer, Dude dude) {
 		layers.get(layer).removeActor(dude);
 	}

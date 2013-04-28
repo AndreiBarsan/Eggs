@@ -49,7 +49,6 @@ public class GameInputHandler extends InputAdapter {
 			
 			Vector2 coords = stage.screenToStageCoordinates(new Vector2(screenX, screenY));
 			Actor result = stage.hit(coords.x, coords.y, true);
-			System.out.println("TOUCH DOWN (" + coords.x + ", " + coords.y + "): " + result);
 			if(null != result) {
 				if(result instanceof Bouncie) {
 					swipeStartDude = (Bouncie) result;
@@ -74,29 +73,11 @@ public class GameInputHandler extends InputAdapter {
 		case Gameplay:
 			Vector2 totalDelta = new Vector2(screenX - swipeStartX, swipeStartY - screenY); // yes, this is good
 			if(totalDelta.len2() > GESTURE_THRESHOLD2) {
-				System.out.println("Long nuff");
 				if(null != swipeStartDude) {
 					Bouncie bestMatch = swipeStartDude.tryFindFuse(totalDelta.angle());
 					if(null != bestMatch) {
 						// If we found something to fuse with
-						System.out.println("Found neighbor to fuse with!!!");
-						if(swipeStartDude instanceof MainParticle && bestMatch instanceof MainParticle) {
-							MainParticle sp = (MainParticle)swipeStartDude;
-							MainParticle ep = (MainParticle)bestMatch;
-							int dif = Math.abs(sp.getValue() - ep.getValue());
-							// TODO: only change the particles' internal state here,
-							// and do the merge once they actually collide
-							//  -> non-interactive & speed one towards other
-							// -> set a goal for one of them - when it detects it's almost in the exact
-							// same place as the goal Particle, perform the merge
-							screen.instability += dif;
-							sp.setValue( (sp.getValue() + ep.getValue()) / 2);
-							Vector2 labelPos = new Vector2(Math.min(sp.getX(), ep.getX()) + Math.abs(ep.getX() - sp.getX()) / 2,
-									Math.min(sp.getY(), ep.getY()) + Math.abs(ep.getY() - sp.getY()) / 2 + 20.0f);
-							screen.addDude("overlay", new FLabel("+" + dif, guiFont, labelPos, 
-									new Vector2(0.0f, -20.0f), 100, 1.2f));
-						}
-						bestMatch.kill();
+						swipeStartDude.beginMergeWith(bestMatch);
 					}
 				}
 			}

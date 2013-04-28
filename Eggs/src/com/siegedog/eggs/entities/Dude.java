@@ -52,10 +52,6 @@ public class Dude extends Actor {
 	
 	@Override
 	public void act(float delta) {
-		if(dead) {
-			return;
-		}
-		
 		// I... am... deeply sorry, ye mighty gods of programming
 		super.setX(physics.getX() - physics.getDimensions().x / 2.0f);
 		super.setY(physics.getY() - physics.getDimensions().y / 2.0f);
@@ -78,10 +74,15 @@ public class Dude extends Actor {
 			Log.E("Killed an enemy twice. Look for bugs!");
 		}
 		dead = true;
+		
 		if(onDeath != null) {
 			onDeath.run();
 		}
-		screen.signalDead(this);
+		
+		System.out.println("Removing: " + this);
+		if(! remove()) {
+			Log.E("Failed removing actor.");
+		}
 	}
 	
 	public void beforeCollision() {
