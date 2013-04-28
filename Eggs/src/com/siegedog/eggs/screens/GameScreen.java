@@ -125,8 +125,13 @@ public class GameScreen implements Screen {
 		return stage;
 	}
 	
+	public Group getLayer(String name) {
+		assert layers.containsKey(name) : "Layer [" + name + "] doesn't exist.";
+		return layers.get(name);
+	}
+	
 	protected void pairwiseCheck(Dude d1, Dude d2) {
-		
+		// hook for certain interactions
 	}
 	
 	public void checkCollisions() {

@@ -10,6 +10,8 @@ import com.siegedog.eggs.physics.Circle;
 public abstract class Bouncie extends Dude {
 	
 	static public final float NEIGHBOR_ANGLE_THRESHOLD = 20.0f;
+	static public final float NORMAL_SPEED2 = 50.0f * 50.0f;
+	static public final float MIN_SPEED2 = 35.0f * 35.0f;
 	
 	public static class Neighbor {
 		public float angleTo;
@@ -45,6 +47,12 @@ public abstract class Bouncie extends Dude {
 	public void act(float delta) {
 		super.act(delta);
 		bounceOnEdges();
+		
+		if(physics.velocity.len2() > NORMAL_SPEED2) {
+			physics.velocity.mul(0.9f);
+		} else if(physics.velocity.len2() < MIN_SPEED2) {
+			physics.velocity.mul(1.1f);
+		}
 	}
 	
 	public void addNeighbor(Bouncie other, float angle) {

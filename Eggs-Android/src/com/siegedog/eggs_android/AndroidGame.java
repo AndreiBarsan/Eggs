@@ -3,6 +3,7 @@ package com.siegedog.eggs_android;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.siegedog.eggs.EggGame;
+import com.siegedog.eggs.util.Log;
 import com.siegedog.eggs.util.Resources;
 
 public class AndroidGame extends AndroidApplication {

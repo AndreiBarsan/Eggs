@@ -9,6 +9,12 @@ import com.siegedog.eggs.EggGame;
 
 public class MainParticle extends Bouncie {
 
+	public enum PState {
+		Spawning,	// When fading in at the beginning
+		Normal,		// When bouncing around
+		Merging		// When about to fuse with another particle
+	}
+	
 	public static final float RADIUS = 32.0f;
 	
 	private int value;

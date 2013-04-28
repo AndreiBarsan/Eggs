@@ -1,17 +1,19 @@
 package com.siegedog.eggs;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.siegedog.eggs.entities.MainParticle;
 
 public class Levels {
-	public static LevelData[] levels = new LevelData[5];
+	public static ArrayList<LevelData> levels = new ArrayList<LevelData>();
 	static {
 		LevelData l;
 		l = new LevelData(1, 1, 100, 90.0f);
 		l.add(new MainParticle(new Vector2(100, 200), new Vector2(40.0f, -10.0f), 32));
 		l.add(new MainParticle(new Vector2(300, 200), new Vector2(-5.0f, -8.0f), 32));
-		levels[1] = l;
+		levels.add(l);
 		
 		l = new LevelData(2, 2, 100, 90.0f);
 		l.add(new MainParticle(new Vector2(30, 120), randDir(50.0f), 15));
@@ -21,7 +23,7 @@ public class Levels {
 		l.add(new MainParticle(new Vector2(310, 250), randDir(50.0f), 79));
 		l.add(new MainParticle(new Vector2(320, 310), randDir(50.0f), 99));
 		l.add(new MainParticle(new Vector2(310, 480), randDir(50.0f), 103));
-		levels[2] = l;
+		levels.add(l);
 	}
 	
 	public static Vector2 randDir(float amount) {

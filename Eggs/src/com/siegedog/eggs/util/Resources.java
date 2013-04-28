@@ -30,15 +30,15 @@ public class Resources {
 	
 	public static String ASS_FOLDER = "assets/";
 	
-	public final static String sfxRoot = 			ASS_FOLDER + "sfx/";
-	public final static String texRoot = 			ASS_FOLDER + "img/";
-	public final static String effectImgRoot = 		ASS_FOLDER + "img/particles/";
-	public final static String levelRootRaw = 		ASS_FOLDER + "lvl/";
-	public final static String levelImageRoot = 	levelRootRaw + "img/";
-	public final static String levelRootBaked = 	levelRootRaw + "baked/";
-	public final static String effectRoot = 		ASS_FOLDER + "particleEffects/";
-	public final static String shaderRoot = 		ASS_FOLDER + "shaders/";
-	public final static String fontRoot = 			ASS_FOLDER + "font/";
+	public static String sfxRoot;
+	public static String texRoot;
+	public static String effectImgRoot;
+	public static String levelRootRaw;
+	public static String levelImageRoot;
+	public static String levelRootBaked;
+	public static String effectRoot;
+	public static String shaderRoot;
+	public static String fontRoot;
 	
 	
 	AssetManager assetManager = new AssetManager();
@@ -65,6 +65,17 @@ public class Resources {
 	
 	public Resources () {
 		this(new InternalFileHandleResolver());
+		
+		sfxRoot = 			ASS_FOLDER + "sfx/";
+		texRoot = 			ASS_FOLDER + "img/";
+		effectImgRoot = 	ASS_FOLDER + "img/particles/";
+		levelRootRaw = 		ASS_FOLDER + "lvl/";
+		levelImageRoot = 	levelRootRaw + "img/";
+		levelRootBaked = 	levelRootRaw + "baked/";
+		effectRoot = 		ASS_FOLDER + "particleEffects/";
+		shaderRoot = 		ASS_FOLDER + "shaders/";
+		fontRoot = 			ASS_FOLDER + "font/";
+		
 	}
 	
 	public Resources(FileHandleResolver resolver) {
@@ -74,6 +85,7 @@ public class Resources {
 			public void error(String fileName, Class type, Throwable throwable) {
 				error = true;
 				String source = "Asset load fail: " + fileName + "\n" + throwable;
+				source += "\nWhile using root asset folder: " + ASS_FOLDER;
 				if(onError != null) {
 					// Optional callback when loading fails
 					Log.D(source);

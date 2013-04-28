@@ -34,7 +34,7 @@ public class Background extends Dude {
 		int y1 = (int) (cy + ch / 2);
 		
 		
-		for(int i = (x0 / sw) * sw; i < (x1 / sw) * sw; i += sw ) {
+		for(int i = (x0 / sw) * sw; i < (x1 / sw + 1) * sw; i += sw ) {
 			for(int j = (y0 / sh) * sh; j < (y1 / sh + 1) * sh; j += sh) {
 				sprite.setPosition(i, j);
 				sprite.draw(batch);

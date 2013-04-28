@@ -1,7 +1,5 @@
 package com.siegedog.eggs.screens;
 
-import java.text.Format;
-
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -10,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.siegedog.eggs.EggGame;
 import com.siegedog.eggs.GameInputHandler;
@@ -21,17 +20,19 @@ import com.siegedog.eggs.entities.Dude;
 import com.siegedog.eggs.entities.FLabel;
 import com.siegedog.eggs.entities.Ray;
 import com.siegedog.eggs.math.Segment;
+import com.siegedog.eggs.physics.Circle;
 
 
 public class Title1953 extends GameScreen {
 
 	public enum State {
-		TitleShown,
-		StartingLevel,
-		Gameplay,
-		EndingLevel,
-		GameOver,
-		LevelWon
+		TitleShown,		// Title screen is being shown
+		StartingLevel,	// Small pause before stuff gets spawned
+		Gameplay,		
+		EndingLevel,	// Small pause before win / loss message is shown
+		GameOver,		// Level failed
+		LevelWon,		// Level finished - rank and whatnot
+		FinishedGame,	// The final stats
 	}
 	
 	public State state = State.TitleShown;
@@ -54,6 +55,9 @@ public class Title1953 extends GameScreen {
 	FLabel continueLabel;
 	FLabel retryLabel;
 	
+	FLabel beatGameMessage;
+	FLabel beatGameStats;
+	
 	public int instability;
 	public int currentLevel = 0;
 	public float timeLeft;
@@ -65,12 +69,16 @@ public class Title1953 extends GameScreen {
 	
 	public void beginLevel() {
 		currentLevel++;
-		restartLevel();
+		if(currentLevel > Levels.levels.size()) {
+			finishedGame();
+		} else {
+			restartLevel();
+		}
 	}
 	
 	public void restartLevel() {
 		state = State.Gameplay;
-		levelData = Levels.levels[currentLevel];
+		levelData = Levels.levels.get(currentLevel - 1);
 		instability = 0;
 		timeLeft = levelData.time;
 		layers.get("main").clear();
@@ -193,6 +201,8 @@ public class Title1953 extends GameScreen {
 	public void showTitle() {
 		continueEnabled = false;
 		splash.addAction(Actions.moveTo(0.0f, 420.0f, 1.0f, Interpolation.exp10));
+		tap.setPosition(cornerLeftX(), cornerLeftY() + 320);
+		tap.message = action + " to start";
 		tap.addAction(Actions.sequence(
 				Actions.delay(1.0f),
 				Actions.fadeIn(0.33f)
@@ -212,6 +222,48 @@ public class Title1953 extends GameScreen {
 		state = State.TitleShown;
 	}
 	
+	public void finishedGame() {
+		continueEnabled = false;
+		state = State.FinishedGame;
+		beatGameMessage.setPosition(cornerLeftX(), cornerLeftY() + Gdx.graphics.getHeight());
+		beatGameMessage.addAction(Actions.moveTo(cornerLeftX(), cornerLeftY() + 420.0f, 1.0f, Interpolation.exp10));
+		
+		beatGameStats.getColor().a = 0.0f;
+		beatGameStats.message = "End game stats go here!";
+		beatGameStats.setPosition(cornerLeftX(), cornerLeftY() + 360.0f);
+		beatGameStats.addAction(Actions.fadeIn(1.0f));
+		
+		tap.setPosition(cornerLeftX(), cornerLeftY() + 120);
+		tap.message = action + " to return to the titlescreen";
+		tap.getColor().a = 0.0f;
+		tap.addAction(Actions.sequence(
+				Actions.delay(1.0f),
+				Actions.fadeIn(0.33f),
+				new Action() {
+					public boolean act(float delta) {
+						continueEnabled = true;
+						return true;
+					}
+				}));
+	}
+	
+	public void finishedToTitle() {
+		continueEnabled = false;
+		tap.addAction(Actions.moveTo(cornerLeftX(), cornerLeftY() + Gdx.graphics.getHeight() + 100, 1.0f, Interpolation.exp10));
+		beatGameStats.addAction(Actions.fadeOut(1.0f));
+		
+		beatGameMessage.addAction(Actions.sequence(
+				Actions.delay(1.0f),
+				Actions.moveTo(cornerLeftX(), cornerLeftY() + Gdx.graphics.getHeight() + 100, 1.0f, Interpolation.exp10),
+				new Action() {
+					public boolean act(float delta) {
+						showTitle();
+						currentLevel = 0;
+						return true;
+					}
+				}));
+	}
+	
 	@Override
 	public void show() {
 		super.show();
@@ -220,7 +272,7 @@ public class Title1953 extends GameScreen {
 		addDude("overlay", splash = new FLabel("1953", splashFont, new Vector2(0, Gdx.graphics.getHeight() + 100), Gdx.graphics.getWidth()));
 		
 		action = (Gdx.app.getType() == ApplicationType.Desktop) ? "Click" : "Tap";
-		tap = new FLabel(action + " to start", guiFont, new Vector2(0, 320), Gdx.graphics.getWidth());
+		tap = new FLabel("", guiFont, new Vector2(), Gdx.graphics.getWidth());
 		addDude("overlay", tap);
 		
 		String about = "Andrei Barsan, 2013\nsiegedog.com ";
@@ -249,6 +301,12 @@ public class Title1953 extends GameScreen {
 		
 		retryLabel = new FLabel(action + " to retry", guiFont, new Vector2(-1500f, -1500f), Gdx.graphics.getWidth());
 		addDude("overlay", retryLabel);
+		
+		beatGameMessage = new FLabel("Game finished", guiFont, new Vector2(), Gdx.graphics.getWidth());
+		addDude("overlay", beatGameMessage);
+		
+		beatGameStats = new FLabel("", guiFont, new Vector2(), Gdx.graphics.getWidth());
+		addDude("overlay", beatGameStats);
 		
 		showTitle();
 		
@@ -299,6 +357,25 @@ public class Title1953 extends GameScreen {
 		} else {
 			timeIndicator.setVisible(false);
 			instabilityIndicator.setVisible(false);
+		}
+	}
+	
+	public void createPulse(float x, float y) {
+		final float PULSERADIUS = 300;
+		final float PR2 = PULSERADIUS * PULSERADIUS;
+		final float PULSEFORCE = 100;
+		System.out.println("PULSE @ " + x + ", " + y);
+		for(Actor actor : getLayer("main").getChildren()) {
+			if(actor instanceof Bouncie) {
+				Vector2 dir = new Vector2(actor.getX(), actor.getY());
+				dir.sub(new Vector2(x, y));
+				if(dir.len2() < PR2) {
+					dir.nor();
+					dir.mul(PULSEFORCE);
+					Bouncie b = (Bouncie)actor;
+					b.physics.velocity.add(dir.x, dir.y);
+				}
+			}
 		}
 	}
 	

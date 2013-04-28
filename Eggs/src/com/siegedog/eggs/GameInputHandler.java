@@ -12,6 +12,7 @@ import com.siegedog.eggs.entities.FLabel;
 import com.siegedog.eggs.entities.MainParticle;
 import com.siegedog.eggs.screens.Title1953;
 import com.siegedog.eggs.screens.Title1953.State;
+import com.siegedog.eggs.util.Log;
 
 public class GameInputHandler extends InputAdapter {
 
@@ -26,6 +27,8 @@ public class GameInputHandler extends InputAdapter {
 	private int swipeStartY;
 	
 	static final int GESTURE_THRESHOLD2 = 80 * 80;
+	private long lastTap = 0;
+	static private final int TAP_THRESHOLD = 200;
 	
 	BitmapFont guiFont = EggGame.R.font("motorwerk32");
 	
@@ -115,8 +118,20 @@ public class GameInputHandler extends InputAdapter {
 			break;
 		case StartingLevel:
 			break;
-		default:
-			break;
+		
+		case FinishedGame:
+			if(screen.continueEnabled) {
+				screen.finishedToTitle();
+			}
+		}
+		
+		long now = System.currentTimeMillis();
+		long delta = now - lastTap;
+		if(delta < TAP_THRESHOLD) {
+			doubleTapped(screenX, screenY);
+			lastTap = 0;
+		} else {
+			lastTap = now;
 		}
 		
 		return true;
@@ -125,20 +140,33 @@ public class GameInputHandler extends InputAdapter {
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		if(screen.state == State.Gameplay) {
-			int dx = (screenX - lastX);
-			int dy = (screenY - lastY);
-			Camera cam = screen.getStage().getCamera();
-			cam.position.x -= dx;
-			cam.position.y += dy;
-			
-			cam.position.x = MathUtils.clamp(cam.position.x, screen.x0 + cam.viewportWidth / 2, screen.x1 - cam.viewportWidth / 2);
-			cam.position.y = MathUtils.clamp(cam.position.y, screen.y0 + cam.viewportHeight / 2, screen.y1 - cam.viewportHeight / 2);
+			if(null == swipeStartDude) {
+				// Only drag the screen when not gesturing a merge command
+				int dx = (screenX - lastX);
+				int dy = (screenY - lastY);
+				Camera cam = screen.getStage().getCamera();
+				cam.position.x -= dx;
+				cam.position.y += dy;
+				
+				cam.position.x = MathUtils.clamp(cam.position.x, screen.x0 + cam.viewportWidth / 2, screen.x1 - cam.viewportWidth / 2);
+				cam.position.y = MathUtils.clamp(cam.position.y, screen.y0 + cam.viewportHeight / 2, screen.y1 - cam.viewportHeight / 2);
+			}
 			
 			lastX = screenX;
 			lastY = screenY;
 		}
 		
 		return true;
+	}
+	
+	private void doubleTapped(int screenX, int screenY) {
+		if(screen.state == State.Gameplay) {
+			Vector2 stageCoords = stage.screenToStageCoordinates(new Vector2(screenX, screenY));
+			Actor result = screen.getLayer("main").hit(stageCoords.x, stageCoords.y, true);
+			if(null == result) {
+				screen.createPulse(stageCoords.x, stageCoords.y);
+			}
+		}
 	}
 
 }
