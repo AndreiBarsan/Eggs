@@ -86,7 +86,7 @@ public abstract class Bouncie extends Dude {
 	
 	protected void onMergeComplete() {
 		mergeTarget.kill();
-		physics.velocity.mul(0.75f);
+		physics.velocity.mul(0.45f);
 	}
 	
 	/** Called only once, for the bouncie the player started the flick on.	 */

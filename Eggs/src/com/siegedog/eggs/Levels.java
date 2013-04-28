@@ -21,9 +21,9 @@ public class Levels {
 		l.add(new MainParticle(new Vector2(70, 150), randDir(50.0f), 13));
 		l.add(new MainParticle(new Vector2(15, 55), randDir(50.0f), 18));
 		
-		l.add(new MainParticle(new Vector2(310, 250), randDir(50.0f), 79));
-		l.add(new MainParticle(new Vector2(320, 310), randDir(50.0f), 99));
-		l.add(new MainParticle(new Vector2(310, 480), randDir(50.0f), 103));
+		l.add(new MainParticle(new Vector2(510, 250), randDir(50.0f), 79));
+		l.add(new MainParticle(new Vector2(520, 310), randDir(50.0f), 99));
+		l.add(new MainParticle(new Vector2(510, 480), randDir(50.0f), 103));
 		levels.add(l);
 	}
 	

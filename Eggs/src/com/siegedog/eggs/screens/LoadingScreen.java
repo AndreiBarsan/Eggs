@@ -1,7 +1,7 @@
 package com.siegedog.eggs.screens;
 
-import com.siegedog.eggs.AnimatedSprite;
 import com.siegedog.eggs.EggGame;
+import com.siegedog.eggs.util.Log;
 
 public class LoadingScreen extends GameScreen {
 
@@ -36,6 +36,8 @@ public class LoadingScreen extends GameScreen {
 		EggGame.R.update(delta);
 		if(EggGame.R.done()) {
 			game.setScreen(new Title1953());
+		} else {
+			Log.D("Still loading....");
 		}
 		super.render(delta);
 	}

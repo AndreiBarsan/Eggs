@@ -18,6 +18,7 @@ public class DevQuickLaunch {
         	
         	LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         	config.fullscreen = false;
+        	config.resizable = false;
         	config.width = 800;
         	config.height = 480;
         	config.samples = 4;

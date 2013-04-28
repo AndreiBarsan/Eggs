@@ -48,9 +48,10 @@ public class MainParticle extends Bouncie {
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		Color tint = new Color((value * 2) / 255.0f, 0.0f, 0.0f, getColor().a);
-		sprite.setColor(tint);
+		setColor(tint);
 		super.draw(batch, parentAlpha);
-		valueFont.setColor(getColor());		
+		
+		valueFont.setColor(Color.WHITE);		
 		valueFont.drawWrapped(batch, String.valueOf(value), getX(), getY() + getHeight() / 2 + 12, getWidth(), HAlignment.CENTER);
 	}
 	
@@ -78,7 +79,6 @@ public class MainParticle extends Bouncie {
 	
 	@Override
 	protected void freshlyMerged() {
-		System.out.println("Merge done. I am the survivor. It is me. I am the star.");
 		state = PState.Normal;
 		physics.interactive = true;
 		this.setTouchable(Touchable.enabled);

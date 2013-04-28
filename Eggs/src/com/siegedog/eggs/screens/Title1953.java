@@ -216,12 +216,14 @@ public class Title1953 extends GameScreen {
 				beginLevel();
 			}
 		})));
+		
+		logo.addAction(Actions.fadeOut(1.0f));
 	}
 	
 	public void showTitle() {
 		continueEnabled = false;
-		splash.addAction(Actions.moveTo(0.0f, 420.0f, 1.0f, Interpolation.exp10));
-		tap.setPosition(cornerLeftX(), cornerLeftY() + 320);
+		splash.addAction(Actions.moveTo(cornerLeftX(), topY() - 10.0f, 1.0f, Interpolation.exp10));
+		tap.setPosition(cornerLeftX(), topY() - 110);
 		tap.message = action + " to start";
 		tap.addAction(Actions.sequence(
 				Actions.delay(1.0f),
@@ -239,6 +241,14 @@ public class Title1953 extends GameScreen {
 					}
 				}));
 		al.getColor().a = 0.0f;
+		
+		logo.getColor().a = 0.0f;
+		logo.setPosition(cornerLeftX() + Gdx.graphics.getWidth() / 2.0f - logo.getSprite().getWidth() / 2.0f,
+				cornerLeftY() + Gdx.graphics.getHeight() / 2.0f - logo.getSprite().getHeight() / 2.0f - 32.0f);
+		logo.addAction(Actions.sequence(
+				Actions.delay(1.0f),
+				Actions.fadeIn(0.33f)
+				));
 		
 		state = State.TitleShown;
 	}
@@ -289,9 +299,16 @@ public class Title1953 extends GameScreen {
 	public void show() {
 		super.show();
 		
+		x1 = 800;
+		y1 = 480;
+		
 		addDude("effects", grain = new Dude(EggGame.R.spriteAsAnimatedSprite("grain"),
 				new AABB(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
 		grain.stretchSprite = true;
+		
+
+		logo = new Dude(EggGame.R.spriteAsAnimatedSprite("logo"), new PointShape(0, 0));
+		addDude("overlay", logo);
 		
 		addDude("background", new Background(EggGame.R.sprite("background")));
 		addDude("overlay", splash = new FLabel("1953", splashFont, new Vector2(0, Gdx.graphics.getHeight() + 100), Gdx.graphics.getWidth()));
@@ -333,9 +350,6 @@ public class Title1953 extends GameScreen {
 		beatGameStats = new FLabel("", guiFont, new Vector2(), Gdx.graphics.getWidth());
 		addDude("overlay", beatGameStats);
 		
-		logo = new Dude(EggGame.R.spriteAsAnimatedSprite("logo"), new PointShape(0, 0));
-		addDude("overlay", logo);
-		
 		showTitle();
 		
 		GameInputHandler ih = new GameInputHandler(this);
@@ -362,10 +376,7 @@ public class Title1953 extends GameScreen {
 		
 	@Override
 	public void render(float delta) {
-		super.render(delta);
-		layers.get("rays").clear();
-		Camera cam = stage.getCamera();
-		
+
 		grain.setX(cornerLeftX());
 		grain.setY(cornerLeftY());
 		
@@ -390,6 +401,9 @@ public class Title1953 extends GameScreen {
 			timeIndicator.setVisible(false);
 			instabilityIndicator.setVisible(false);
 		}
+	
+		super.render(delta);
+		layers.get("rays").clear();
 	}
 	
 	public void createPulse(float x, float y) {
@@ -428,9 +442,9 @@ public class Title1953 extends GameScreen {
 		Camera cam = stage.getCamera();
 		return cam.position.y - cam.viewportHeight / 2.0f;
 	}
-
-	private float cornerRightY() {
+	
+	private float topY() {
 		Camera cam = stage.getCamera();
-		return cam.position.y + cam.viewportHeight / 2.0f;
+		return cam.position.y + cam.viewportHeight / 2.0f; 
 	}
 }

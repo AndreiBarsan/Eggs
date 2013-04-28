@@ -15,6 +15,7 @@ public class AndroidGame extends AndroidApplication {
                 config.useGL20 = false;
                 
                 Resources.ASS_FOLDER = "";
+                Resources.refreshPaths();
                 initialize(new EggGame(), config);
         }
 }

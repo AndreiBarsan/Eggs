@@ -81,6 +81,7 @@ public class GameInputHandler extends InputAdapter {
 					}
 				}
 			}
+			swipeStartDude = null;
 			break;
 				
 		case EndingLevel:
