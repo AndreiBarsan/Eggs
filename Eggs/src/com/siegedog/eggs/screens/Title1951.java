@@ -114,10 +114,14 @@ public class Title1951 extends GameScreen {
 	public void winLevel() {
 		state = State.EndingLevel;
 		hideTutorials();
+		
+		winner.setVisible(true);
+		winner.setPosition(cornerLeftX(), topY() - 80);
+		winner.addAction(Actions.fadeIn(0.33f));
+		
 		stage.addAction(Actions.delay(1.0f, new Action() {
 			public boolean act(float delta) {
 				showStats();
-				// TODO: show winner message
 				return true;
 			}
 		}));
@@ -177,8 +181,8 @@ public class Title1951 extends GameScreen {
 		state = State.GameOver;
 		continueEnabled = false;
 		Camera cam = stage.getCamera();
-		float sry = cam.position.y + cam.viewportHeight / 2.0f - 150;
-		loseMessage.setPosition(cam.position.x - Gdx.graphics.getWidth() * 1.5f, sry);
+		float sry = cornerLeftY() + 40.0f;
+		loseMessage.setPosition(cornerLeftX(), sry);
 		loseMessage.addAction(Actions.moveTo(cam.position.x - cam.viewportWidth / 2.0f, sry, 1.0f, Interpolation.exp10In));
 		
 		continueLabel.message = action + " to retry";
@@ -208,6 +212,10 @@ public class Title1951 extends GameScreen {
 		Camera cam = stage.getCamera();
 		float sry = cam.position.y + cam.viewportHeight / 2.0f - 150;
 		statReport.addAction(Actions.moveTo(cam.position.x - Gdx.graphics.getWidth() * 1.5f, sry, 1.0f, Interpolation.exp10In));
+		winner.addAction(Actions.sequence(
+				Actions.fadeOut(0.33f),
+				Actions.hide()
+				));
 		continueLabel.addAction(Actions.sequence(
 				Actions.fadeOut(1.0f, Interpolation.exp10),
 				Actions.delay(0.5f, 
@@ -237,7 +245,10 @@ public class Title1951 extends GameScreen {
 	
 	public void hideTitle() {
 		continueEnabled = false;
-		splash.addAction(Actions.moveTo(0.0f,  Gdx.graphics.getHeight() + 100, 1.0f, Interpolation.exp10));
+		splash.addAction(Actions.sequence(
+				Actions.moveTo(0.0f,  Gdx.graphics.getHeight() + 100, 1.0f, Interpolation.exp10),
+				Actions.hide()
+				));
 		tap.addAction(Actions.moveTo(-1000.0f, 350, 1.0f, Interpolation.exp10));
 		al.addAction(Actions.moveTo(1000.0f, 60, 1.0f, Interpolation.exp10));
 		state = State.StartingLevel;
@@ -252,7 +263,12 @@ public class Title1951 extends GameScreen {
 	
 	public void showTitle() {
 		continueEnabled = false;
+		
+		splash.setPosition(cornerLeftX(), topY() + 150f);
+		splash.setVisible(true);
 		splash.addAction(Actions.moveTo(cornerLeftX(), topY() - 10.0f, 1.0f, Interpolation.exp10));
+		
+		tap.setVisible(true);
 		tap.setPosition(cornerLeftX(), topY() - 110);
 		tap.message = action + " to start";
 		tap.addAction(Actions.sequence(
@@ -286,15 +302,15 @@ public class Title1951 extends GameScreen {
 	public void finishedGame() {
 		continueEnabled = false;
 		state = State.FinishedGame;
-		beatGameMessage.setPosition(cornerLeftX(), cornerLeftY() + Gdx.graphics.getHeight());
-		beatGameMessage.addAction(Actions.moveTo(cornerLeftX(), cornerLeftY() + 420.0f, 1.0f, Interpolation.exp10));
+		beatGameMessage.setPosition(cornerLeftX(), topY());
+		beatGameMessage.addAction(Actions.moveTo(cornerLeftX(), topY() - 30.0f, 1.0f, Interpolation.exp10));
 		
 		beatGameStats.getColor().a = 0.0f;
-		beatGameStats.message = "End game stats go here!";
-		beatGameStats.setPosition(cornerLeftX(), cornerLeftY() + 360.0f);
+		beatGameStats.message = "Congratulations!"; // End game stats go here!
+		beatGameStats.setPosition(cornerLeftX(), topY() - 100.0f);
 		beatGameStats.addAction(Actions.fadeIn(1.0f));
 		
-		tap.setPosition(cornerLeftX(), cornerLeftY() + 120);
+		tap.setPosition(cornerLeftX(), cornerLeftY() + 85);
 		tap.message = action + " to return to the titlescreen";
 		tap.getColor().a = 0.0f;
 		tap.addAction(Actions.sequence(
@@ -351,7 +367,7 @@ public class Title1951 extends GameScreen {
 		al = new FLabel(about, small, new Vector2(), Gdx.graphics.getWidth());
 		addDude("overlay", al);
 		
-		winner = new FLabel("Level complete!", splashFont, new Vector2(-1500f, -1500f), Gdx.graphics.getWidth());
+		winner = new FLabel("Level complete!", guiFont, new Vector2(-1500f, -1500f), Gdx.graphics.getWidth());
 		addDude("overlay", winner);
 		
 		loseMessage = new FLabel("Level failed!", splashFont, new Vector2(-1500f, -1500f), Gdx.graphics.getWidth());
@@ -441,7 +457,7 @@ public class Title1951 extends GameScreen {
 		final float PR2 = PULSERADIUS * PULSERADIUS;
 		final float PULSEFORCE_MIN = 25;
 		final float PULSEFORCE_MAX = 200;
-		System.out.println("PULSE @ " + x + ", " + y);
+
 		for(Actor actor : getLayer("main").getChildren()) {
 			if(actor instanceof Bouncie) {
 				Vector2 dir = new Vector2(actor.getX() + actor.getWidth() / 2.0f, actor.getY() + actor.getHeight() / 2.0f);
@@ -449,7 +465,6 @@ public class Title1951 extends GameScreen {
 				if(dir.len2() < PR2) {
 					float power = Interpolation.linear.apply(PULSEFORCE_MAX, PULSEFORCE_MIN, dir.len() / PULSERADIUS);
 					dir.nor();
-					System.out.println("POWER: " + power);
 					dir.mul(power);
 					Bouncie b = (Bouncie)actor;
 					b.physics.velocity.add(dir.x, dir.y);

@@ -150,14 +150,12 @@ public abstract class Bouncie extends Dude {
 	public Bouncie tryFindFuse(float angleDeg) {
 		float bestDiff = NEIGHBOR_ANGLE_THRESHOLD;
 		Neighbor bestNeighbor = null;
-		System.out.println("Trying to find fuse for swipe angle: DEG " + angleDeg);
 		for(Neighbor n : neighbors) {
 			float diff = Math.abs(n.angleTo - angleDeg);
 			if(diff < bestDiff) {
 				bestDiff = diff;
 				bestNeighbor = n;
 			}
-			System.out.println("FAIL: " + n.angleTo);
 		}
 		
 		return (bestNeighbor != null) ? bestNeighbor.data : null;

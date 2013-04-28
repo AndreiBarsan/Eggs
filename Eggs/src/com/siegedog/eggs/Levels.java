@@ -29,9 +29,9 @@ public class Levels {
 		l = new LevelData(2, 2, 100, 30, 90.0f,
 				new TutorialMessage("Merge particles with the smallest difference to win!",
 						fnt, new Vector2(w * 0.125f, 200), -1, ww));
-		l.add(new MainParticle(new Vector2(40, 50), randDir(45.0f), 22));
-		l.add(new MainParticle(new Vector2(50, 90), randDir(45.0f), 24));
-		l.add(new MainParticle(new Vector2(250, 390), randDir(45.0f), 224));
+		l.add(new MainParticle(new Vector2(40, 50), randDir(15.0f), 22));
+		l.add(new MainParticle(new Vector2(50, 90), randDir(15.0f), 24));
+		l.add(new MainParticle(new Vector2(250, 390), randDir(65.0f), 224));
 		levels.add(l);
 		
 		l = new LevelData(2, 2, 100, 30, 90.0f,

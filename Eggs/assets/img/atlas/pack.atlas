@@ -17,6 +17,20 @@ logo
   orig: 265, 209
   offset: 0, 0
   index: -1
+instabar
+  rotate: false
+  xy: 268, 233
+  size: 381, 43
+  orig: 381, 43
+  offset: 0, 0
+  index: -1
+instabarFill
+  rotate: false
+  xy: 268, 188
+  size: 381, 43
+  orig: 381, 43
+  offset: 0, 0
+  index: -1
 background
   rotate: false
   xy: 803, 558
@@ -33,7 +47,7 @@ mainParticle
   index: -1
 ray
   rotate: false
-  xy: 268, 275
+  xy: 651, 275
   size: 3, 1
   orig: 3, 1
   offset: 0, 0

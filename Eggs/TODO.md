@@ -8,8 +8,8 @@ General
  	
  Game stuff
  ----------
-  - tutorial messages - explain swipe to merge, double tap to explode
-  		- ability to define them in Levels.java
+  [v] - tutorial messages - explain swipe to merge, double tap to explode
+  [v]		- ability to define them in Levels.java
   - visual feedback for pulses
   - explosion when losing (screen goes white)
   - positron / negatron powerups for changing a particle's value without affecting the overall instability
