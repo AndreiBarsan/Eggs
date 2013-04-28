@@ -18,7 +18,7 @@ public class LoadingScreen extends GameScreen {
 		bf.setScale(2.0f);
 		
 		EggGame.R
-			.loadFont("motorwerk16")
+			.loadFont("motorwerk20")
 			.loadFont("motorwerk24")
 			.loadFont("motorwerk32")
 			.loadFont("motorwerk128")

@@ -50,6 +50,7 @@ public class Title1951 extends GameScreen {
 	BitmapFont splashFont = EggGame.R.font("motorwerk128");
 	BitmapFont guiFont = EggGame.R.font("motorwerk32");
 	BitmapFont small = EggGame.R.font("motorwerk24");
+	BitmapFont tiny = EggGame.R.font("motorwerk20");
 	
 	FLabel instabilityIndicator;
 	FLabel timeIndicator;
@@ -71,7 +72,7 @@ public class Title1951 extends GameScreen {
 	FLabel goal;
 	
 	public int instability;
-	public int currentLevel = 2;
+	public int currentLevel = 5;
 	public float timeLeft;
 	public LevelData levelData;
 	
@@ -158,11 +159,13 @@ public class Title1951 extends GameScreen {
 	}
 	
 	private void hideTutorials() {
-		for(TutorialMessage tut : levelData.tuts) {
-			tut.addAction(Actions.sequence(
-					Actions.fadeOut(0.33f),
-					Actions.hide()
-					));
+		if(null != levelData.tuts) {
+			for(TutorialMessage tut : levelData.tuts) {
+				tut.addAction(Actions.sequence(
+						Actions.fadeOut(0.33f),
+						Actions.hide()
+						));
+			}
 		}
 	}
 	
@@ -303,7 +306,7 @@ public class Title1951 extends GameScreen {
 		tap.getColor().a = 0.0f;
 		
 		al.setVisible(true);
-		al.setPosition(cornerLeftX() + 0, cornerLeftY() + 60);
+		al.setPosition(cornerLeftX() + 0, cornerLeftY() + 100);
 		al.addAction(Actions.sequence(
 				Actions.delay(1.0f),
 				Actions.fadeIn(0.33f),
@@ -333,7 +336,7 @@ public class Title1951 extends GameScreen {
 		beatGameMessage.addAction(Actions.moveTo(cornerLeftX(), topY() - 30.0f, 1.0f, Interpolation.exp10));
 		
 		beatGameStats.getColor().a = 0.0f;
-		beatGameStats.message = "Congratulations!"; // End game stats go here!
+		beatGameStats.message = "Congratulations!\nThanks for playing!"; // End game stats go here!
 		beatGameStats.setPosition(cornerLeftX(), topY() - 100.0f);
 		beatGameStats.addAction(Actions.fadeIn(1.0f));
 		
@@ -403,8 +406,11 @@ public class Title1951 extends GameScreen {
 		tap = new FLabel("", guiFont, new Vector2(), Gdx.graphics.getWidth());
 		addDude("overlay", tap);
 		
-		String about = "Andrei Barsan, 2013\nsiegedog.com ";
-		al = new FLabel(about, small, new Vector2(), Gdx.graphics.getWidth());
+		String about = "Andrei Barsan, 2013\nsiegedog.com" +
+				"\nGame developed in 48 hours for the Ludum Dare contest" +
+				"\nTheme: minimalism" +
+				"\nludumdare.com/compo";
+		al = new FLabel(about, tiny, new Vector2(), Gdx.graphics.getWidth());
 		addDude("overlay", al);
 		
 		winner = new FLabel("Level complete!", guiFont, new Vector2(-1500f, -1500f), Gdx.graphics.getWidth());
@@ -473,6 +479,8 @@ public class Title1951 extends GameScreen {
 			timeIndicator.message = String.format("%s: %.0f''", timeLabel, timeLeft);
 			if(timeLeft < 10) {
 				timeIndicator.setColor(Color.RED);
+			} else {
+				timeIndicator.setColor(Color.WHITE);
 			}
 			timeIndicator.setPosition(cornerLeftX() - 20, cornerLeftY() + 43);			
 			

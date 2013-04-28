@@ -10,21 +10,24 @@ General
  ----------
   [v] - tutorial messages - explain swipe to merge, double tap to explode
   [v]		- ability to define them in Levels.java
-  - visual feedback for pulses
-  - explosion when losing (screen goes white)
+  [v] visual feedback for pulses
+  [v] explosion when losing (screen goes white)
   - positron / negatron powerups for changing a particle's value without affecting the overall instability
-  - time bar & instability bar
+  [v] [-t-i-m-e- -b-a-r-] & instability bar
+  
   - levels 3 & 4 normal
   - 5 & 6 positrons
   - 7 & 8 with negatrons
   - small logo -> stand out in list (better than just a screenshot)
-  - larger levels - sweep to move around (+tutorial hint message - or maybe not - should be straightforward)
+  [v-ish] larger levels - sweep to move around (+tutorial hint message - or maybe not - should be straightforward)
   - final game stats (average of ranks or something)
   - something slightly rewarding @ end
   
+  [v] potato
+  
  Maybe
  -----
-  - actual loading screen
+  [v] actual loading screen
   - disrupters that attract other bouncies (double tap to disable)
   - different size bouncies
   

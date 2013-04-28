@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.siegedog.eggs.entities.MainParticle;
+import com.siegedog.eggs.entities.Tron;
 import com.siegedog.eggs.entities.TutorialMessage;
 
 public class Levels {
@@ -39,7 +40,7 @@ public class Levels {
 		l.add(new MainParticle(new Vector2(250, 390), randDir(65.0f), 224));
 		levels.add(l);
 		
-		l = new LevelData(2, 2, 100, 30, 90.0f,
+		l = new LevelData(3, 2, 100, 30, 90.0f,
 				new TutorialMessage("Double " + action + " a FREE SPACE to nudge nearby particles.",
 						fnt, new Vector2(w * 0.125f, 200), -1, ww));
 		l.add(new MainParticle(new Vector2(60, 90), randDir(50.0f), 15));
@@ -50,6 +51,35 @@ public class Levels {
 		l.add(new MainParticle(new Vector2(580, 310), randDir(50.0f), 99));
 		l.add(new MainParticle(new Vector2(550, 480), randDir(50.0f), 103));
 		levels.add(l);
+		
+		l = new LevelData(4, 3, 150, 30, 90.0f);
+		l.add(new MainParticle(new Vector2(120, 190), randDir(50.0f), 15));
+		l.add(new MainParticle(new Vector2(115, 200), randDir(50.0f), 24));
+		l.add(new MainParticle(new Vector2(130, 255), randDir(50.0f), 43));
+		l.add(new MainParticle(new Vector2(110, 250), randDir(50.0f), 79));
+		l.add(new MainParticle(new Vector2(170, 310), randDir(50.0f), 50));
+		l.add(new MainParticle(new Vector2(240, 120), randDir(50.0f), 293));
+		levels.add(l);
+		
+		l = new LevelData(5, 1, 15, 10, 60.0f);
+		l.add(new MainParticle(new Vector2(150, 150), randDir(45.0f), 35));
+		l.add(new MainParticle(new Vector2(150, 250), randDir(45.0f), 47));
+		l.add(new MainParticle(new Vector2(250, 250), randDir(45.0f), 42));
+		l.add(new MainParticle(new Vector2(250, 150), randDir(45.0f), 42));
+		levels.add(l);
+		
+		l = new LevelData(6, 1, 50, 0, 60.0f, 
+				new TutorialMessage("The new item can alter a particle's value" +
+						"\nwithout affecting the global instability!",
+						fnt, new Vector2(0.0f, 0.0f), -1, ww));
+		
+		l.add(new MainParticle(new Vector2(50, 350), randDir(45.0f), 120));
+		
+		l.add(new MainParticle(new Vector2(350, 90), randDir(25.0f), 20));
+		l.add(new Tron(new Vector2(300, 80), randDir(25.0f), 100));
+		
+		levels.add(l);
+		
 	}
 	
 	public static Vector2 randDir(float amount) {

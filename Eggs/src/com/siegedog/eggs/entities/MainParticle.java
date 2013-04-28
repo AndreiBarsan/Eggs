@@ -16,8 +16,7 @@ public class MainParticle extends Bouncie {
 	public static final float RADIUS = 32.0f;
 	
 	private int value;
-	private BitmapFont valueFont;
-	private BitmapFont guiFont;
+	
 	
 	/** To be used only when defining levels */
 	public MainParticle(Vector2 pos, Vector2 vel, int val) {
@@ -33,8 +32,6 @@ public class MainParticle extends Bouncie {
 	public MainParticle(PhysicsNode phy, int value) {
 		super(EggGame.R.spriteAsAnimatedSprite("mainParticle"), phy, RADIUS);
 		this.value = value;
-		valueFont = EggGame.R.font("motorwerk24");
-		guiFont = EggGame.R.font("motorwerk32");
 	}
 
 	public int getValue() {
@@ -63,7 +60,8 @@ public class MainParticle extends Bouncie {
 	protected void onMergeComplete() {
 		super.onMergeComplete();
 		
-		if(mergeTarget instanceof MainParticle) {
+		if(mergeTarget instanceof MainParticle)
+		{
 			MainParticle mpt = (MainParticle)mergeTarget;
 			int dif = Math.abs(this.getValue() - mpt.getValue());
 			((Title1951)screen).instability += dif;
@@ -74,8 +72,19 @@ public class MainParticle extends Bouncie {
 					Math.min(getY(), mpt.getY()) + Math.abs(getY() - mpt.getY()) / 2 + 20.0f);
 			
 			Vector2 fspeed = new Vector2(0.0f, -20.0f);
-			screen.addDude("overlay", 
-					new FLabel("+" + dif, guiFont, labelPos, fspeed, 100, 1.2f));
+			screen.addDude("overlay", new FLabel("+" + dif, guiFont, labelPos, fspeed, 100, 1.2f));
+		} 
+		else if(mergeTarget instanceof Tron) 
+		{
+			Tron neg = (Tron)mergeTarget;
+			value += neg.value;
+			
+			Vector2 labelPos = new Vector2(getX(), getY() + 20.0f);
+			
+			Vector2 fspeed = new Vector2(0.0f, -20.0f);
+			FLabel label = new FLabel("+" + neg.value, guiFont, labelPos, fspeed, 100, 1.2f);
+			screen.addDude("overlay", label);
+			label.setColor(Color.GREEN.cpy());
 		}
 		
 		freshlyMerged();

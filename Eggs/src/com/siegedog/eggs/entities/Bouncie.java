@@ -2,6 +2,7 @@ package com.siegedog.eggs.entities;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -24,6 +25,10 @@ public abstract class Bouncie extends Dude {
 	}
 	public PState state;
 	protected boolean potato = false;
+	
+	protected BitmapFont smallValueFont;
+	protected BitmapFont valueFont;
+	protected BitmapFont guiFont;
 	
 	static public final float NEIGHBOR_ANGLE_THRESHOLD = 20.0f;
 	static public final float NORMAL_SPEED2 = 50.0f * 50.0f;
@@ -55,6 +60,10 @@ public abstract class Bouncie extends Dude {
 	}
 	
 	private void spawnLogic() {
+		smallValueFont = EggGame.R.font("motorwerk20");
+		valueFont = EggGame.R.font("motorwerk24");
+		guiFont = EggGame.R.font("motorwerk32");
+		
 		state = PState.Spawning;
 		physics.interactive = false;
 		storedMove = physics.velocity.cpy();
