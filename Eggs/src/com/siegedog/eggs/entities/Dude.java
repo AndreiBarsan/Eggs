@@ -105,7 +105,9 @@ public class Dude extends Actor {
 				sprite.setPosition(getX(), getY());
 			}
 			sprite.setColor(getColor());
+			sprite.setScale(getScaleX(), getScaleY());
 			sprite.setRotation(getRotation());
+			sprite.setOrigin(getOriginX(), getOriginY());
 			sprite.draw(batch);
 		}
 	}

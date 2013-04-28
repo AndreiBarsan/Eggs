@@ -47,8 +47,12 @@ public class MainParticle extends Bouncie {
 	
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
-		Color tint = new Color((value * 2) / 255.0f, 0.0f, 0.0f, getColor().a);
-		setColor(tint);
+		if(potato) {
+			setColor(Color.WHITE.cpy());
+		} else {
+			Color tint = new Color((value * 2) / 255.0f, 0.0f, 0.0f, getColor().a);
+			setColor(tint);
+		}
 		super.draw(batch, parentAlpha);
 		
 		valueFont.setColor(Color.WHITE);		

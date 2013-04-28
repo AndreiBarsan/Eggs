@@ -24,9 +24,8 @@ public class Ray extends Dude {
 		setScaleY(sl);
 		setScaleX(1.0f);
 		setOrigin(0.0f, 0.0f);
-		setX(Math.min(s.start.x, s.end.x) +  Math.abs(s.start.x - s.end.x) / 2.0f);
-		setY(s.start.y +  (-s.start.y + s.end.y) / 2.0f);
-		sprite.setScale(getScaleX(), getScaleY());
+		setX(s.end.x);
+		setY(s.end.y);
 		
 		super.act(delta);
 	}

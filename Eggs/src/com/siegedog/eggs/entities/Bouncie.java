@@ -2,11 +2,13 @@ package com.siegedog.eggs.entities;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.siegedog.eggs.AnimatedSprite;
+import com.siegedog.eggs.EggGame;
 import com.siegedog.eggs.physics.Circle;
 import com.siegedog.eggs.physics.PhysicsNode;
 
@@ -21,6 +23,7 @@ public abstract class Bouncie extends Dude {
 		Merging		// When about to fuse with another particle
 	}
 	public PState state;
+	protected boolean potato = false;
 	
 	static public final float NEIGHBOR_ANGLE_THRESHOLD = 20.0f;
 	static public final float NORMAL_SPEED2 = 50.0f * 50.0f;
@@ -70,6 +73,15 @@ public abstract class Bouncie extends Dude {
 			})));
 	}
 	
+	public void applyPulse(float x, float y) {
+		physics.velocity.add(x, y);
+		if(MathUtils.random(100) == 42) {
+			potato = true;
+			sprite = new AnimatedSprite(EggGame.R.spriteAsAnimatedSprite("potato"));
+			setOrigin(sprite.getWidth() / 2.0f, sprite.getHeight() / 2.0f);
+		}
+	}
+	
 	private void startInteracting() {
 		state = PState.Normal;
 		
@@ -110,6 +122,10 @@ public abstract class Bouncie extends Dude {
 		if(isDead()) {
 			// Thank you libgdx for allowing such flexible actor management... </sarcasm>
 			return;
+		}
+		
+		if(potato) {
+			setRotation(getRotation() + physics.velocity.len() / 2.0f * delta);
 		}
 		
 		switch(state) {

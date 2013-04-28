@@ -14,14 +14,19 @@ public class Levels {
 	public static ArrayList<LevelData> levels = new ArrayList<LevelData>();
 	static {
 		int w = Gdx.graphics.getWidth();
-		String action = (Gdx.app.getType() == ApplicationType.Android) ? "tap" : "click";
-		BitmapFont fnt = (Gdx.app.getType() == ApplicationType.Android) ? EggGame.R.font("motorwerk16") : EggGame.R.font("motorwerk24");
+		String action = (Gdx.app.getType() == ApplicationType.Android)
+				? "tap" 
+				: "click";
+		
+		BitmapFont fnt = (Gdx.app.getType() == ApplicationType.Android) 
+				? EggGame.R.font("motorwerk24") 
+				: EggGame.R.font("motorwerk24");
 		
 		LevelData l;
 		l = new LevelData(1, 1, 100, 0, 90.0f 
-				,new TutorialMessage("Swipe to fuse the particles!", fnt, new Vector2(0, 320), 0, w)
+				,new TutorialMessage("Swipe FROM one particle\nTO the other to fuse them!", fnt, new Vector2(0, 320), 0, w)
 		);
-		l.add(new MainParticle(new Vector2(Gdx.graphics.getWidth() / 2.0f - 100, 200), new Vector2(40.0f, -10.0f), 32));
+		l.add(new MainParticle(new Vector2(Gdx.graphics.getWidth() / 2.0f - 100, 200), new Vector2(25.0f, -10.0f), 32));
 		l.add(new MainParticle(new Vector2(Gdx.graphics.getWidth() / 2.0f + 100, 200), new Vector2(-5.0f, -8.0f), 32));
 		levels.add(l);
 		
@@ -35,7 +40,7 @@ public class Levels {
 		levels.add(l);
 		
 		l = new LevelData(2, 2, 100, 30, 90.0f,
-				new TutorialMessage("Double " + action + " a free space to nudge nearby particles.",
+				new TutorialMessage("Double " + action + " a FREE SPACE to nudge nearby particles.",
 						fnt, new Vector2(w * 0.125f, 200), -1, ww));
 		l.add(new MainParticle(new Vector2(60, 90), randDir(50.0f), 15));
 		l.add(new MainParticle(new Vector2(100, 100), randDir(50.0f), 13));

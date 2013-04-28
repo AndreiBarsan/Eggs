@@ -5,50 +5,71 @@ filter: Nearest,Nearest
 repeat: none
 grain
   rotate: false
-  xy: 1, 278
+  xy: 1, 496
   size: 800, 480
   orig: 800, 480
   offset: 0, 0
   index: -1
+pulse
+  rotate: false
+  xy: 1, 94
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
 logo
   rotate: false
-  xy: 1, 67
+  xy: 403, 285
   size: 265, 209
   orig: 265, 209
   offset: 0, 0
   index: -1
 instabar
   rotate: false
-  xy: 268, 233
+  xy: 1, 49
   size: 381, 43
   orig: 381, 43
   offset: 0, 0
   index: -1
 instabarFill
   rotate: false
-  xy: 268, 188
+  xy: 1, 4
   size: 381, 43
   orig: 381, 43
   offset: 0, 0
   index: -1
 background
   rotate: false
-  xy: 803, 558
+  xy: 803, 776
   size: 200, 200
   orig: 200, 200
   offset: 0, 0
   index: -1
 mainParticle
   rotate: false
-  xy: 1, 1
+  xy: 403, 219
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+potato
+  rotate: false
+  xy: 670, 430
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 ray
   rotate: false
-  xy: 651, 275
+  xy: 384, 91
   size: 3, 1
   orig: 3, 1
+  offset: 0, 0
+  index: -1
+pixel
+  rotate: false
+  xy: 1, 1
+  size: 1, 1
+  orig: 1, 1
   offset: 0, 0
   index: -1

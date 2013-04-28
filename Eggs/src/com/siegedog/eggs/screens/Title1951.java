@@ -3,6 +3,7 @@ package com.siegedog.eggs.screens;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.math.Interpolation;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.siegedog.eggs.AnimatedSprite;
 import com.siegedog.eggs.EggGame;
 import com.siegedog.eggs.GameInputHandler;
 import com.siegedog.eggs.LevelData;
@@ -23,7 +25,6 @@ import com.siegedog.eggs.entities.TutorialMessage;
 import com.siegedog.eggs.math.Segment;
 import com.siegedog.eggs.physics.AABB;
 import com.siegedog.eggs.physics.PointShape;
-import com.sun.org.apache.bcel.internal.generic.FADD;
 
 
 public class Title1951 extends GameScreen {
@@ -43,6 +44,7 @@ public class Title1951 extends GameScreen {
 	String timeLabel = (Gdx.app.getType() == ApplicationType.Android) ? "T" : "Time";
 	
 	Dude grain;
+	Dude flash;
 	Bar instabar;
 	
 	BitmapFont splashFont = EggGame.R.font("motorwerk128");
@@ -66,8 +68,10 @@ public class Title1951 extends GameScreen {
 	FLabel beatGameMessage;
 	FLabel beatGameStats;
 	
+	FLabel goal;
+	
 	public int instability;
-	public int currentLevel = 0;
+	public int currentLevel = 2;
 	public float timeLeft;
 	public LevelData levelData;
 	
@@ -133,7 +137,18 @@ public class Title1951 extends GameScreen {
 	public void loseLevel() {
 		state = State.EndingLevel;
 		hideTutorials();
-		stage.addAction(Actions.delay(1.0f, new Action() {
+		
+		flash.setX(cornerLeftX());
+		flash.setY(cornerLeftY());
+		flash.setVisible(true);
+		flash.getColor().a = 0.0f;
+		flash.addAction(Actions.sequence(
+				Actions.fadeIn(0.15f),
+				Actions.delay(1.50f),
+				Actions.fadeOut(3.0f),
+				Actions.hide()
+				));
+		stage.addAction(Actions.delay(0.5f, new Action() {
 			public boolean act(float delta) {
 				// TODO: make screen go white like an explosion
 				showRetry();
@@ -183,10 +198,10 @@ public class Title1951 extends GameScreen {
 	public void showRetry() {
 		state = State.GameOver;
 		continueEnabled = false;
-		Camera cam = stage.getCamera();
-		float sry = cornerLeftY() + 40.0f;
-		loseMessage.setPosition(cornerLeftX(), sry);
-		loseMessage.addAction(Actions.moveTo(cam.position.x - cam.viewportWidth / 2.0f, sry, 1.0f, Interpolation.exp10In));
+		
+		float sry = topY() - 40.0f;
+		loseMessage.setPosition(cornerLeftX() - Gdx.graphics.getWidth(), sry);
+		loseMessage.addAction(Actions.moveTo(cornerLeftX(), sry, 1.0f, Interpolation.exp10In));
 		
 		continueLabel.message = action + " to retry";
 		prepareContinueLabel();
@@ -233,7 +248,7 @@ public class Title1951 extends GameScreen {
 	public void hideRetry() {
 		continueEnabled = false;
 		Camera cam = stage.getCamera();
-		float sry = 100 + cam.position.y + cam.viewportHeight / 2.0f;
+		float sry = topY() - 40.0f;
 		loseMessage.addAction(Actions.moveTo(cam.position.x - Gdx.graphics.getWidth() * 1.5f, sry, 1.0f, Interpolation.exp10In));
 		continueLabel.addAction(Actions.sequence(
 				Actions.fadeOut(1.0f, Interpolation.exp10),
@@ -274,7 +289,7 @@ public class Title1951 extends GameScreen {
 	public void showTitle() {
 		continueEnabled = false;
 		
-		splash.setPosition(cornerLeftX(), topY() + 150f);
+		splash.setPosition(cornerLeftX(), topY() + 250f);
 		splash.setVisible(true);
 		splash.addAction(Actions.moveTo(cornerLeftX(), topY() - 10.0f, 1.0f, Interpolation.exp10));
 		
@@ -361,13 +376,23 @@ public class Title1951 extends GameScreen {
 		x1 = 800;
 		y1 = 480;
 		
+		addDude("effects", flash = new Dude(EggGame.R.spriteAsAnimatedSprite("pixel"),
+				new AABB(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
+		flash.stretchSprite = true;
+		flash.setVisible(false);
+		
 		addDude("effects", grain = new Dude(EggGame.R.spriteAsAnimatedSprite("grain"),
 				new AABB(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
 		grain.stretchSprite = true;
 		
+		
+		
 		instabar = new Bar(EggGame.R.sprite("instabar"), EggGame.R.sprite("instabarFill"), new Vector2());
 		addDude("overlay", instabar);
-
+		
+		goal = new FLabel("", guiFont, new Vector2());
+		addDude("overlay", goal);
+		
 		logo = new Dude(EggGame.R.spriteAsAnimatedSprite("logo"), new PointShape(0, 0));
 		addDude("overlay", logo);
 		
@@ -446,7 +471,10 @@ public class Title1951 extends GameScreen {
 						
 			timeIndicator.setVisible(true);
 			timeIndicator.message = String.format("%s: %.0f''", timeLabel, timeLeft);
-			timeIndicator.setPosition(cornerLeftX() - 20, cornerLeftY() + 39);			
+			if(timeLeft < 10) {
+				timeIndicator.setColor(Color.RED);
+			}
+			timeIndicator.setPosition(cornerLeftX() - 20, cornerLeftY() + 43);			
 			
 			instabilityIndicator.setVisible(true);
 			instabilityIndicator.message = "Instability: " + instability + " / " + levelData.meltdownThreshold;
@@ -455,6 +483,10 @@ public class Title1951 extends GameScreen {
 			instabar.setVisible(true);
 			instabar.percent = instability / (float)levelData.meltdownThreshold;
 			instabar.setPosition(cornerLeftX() + instabar.getWidth() / 2.0f + 8, cornerLeftY() + 32);
+			
+			goal.setVisible(true);
+			goal.message = "Goal: " + levelData.winCondition + " " + derpPlur("particle", levelData.winCondition) + ".";
+			goal.setPosition(cornerLeftX() + 8, topY() - 16);
 			
 			if(instability >= levelData.meltdownThreshold || timeLeft <= 0) {
 				loseLevel();
@@ -465,13 +497,17 @@ public class Title1951 extends GameScreen {
 			timeIndicator.setVisible(false);
 			instabilityIndicator.setVisible(false);
 			instabar.setVisible(false);
+			goal.setVisible(false);
 		}
 	
 		super.render(delta);
 		layers.get("rays").clear();
 	}
 	
+	/** The hackyness is strong in this one */
 	public void createPulse(float x, float y) {
+		if(currentLevel < 3) return;
+		
 		final float PULSERADIUS = 300;
 		final float PR2 = PULSERADIUS * PULSERADIUS;
 		final float PULSEFORCE_MIN = 25;
@@ -486,7 +522,23 @@ public class Title1951 extends GameScreen {
 					dir.nor();
 					dir.mul(power);
 					Bouncie b = (Bouncie)actor;
-					b.physics.velocity.add(dir.x, dir.y);
+					b.applyPulse(dir.x, dir.y);
+					AnimatedSprite pspr = EggGame.R.spriteAsAnimatedSprite("pulse");
+					final Dude pulseGfx = new Dude(pspr, new AABB(x - PULSERADIUS / 2.0f, y - PULSERADIUS / 2.0f, PULSERADIUS, PULSERADIUS));
+					pulseGfx.setScale(0.0f);
+					pulseGfx.stretchSprite = true;
+					//pulseGfx.setOrigin(pspr.getWidth() / 2.0f, pspr.getHeight() / 2.0f);
+					pulseGfx.setOrigin(PULSERADIUS / 2.0f, PULSERADIUS / 2.0f);
+					pulseGfx.addAction(Actions.sequence(
+							Actions.scaleTo(1.0f, 1.0f, 0.20f),
+							Actions.fadeOut(0.55f),
+							new Action() {
+								public boolean act(float delta) {
+									pulseGfx.kill();
+									return true;
+								}
+							}));
+					addDude("main", pulseGfx);
 				}
 			}
 		}
@@ -510,5 +562,9 @@ public class Title1951 extends GameScreen {
 	private float topY() {
 		Camera cam = stage.getCamera();
 		return cam.position.y + cam.viewportHeight / 2.0f; 
+	}
+	
+	private String derpPlur(String word, int nr) {
+		return nr == 1 ? word : word + "s";
 	}
 }
