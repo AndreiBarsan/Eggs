@@ -40,7 +40,10 @@ public class Title1951 extends GameScreen {
 	
 	public State state = State.TitleShown;
 	
+	String timeLabel = (Gdx.app.getType() == ApplicationType.Android) ? "T" : "Time";
+	
 	Dude grain;
+	Bar instabar;
 	
 	BitmapFont splashFont = EggGame.R.font("motorwerk128");
 	BitmapFont guiFont = EggGame.R.font("motorwerk32");
@@ -249,8 +252,15 @@ public class Title1951 extends GameScreen {
 				Actions.moveTo(0.0f,  Gdx.graphics.getHeight() + 100, 1.0f, Interpolation.exp10),
 				Actions.hide()
 				));
-		tap.addAction(Actions.moveTo(-1000.0f, 350, 1.0f, Interpolation.exp10));
-		al.addAction(Actions.moveTo(1000.0f, 60, 1.0f, Interpolation.exp10));
+		tap.addAction(Actions.sequence(
+				Actions.moveTo(cornerLeftX() - Gdx.graphics.getWidth(), topY() - 110, 1.0f, Interpolation.exp10),
+				Actions.hide()
+				));
+		al.addAction(Actions.sequence(
+				Actions.moveTo(cornerLeftX() + Gdx.graphics.getWidth(), 60, 1.0f, Interpolation.exp10),
+				Actions.hide()
+				));
+		
 		state = State.StartingLevel;
 		stage.addAction(Actions.sequence(Actions.delay(0.9f), Actions.run(new Runnable() {
 			public void run() {
@@ -276,6 +286,8 @@ public class Title1951 extends GameScreen {
 				Actions.fadeIn(0.33f)
 				));
 		tap.getColor().a = 0.0f;
+		
+		al.setVisible(true);
 		al.setPosition(cornerLeftX() + 0, cornerLeftY() + 60);
 		al.addAction(Actions.sequence(
 				Actions.delay(1.0f),
@@ -310,6 +322,7 @@ public class Title1951 extends GameScreen {
 		beatGameStats.setPosition(cornerLeftX(), topY() - 100.0f);
 		beatGameStats.addAction(Actions.fadeIn(1.0f));
 		
+		tap.setVisible(true);
 		tap.setPosition(cornerLeftX(), cornerLeftY() + 85);
 		tap.message = action + " to return to the titlescreen";
 		tap.getColor().a = 0.0f;
@@ -352,6 +365,8 @@ public class Title1951 extends GameScreen {
 				new AABB(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
 		grain.stretchSprite = true;
 		
+		instabar = new Bar(EggGame.R.sprite("instabar"), EggGame.R.sprite("instabarFill"), new Vector2());
+		addDude("overlay", instabar);
 
 		logo = new Dude(EggGame.R.spriteAsAnimatedSprite("logo"), new PointShape(0, 0));
 		addDude("overlay", logo);
@@ -376,8 +391,7 @@ public class Title1951 extends GameScreen {
 		statReport = new FLabel("Stats: ", guiFont, new Vector2(-1500f, -1500f), Gdx.graphics.getWidth());
 		addDude("overlay", statReport);
 		
-		instabilityIndicator = new FLabel("", guiFont, new Vector2(10.0f, 10.0f), Gdx.graphics.getWidth());
-		instabilityIndicator.alignment = HAlignment.LEFT;
+		instabilityIndicator = new FLabel("", small, new Vector2(10.0f, 10.0f), EggGame.R.sprite("instabar").getWidth());
 		addDude("overlay", instabilityIndicator);
 		
 		timeIndicator = new FLabel("", guiFont, new Vector2(), Gdx.graphics.getWidth());
@@ -429,14 +443,18 @@ public class Title1951 extends GameScreen {
 		if(state == State.Gameplay) {
 			
 			timeLeft -= delta;
-			
+						
 			timeIndicator.setVisible(true);
-			timeIndicator.message = String.format("Time: %.0f''", timeLeft);
-			timeIndicator.setPosition(cornerLeftX() - 20, cornerLeftY() + 32);			
+			timeIndicator.message = String.format("%s: %.0f''", timeLabel, timeLeft);
+			timeIndicator.setPosition(cornerLeftX() - 20, cornerLeftY() + 39);			
 			
 			instabilityIndicator.setVisible(true);
 			instabilityIndicator.message = "Instability: " + instability + " / " + levelData.meltdownThreshold;
-			instabilityIndicator.setPosition(cornerLeftX() + 8, cornerLeftY() + 32);
+			instabilityIndicator.setPosition(cornerLeftX() + 8, cornerLeftY() + 42);
+			
+			instabar.setVisible(true);
+			instabar.percent = instability / (float)levelData.meltdownThreshold;
+			instabar.setPosition(cornerLeftX() + instabar.getWidth() / 2.0f + 8, cornerLeftY() + 32);
 			
 			if(instability >= levelData.meltdownThreshold || timeLeft <= 0) {
 				loseLevel();
@@ -446,6 +464,7 @@ public class Title1951 extends GameScreen {
 		} else {
 			timeIndicator.setVisible(false);
 			instabilityIndicator.setVisible(false);
+			instabar.setVisible(false);
 		}
 	
 		super.render(delta);

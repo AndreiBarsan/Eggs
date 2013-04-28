@@ -26,7 +26,7 @@ public class GameInputHandler extends InputAdapter {
 	private int swipeStartX;
 	private int swipeStartY;
 	
-	static final int GESTURE_THRESHOLD2 = 80 * 80;
+	static final int GESTURE_THRESHOLD2 = 40 * 40;
 	private long lastTap = 0;
 	static private final int TAP_THRESHOLD = 200;
 	
