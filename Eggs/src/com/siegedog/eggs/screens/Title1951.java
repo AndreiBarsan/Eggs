@@ -19,12 +19,14 @@ import com.siegedog.eggs.entities.Bouncie;
 import com.siegedog.eggs.entities.Dude;
 import com.siegedog.eggs.entities.FLabel;
 import com.siegedog.eggs.entities.Ray;
+import com.siegedog.eggs.entities.TutorialMessage;
 import com.siegedog.eggs.math.Segment;
 import com.siegedog.eggs.physics.AABB;
 import com.siegedog.eggs.physics.PointShape;
+import com.sun.org.apache.bcel.internal.generic.FADD;
 
 
-public class Title1953 extends GameScreen {
+public class Title1951 extends GameScreen {
 
 	public enum State {
 		TitleShown,		// Title screen is being shown
@@ -87,13 +89,31 @@ public class Title1953 extends GameScreen {
 		instability = 0;
 		timeLeft = levelData.time;
 		layers.get("main").clear();
+		Bouncie[] qr = new Bouncie[levelData.entities.size()];
+		int index = 0;
+		// Hacky index-based solution is meant to compensate for the fact that 
+		// we can't define connections that easily since we're copying stuff
 		for(Bouncie b : levelData.entities) {
-			addDude(b.copy());
+			Bouncie d = b.copy();
+			addDude(d);
+			qr[index++] = d;
+		}
+		
+		if(null != levelData.tuts) {
+			for(TutorialMessage tut : levelData.tuts) {
+				addDude("overlay", tut);
+				tut.getColor().a = 1.0f;
+				tut.setVisible(true);
+				if(tut.pointsAtIndex != -1) {
+					tut.pointsAt = qr[tut.pointsAtIndex];
+				}
+			}
 		}
 	}
 	
 	public void winLevel() {
 		state = State.EndingLevel;
+		hideTutorials();
 		stage.addAction(Actions.delay(1.0f, new Action() {
 			public boolean act(float delta) {
 				showStats();
@@ -105,6 +125,7 @@ public class Title1953 extends GameScreen {
 	
 	public void loseLevel() {
 		state = State.EndingLevel;
+		hideTutorials();
 		stage.addAction(Actions.delay(1.0f, new Action() {
 			public boolean act(float delta) {
 				// TODO: make screen go white like an explosion
@@ -112,6 +133,15 @@ public class Title1953 extends GameScreen {
 				return true;
 			}
 		}));
+	}
+	
+	private void hideTutorials() {
+		for(TutorialMessage tut : levelData.tuts) {
+			tut.addAction(Actions.sequence(
+					Actions.fadeOut(0.33f),
+					Actions.hide()
+					));
+		}
 	}
 	
 	public void showStats() {
@@ -311,7 +341,7 @@ public class Title1953 extends GameScreen {
 		addDude("overlay", logo);
 		
 		addDude("background", new Background(EggGame.R.sprite("background")));
-		addDude("overlay", splash = new FLabel("1953", splashFont, new Vector2(0, Gdx.graphics.getHeight() + 100), Gdx.graphics.getWidth()));
+		addDude("overlay", splash = new FLabel("1951", splashFont, new Vector2(0, Gdx.graphics.getHeight() + 100), Gdx.graphics.getWidth()));
 		
 		action = (Gdx.app.getType() == ApplicationType.Desktop) ? "Click" : "Tap";
 		tap = new FLabel("", guiFont, new Vector2(), Gdx.graphics.getWidth());

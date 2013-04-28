@@ -35,7 +35,7 @@ public class LoadingScreen extends GameScreen {
 	public void render(float delta) {
 		EggGame.R.update(delta);
 		if(EggGame.R.done()) {
-			game.setScreen(new Title1953());
+			game.setScreen(new Title1951());
 		} else {
 			Log.D("Still loading....");
 		}

@@ -170,30 +170,10 @@ public abstract class Bouncie extends Dude {
 	}
 
 	private void bounceOnEdges() {
-		float x0 = 0;
-		float y0 = 0;
-		float x1 = x0 + screen.getStage().getWidth();
-		float y1 = y0 + screen.getStage().getHeight();
-		/*
-		if(getX() < x0 + getWidth() / 2.0f) {
-			setX(x0 + getWidth() / 2.0f);
-			physics.velocity.x = -physics.velocity.x;
-		}
-		
-		if(getX() + getWidth() / 2.0f > x1) {
-			setX(x1 - getWidth() / 2.0f);
-			physics.velocity.x = -physics.velocity.x;
-		}
-		
-		if(getY() < y0 + getHeight() / 2.0f) {
-			setY(y0 + getHeight() / 2.0f);
-			physics.velocity.y = -physics.velocity.y;
-		}
-		
-		if(getY() + getHeight() / 2.0f  > y1) {
-			setY(y1 - getHeight() / 2.0f);
-			physics.velocity.y = -physics.velocity.y;
-		}*/
+		float x0 = screen.x0;
+		float y0 = screen.y0;
+		float x1 = screen.x1;
+		float y1 = screen.y1;
 		
 		if(getX() < x0) {
 			setX(x0 + getWidth() / 2.0f);

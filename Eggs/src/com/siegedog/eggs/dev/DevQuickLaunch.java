@@ -9,7 +9,8 @@ import com.siegedog.eggs.util.Resources;
 public class DevQuickLaunch {
         public static void main (String[] args) throws Exception {
         	
-        	BakeTileMaps.main(args);
+        	// Not using tilemaps right now
+        	// BakeTileMaps.main(args);
         	
         	TexturePacker2.main(new String[] {
         		Resources.texRoot,

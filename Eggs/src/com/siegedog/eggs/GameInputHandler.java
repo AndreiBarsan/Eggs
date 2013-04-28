@@ -10,13 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.siegedog.eggs.entities.Bouncie;
 import com.siegedog.eggs.entities.FLabel;
 import com.siegedog.eggs.entities.MainParticle;
-import com.siegedog.eggs.screens.Title1953;
-import com.siegedog.eggs.screens.Title1953.State;
+import com.siegedog.eggs.screens.Title1951;
+import com.siegedog.eggs.screens.Title1951.State;
 import com.siegedog.eggs.util.Log;
 
 public class GameInputHandler extends InputAdapter {
 
-	private Title1953 screen;
+	private Title1951 screen;
 	private Stage stage;
 	
 	private int lastX;
@@ -32,7 +32,7 @@ public class GameInputHandler extends InputAdapter {
 	
 	BitmapFont guiFont = EggGame.R.font("motorwerk32");
 	
-	public GameInputHandler(Title1953 scr) {
+	public GameInputHandler(Title1951 scr) {
 		screen = scr;
 		stage = scr.getStage();
 	}

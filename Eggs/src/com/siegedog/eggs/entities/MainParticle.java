@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.siegedog.eggs.EggGame;
 import com.siegedog.eggs.physics.Circle;
 import com.siegedog.eggs.physics.PhysicsNode;
-import com.siegedog.eggs.screens.Title1953;
+import com.siegedog.eggs.screens.Title1951;
 
 public class MainParticle extends Bouncie {
 
@@ -62,7 +62,7 @@ public class MainParticle extends Bouncie {
 		if(mergeTarget instanceof MainParticle) {
 			MainParticle mpt = (MainParticle)mergeTarget;
 			int dif = Math.abs(this.getValue() - mpt.getValue());
-			((Title1953)screen).instability += dif;
+			((Title1951)screen).instability += dif;
 			value = (value + mpt.value) / 2;
 			
 			Vector2 labelPos = new Vector2(

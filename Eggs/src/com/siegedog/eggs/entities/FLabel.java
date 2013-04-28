@@ -1,5 +1,6 @@
 package com.siegedog.eggs.entities;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,7 +26,9 @@ public class FLabel extends Dude {
 	private float lifespan;
 	private float lifespanLeft;
 	
-	private float wrapWidth;
+	public boolean relativeToCamera = false;
+	
+	protected float wrapWidth;
 	
 	public FLabel(String message, BitmapFont font, Vector2 position) {
 		this(message, font, position, new Vector2(0.0f, 0.0f));
@@ -79,11 +82,20 @@ public class FLabel extends Dude {
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		font.setColor(getColor());
+		float xx = getX();
+		float yy = getY();
+		
+		if(relativeToCamera) {
+			Camera cam = screen.getStage().getCamera();
+			xx += cam.position.x - cam.viewportWidth / 2.0f;
+			yy += cam.position.y - cam.viewportHeight / 2.0f;
+		}
+		
 		if(wrapWidth != 0.0f) {
-			font.drawWrapped(batch, message, getX(), getY(), wrapWidth, alignment);
+			font.drawWrapped(batch, message, xx, yy, wrapWidth, alignment);
 		}
 		else {
-			font.drawMultiLine(batch, message, getX(), getY());
+			font.drawMultiLine(batch, message, xx, yy);
 		}
 	}
 
