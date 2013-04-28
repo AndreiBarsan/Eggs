@@ -33,7 +33,9 @@ public abstract class Bouncie extends Dude {
 	static public final float NEIGHBOR_ANGLE_THRESHOLD = 20.0f;
 	static public final float NORMAL_SPEED2 = 50.0f * 50.0f;
 	static public final float MIN_SPEED2 = 35.0f * 35.0f;
-	static public final float MERGE_THRESHOLD2 = 15.0f * 15.0f; 
+	static public final float MERGE_THRESHOLD2 = 15.0f * 15.0f;
+	static public final float ENCOUNTER_SPEED = 200.0f;
+	static public final float MERGE_BREAK_FACTOR = 0.20f;
 	
 	private Vector2 storedMove;
 	public Bouncie mergeTarget = null;
@@ -106,7 +108,7 @@ public abstract class Bouncie extends Dude {
 	}
 	
 	protected void onMergeComplete() {
-		physics.velocity.mul(0.45f);
+		physics.velocity.mul(MERGE_BREAK_FACTOR);
 	}
 	
 	/** Called only once, for the bouncie the player started the flick on.	 */
@@ -143,7 +145,7 @@ public abstract class Bouncie extends Dude {
 			if(dirTarget.len2() < MERGE_THRESHOLD2) {
 				onMergeComplete();
 			} else {
-				physics.velocity.set(dirTarget.nor().mul(150.0f));
+				physics.velocity.set(dirTarget.nor().mul(ENCOUNTER_SPEED));
 			}
 			break;
 			

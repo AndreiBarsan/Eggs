@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.siegedog.eggs.AnimatedSprite;
 import com.siegedog.eggs.physics.PointShape;
-import com.siegedog.eggs.physics.Shape;
 
 public class Background extends Dude {
 

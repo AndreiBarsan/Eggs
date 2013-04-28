@@ -8,11 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.siegedog.eggs.entities.Bouncie;
-import com.siegedog.eggs.entities.FLabel;
-import com.siegedog.eggs.entities.MainParticle;
 import com.siegedog.eggs.screens.Title1951;
 import com.siegedog.eggs.screens.Title1951.State;
-import com.siegedog.eggs.util.Log;
 
 public class GameInputHandler extends InputAdapter {
 
@@ -26,7 +23,7 @@ public class GameInputHandler extends InputAdapter {
 	private int swipeStartX;
 	private int swipeStartY;
 	
-	static final int GESTURE_THRESHOLD2 = 40 * 40;
+	static final int GESTURE_THRESHOLD2 = 30 * 30;
 	private long lastTap = 0;
 	static private final int TAP_THRESHOLD = 200;
 	

@@ -5,14 +5,14 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.siegedog.eggs.entities.Dude;
-import com.siegedog.eggs.screens.GameplayScreen;
+import com.siegedog.eggs.screens.OldGameplayScreen;
 import com.siegedog.eggs.util.Log;
 
 public class DemoInput extends InputAdapter {
 
 	final int klimit = 512;
 	boolean keys[] = new boolean[klimit];
-	private GameplayScreen screen;
+	private OldGameplayScreen screen;
 	int lastX = -1;
 	int lastY = -1;
 	long lastTap;
@@ -20,7 +20,7 @@ public class DemoInput extends InputAdapter {
 	/** Measured in milliseconds */
 	public final int TAP_TIME = 200;
 		
-	public DemoInput(GameplayScreen toMonitor) {
+	public DemoInput(OldGameplayScreen toMonitor) {
 		screen = toMonitor;
 	}
 		

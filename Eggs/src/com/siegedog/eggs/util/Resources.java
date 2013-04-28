@@ -17,7 +17,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.tiled.TiledLoader;
 import com.badlogic.gdx.graphics.g2d.tiled.TiledMap;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
@@ -106,7 +105,7 @@ public class Resources {
 		done = assetManager.update();
 
 		if (!old && done) {
-			System.out.println("Resources are done loading.");
+			Log.D("Resources are done loading.");
 			if(error) {
 				Log.D("Skipping advanced resource processing due to an earlier resource loading error.");
 				return;
@@ -116,7 +115,6 @@ public class Resources {
 				// Prepare sprites from the atlas
 				TextureAtlas atlas = assetManager.get(atlasName, TextureAtlas.class);
 				for(AtlasRegion tr : atlas.getRegions()) {
-					System.out.println("Putting sprite in sprites: " + tr.name);
 					sprites.put(tr.name, new Sprite(tr));
 				}
 			}

@@ -38,7 +38,7 @@ public class BlobLoadingScreen extends GameScreen {
 					as.addAnimationByFrameCount("wobble", 10, 0.05f);
 					as.addAnimation("dead", 0, 144, 48, 48, 2, 0.60f);
 					
-					game.setScreen(new GameplayScreen());
+					game.setScreen(new OldGameplayScreen());
 				}
 			});
 		

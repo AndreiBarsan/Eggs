@@ -25,7 +25,7 @@ public class VictoryScreen extends GameScreen {
 		Gdx.input.setInputProcessor(new InputAdapter() {
 			@Override
 			public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-				game.setScreen(new GameplayScreen());
+				game.setScreen(new OldGameplayScreen());
 				return super.touchUp(screenX, screenY, pointer, button);
 			}
 		});

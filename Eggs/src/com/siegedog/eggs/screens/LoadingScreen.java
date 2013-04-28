@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.siegedog.eggs.EggGame;
-import com.siegedog.eggs.util.Log;
 
 public class LoadingScreen extends GameScreen {
 

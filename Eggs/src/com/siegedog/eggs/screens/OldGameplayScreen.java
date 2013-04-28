@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.tiled.TileMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -21,11 +20,10 @@ import com.siegedog.eggs.EggGame;
 import com.siegedog.eggs.entities.Block;
 import com.siegedog.eggs.entities.Dude;
 import com.siegedog.eggs.physics.AABB;
-import com.siegedog.eggs.physics.Circle;
 import com.siegedog.eggs.util.Log;
 import com.siegedog.eggs.util.Resources;
 
-public class GameplayScreen extends GameScreen {
+public class OldGameplayScreen extends GameScreen {
 
 	private int left;
 	BitmapFont bf;
@@ -151,7 +149,7 @@ public class GameplayScreen extends GameScreen {
 		}
 		//*/
 		
-		Block b = new Block(EggGame.R.spriteAsAnimatedSprite("crate"), new Vector2(120, 220), new Vector2(64, 64));
+		//Block b = new Block(EggGame.R.spriteAsAnimatedSprite("crate"), new Vector2(120, 220), new Vector2(64, 64));
 		//addDude(b);
 		
 		float csize = 128;

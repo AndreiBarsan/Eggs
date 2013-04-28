@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.utils.Logger;
 import com.siegedog.eggs.screens.GameScreen;
-import com.siegedog.eggs.screens.BlobLoadingScreen;
 import com.siegedog.eggs.screens.LoadingScreen;
 import com.siegedog.eggs.util.Log;
 import com.siegedog.eggs.util.Resources;

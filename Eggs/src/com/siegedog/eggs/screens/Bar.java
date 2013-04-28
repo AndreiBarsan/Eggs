@@ -3,7 +3,6 @@ package com.siegedog.eggs.screens;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.siegedog.eggs.AnimatedSprite;
 import com.siegedog.eggs.entities.Dude;

@@ -42,6 +42,9 @@ public class Title1951 extends GameScreen {
 	
 	public State state = State.TitleShown;
 	
+	static private final int LIM 	= 250;
+	static private final int LIM2 	= LIM * LIM;
+	
 	String timeLabel = (Gdx.app.getType() == ApplicationType.Android) ? "T" : "Time";
 	
 	Dude grain;
@@ -73,7 +76,7 @@ public class Title1951 extends GameScreen {
 	FLabel goal;
 	
 	public int instability;
-	public int currentLevel = 6;
+	public int currentLevel = 0;
 	public float timeLeft;
 	public LevelData levelData;
 	
@@ -175,6 +178,7 @@ public class Title1951 extends GameScreen {
 		continueEnabled = false;
 		Camera cam = stage.getCamera();
 		float sry = cam.position.y + cam.viewportHeight / 2.0f - 150;
+		statReport.setVisible(true);
 		statReport.setPosition(cam.position.x - Gdx.graphics.getWidth() * 1.5f, sry);
 		statReport.addAction(Actions.moveTo(cam.position.x - cam.viewportWidth / 2.0f, sry, 1.0f, Interpolation.exp10In));
 		int spare = levelData.par - instability;
@@ -204,6 +208,7 @@ public class Title1951 extends GameScreen {
 		continueEnabled = false;
 		
 		float sry = topY() - 40.0f;
+		loseMessage.setVisible(true);
 		loseMessage.setPosition(cornerLeftX() - Gdx.graphics.getWidth(), sry);
 		loseMessage.addAction(Actions.moveTo(cornerLeftX(), sry, 1.0f, Interpolation.exp10In));
 		
@@ -213,9 +218,8 @@ public class Title1951 extends GameScreen {
 	}
 	
 	private void prepareContinueLabel() {
-		Camera cam = stage.getCamera();
-		float sry = cam.position.y + cam.viewportHeight / 2.0f - 150;
-		continueLabel.setPosition(cam.position.x - Gdx.graphics.getWidth() / 2, sry - 250);
+		float sry = cornerLeftY() + 60;
+		continueLabel.setPosition(cornerLeftX(), sry);
 		continueLabel.getColor().a = 0.0f;
 		continueLabel.addAction(Actions.sequence(
 				Actions.delay(1.5f),
@@ -233,7 +237,10 @@ public class Title1951 extends GameScreen {
 		continueEnabled = false;
 		Camera cam = stage.getCamera();
 		float sry = cam.position.y + cam.viewportHeight / 2.0f - 150;
-		statReport.addAction(Actions.moveTo(cam.position.x - Gdx.graphics.getWidth() * 1.5f, sry, 1.0f, Interpolation.exp10In));
+		statReport.addAction(Actions.sequence(
+				Actions.moveTo(cam.position.x - Gdx.graphics.getWidth() * 1.5f, sry, 1.0f, Interpolation.exp10In),
+				Actions.hide()
+				));
 		winner.addAction(Actions.sequence(
 				Actions.fadeOut(0.33f),
 				Actions.hide()
@@ -253,7 +260,10 @@ public class Title1951 extends GameScreen {
 		continueEnabled = false;
 		Camera cam = stage.getCamera();
 		float sry = topY() - 40.0f;
-		loseMessage.addAction(Actions.moveTo(cam.position.x - Gdx.graphics.getWidth() * 1.5f, sry, 1.0f, Interpolation.exp10In));
+		loseMessage.addAction(Actions.sequence(
+				Actions.moveTo(cam.position.x - Gdx.graphics.getWidth() * 1.5f, sry, 1.0f, Interpolation.exp10In),
+				Actions.hide()
+				));
 		continueLabel.addAction(Actions.sequence(
 				Actions.fadeOut(1.0f, Interpolation.exp10),
 				Actions.delay(0.5f, 
@@ -321,7 +331,7 @@ public class Title1951 extends GameScreen {
 		
 		logo.getColor().a = 0.0f;
 		logo.setPosition(cornerLeftX() + Gdx.graphics.getWidth() / 2.0f - logo.getSprite().getWidth() / 2.0f,
-				cornerLeftY() + Gdx.graphics.getHeight() / 2.0f - logo.getSprite().getHeight() / 2.0f - 32.0f);
+				cornerLeftY() + 106.0f);
 		logo.addAction(Actions.sequence(
 				Actions.delay(1.0f),
 				Actions.fadeIn(0.33f)
@@ -450,9 +460,7 @@ public class Title1951 extends GameScreen {
 		GameInputHandler ih = new GameInputHandler(this);
 		Gdx.input.setInputProcessor(ih);
 	}
-	
-	final int LIM2 = 180 * 180;
-	
+		
 	@Override
 	protected void pairwiseCheck(Dude d1, Dude d2) {
 		float dx = d1.physics.getX() - d2.physics.getX();
@@ -499,7 +507,7 @@ public class Title1951 extends GameScreen {
 			instabar.setPosition(cornerLeftX() + instabar.getWidth() / 2.0f + 8, cornerLeftY() + 32);
 			
 			goal.setVisible(true);
-			goal.message = "Goal: " + levelData.winCondition + " " + derpPlur("particle", levelData.winCondition) + ".";
+			goal.message = "Goal: " + levelData.winCondition + " " + derpPlur("particle", levelData.winCondition);
 			goal.setPosition(cornerLeftX() + 8, topY() - 16);
 			
 			if(instability >= levelData.meltdownThreshold || timeLeft <= 0) {
@@ -561,11 +569,6 @@ public class Title1951 extends GameScreen {
 	private float cornerLeftX() {
 		Camera cam = stage.getCamera();
 		return cam.position.x - cam.viewportWidth / 2.0f;
-	}
-	
-	private float cornerRightX() {
-		Camera cam = stage.getCamera();
-		return cam.position.x + cam.viewportWidth / 2.0f;
 	}
 	
 	private float cornerLeftY() {

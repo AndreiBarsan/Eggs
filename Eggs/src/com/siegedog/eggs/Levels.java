@@ -19,13 +19,17 @@ public class Levels {
 				? "tap" 
 				: "click";
 		
+		String gestureAction = (Gdx.app.getType() == ApplicationType.Android)
+				? "Swipe"
+				: "Drag the mouse";
+		
 		BitmapFont fnt = (Gdx.app.getType() == ApplicationType.Android) 
 				? EggGame.R.font("motorwerk24") 
 				: EggGame.R.font("motorwerk24");
 		
 		LevelData l;
 		l = new LevelData(1, 1, 100, 0, 90.0f,
-				new TutorialMessage("Swipe FROM one particle\nTO the other to fuse them!", fnt, new Vector2(0, 300), 0, w)
+				new TutorialMessage(gestureAction + " FROM one particle\nTO the other to fuse them!", fnt, new Vector2(0, 300), 0, w)
 		);
 		l.add(new MainParticle(new Vector2(Gdx.graphics.getWidth() / 2.0f - 100, 200), new Vector2(25.0f, -10.0f), 32));
 		l.add(new MainParticle(new Vector2(Gdx.graphics.getWidth() / 2.0f + 100, 200), new Vector2(-5.0f, -8.0f), 32));
@@ -102,6 +106,31 @@ public class Levels {
 		
 		levels.add(l);
 		
+		l = new LevelData(9, 4, 20, 11, 25.0f);
+		l.add(new MainParticle	(new Vector2(220, 115), randDir(60.0f), 11));
+		l.add(new MainParticle	(new Vector2(420, 315), randDir(60.0f), 15));
+		l.add(new MainParticle	(new Vector2(191, 30),  randDir(60.0f), 81));
+		l.add(new MainParticle	(new Vector2(291, 130), randDir(60.0f), 84));
+		l.add(new MainParticle	(new Vector2(100, 79),  randDir(60.0f), 420));
+		l.add(new MainParticle	(new Vector2(150, 320), randDir(60.0f), 423));
+		l.add(new MainParticle	(new Vector2(550, 120), randDir(60.0f), 111));
+		l.add(new MainParticle	(new Vector2(650, 90),  randDir(60.0f), 112));
+		levels.add(l);
+		
+		l = new LevelData(10, 1, 20, 10, 25.0f);
+		l.add(new MainParticle	(new Vector2(250, 250), randDir(40.0f), 730));
+		l.add(new Tron 			(new Vector2(200, 250), randDir(30.0f), -100));
+		l.add(new Tron 			(new Vector2(300, 250), randDir(30.0f), -100));
+		l.add(new Tron 			(new Vector2(250, 200), randDir(30.0f), -100));
+		l.add(new Tron 			(new Vector2(250, 300), randDir(30.0f), -100));
+		
+		l.add(new MainParticle	(new Vector2(630, 125), randDir(40.0f), 200));
+		l.add(new Tron			(new Vector2(710, 125), randDir(30.0f), +30));
+		l.add(new Tron			(new Vector2(550, 125), randDir(30.0f), +30));
+		l.add(new Tron			(new Vector2(630, 205), randDir(30.0f), +30));
+		l.add(new Tron			(new Vector2(630, 45),  randDir(30.0f), +30));
+		
+		levels.add(l);
 	}
 	
 	public static Vector2 randDir(float amount) {
