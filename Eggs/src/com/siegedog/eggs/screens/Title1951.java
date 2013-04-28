@@ -275,7 +275,7 @@ public class Title1951 extends GameScreen {
 				Actions.hide()
 				));
 		al.addAction(Actions.sequence(
-				Actions.moveTo(cornerLeftX() + Gdx.graphics.getWidth(), 60, 1.0f, Interpolation.exp10),
+				Actions.moveTo(cornerLeftX() + Gdx.graphics.getWidth(),  cornerLeftY() + 100, 1.0f, Interpolation.exp10),
 				Actions.hide()
 				));
 		
@@ -336,7 +336,10 @@ public class Title1951 extends GameScreen {
 		beatGameMessage.addAction(Actions.moveTo(cornerLeftX(), topY() - 30.0f, 1.0f, Interpolation.exp10));
 		
 		beatGameStats.getColor().a = 0.0f;
-		beatGameStats.message = "Congratulations!\nThanks for playing!"; // End game stats go here!
+		beatGameStats.message = "Congratulations!\nThanks for playing!" +
+				"\n\nMy next game will have retro graphics and pixelated violence." +
+				"\nI promise you that, dear player!" +
+				"\nCheck out siegedog.com for updates!"; // End game stats go here!
 		beatGameStats.setPosition(cornerLeftX(), topY() - 100.0f);
 		beatGameStats.addAction(Actions.fadeIn(1.0f));
 		

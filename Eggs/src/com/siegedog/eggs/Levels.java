@@ -24,8 +24,8 @@ public class Levels {
 				: EggGame.R.font("motorwerk24");
 		
 		LevelData l;
-		l = new LevelData(1, 1, 100, 0, 90.0f 
-				,new TutorialMessage("Swipe FROM one particle\nTO the other to fuse them!", fnt, new Vector2(0, 320), 0, w)
+		l = new LevelData(1, 1, 100, 0, 90.0f,
+				new TutorialMessage("Swipe FROM one particle\nTO the other to fuse them!", fnt, new Vector2(0, 300), 0, w)
 		);
 		l.add(new MainParticle(new Vector2(Gdx.graphics.getWidth() / 2.0f - 100, 200), new Vector2(25.0f, -10.0f), 32));
 		l.add(new MainParticle(new Vector2(Gdx.graphics.getWidth() / 2.0f + 100, 200), new Vector2(-5.0f, -8.0f), 32));
@@ -70,8 +70,9 @@ public class Levels {
 		
 		l = new LevelData(6, 1, 50, 0, 60.0f, 
 				new TutorialMessage("The new item can alter a particle's value" +
-						"\nwithout affecting the global instability!",
-						fnt, new Vector2(0.0f, 0.0f), -1, ww));
+						" without affecting the global instability! " +
+						"\nUse this to your advantage!",
+						fnt, new Vector2(w * 0.125f, 280.0f), -1, ww));
 		
 		l.add(new MainParticle(new Vector2(50, 350), randDir(45.0f), 120));
 		
