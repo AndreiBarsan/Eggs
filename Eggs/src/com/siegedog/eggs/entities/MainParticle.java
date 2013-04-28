@@ -23,6 +23,7 @@ public class MainParticle extends Bouncie {
 	public MainParticle(Vector2 pos, Vector2 vel, int val) {
 		this(new PhysicsNode(new Circle(pos, RADIUS)), val);
 		physics.velocity.set(vel);
+		physics.restitution = 0.75f;
 	}
 	
 	public MainParticle(MainParticle other) {
@@ -46,7 +47,7 @@ public class MainParticle extends Bouncie {
 	
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
-		Color tint = new Color((value * 2) / 255.0f, 0.0f, 0.0f, 1.0f);
+		Color tint = new Color((value * 2) / 255.0f, 0.0f, 0.0f, getColor().a);
 		sprite.setColor(tint);
 		super.draw(batch, parentAlpha);
 		valueFont.setColor(getColor());		

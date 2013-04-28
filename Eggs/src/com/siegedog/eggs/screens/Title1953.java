@@ -20,7 +20,8 @@ import com.siegedog.eggs.entities.Dude;
 import com.siegedog.eggs.entities.FLabel;
 import com.siegedog.eggs.entities.Ray;
 import com.siegedog.eggs.math.Segment;
-import com.siegedog.eggs.physics.Circle;
+import com.siegedog.eggs.physics.AABB;
+import com.siegedog.eggs.physics.PointShape;
 
 
 public class Title1953 extends GameScreen {
@@ -36,6 +37,8 @@ public class Title1953 extends GameScreen {
 	}
 	
 	public State state = State.TitleShown;
+	
+	Dude grain;
 	
 	BitmapFont splashFont = EggGame.R.font("motorwerk128");
 	BitmapFont guiFont = EggGame.R.font("motorwerk32");
@@ -64,6 +67,8 @@ public class Title1953 extends GameScreen {
 	public LevelData levelData;
 	
 	String action;
+	
+	Dude logo;
 	
 	public boolean continueEnabled = false;
 	
@@ -116,7 +121,22 @@ public class Title1953 extends GameScreen {
 		float sry = cam.position.y + cam.viewportHeight / 2.0f - 150;
 		statReport.setPosition(cam.position.x - Gdx.graphics.getWidth() * 1.5f, sry);
 		statReport.addAction(Actions.moveTo(cam.position.x - cam.viewportWidth / 2.0f, sry, 1.0f, Interpolation.exp10In));
-		statReport.message = "Stats: \nLevel: " + currentLevel + "\nRank: Whatevs";
+		int spare = levelData.par - instability;
+		String rank = "";
+		if(spare <= 0) {
+			rank = "A+";
+		} else if(spare < 10) {
+			rank = "A";
+		} else if (spare < 30) {
+			rank = "B";
+		} else if (spare < 60) {
+			rank = "C";
+		} else {
+			rank = "D";
+		}
+		statReport.message = "Stats: \nLevel: " + currentLevel + "\n"
+				+ "Instability: " + instability + " / " + levelData.meltdownThreshold + "\n"
+				+ "Rank: " + rank;
 		
 		continueLabel.message = action + " to continue";
 		prepareContinueLabel();
@@ -157,7 +177,7 @@ public class Title1953 extends GameScreen {
 		continueEnabled = false;
 		Camera cam = stage.getCamera();
 		float sry = cam.position.y + cam.viewportHeight / 2.0f - 150;
-		statReport.addAction(Actions.moveTo(cam.position.x - cam.viewportWidth * 1.5f, sry, 1.0f, Interpolation.exp10In));
+		statReport.addAction(Actions.moveTo(cam.position.x - Gdx.graphics.getWidth() * 1.5f, sry, 1.0f, Interpolation.exp10In));
 		continueLabel.addAction(Actions.sequence(
 				Actions.fadeOut(1.0f, Interpolation.exp10),
 				Actions.delay(0.5f, 
@@ -172,7 +192,7 @@ public class Title1953 extends GameScreen {
 	public void hideRetry() {
 		continueEnabled = false;
 		Camera cam = stage.getCamera();
-		float sry = 100 + cam.position.y - cam.viewportHeight / 2.0f;
+		float sry = 100 + cam.position.y + cam.viewportHeight / 2.0f;
 		loseMessage.addAction(Actions.moveTo(cam.position.x - Gdx.graphics.getWidth() * 1.5f, sry, 1.0f, Interpolation.exp10In));
 		continueLabel.addAction(Actions.sequence(
 				Actions.fadeOut(1.0f, Interpolation.exp10),
@@ -208,6 +228,7 @@ public class Title1953 extends GameScreen {
 				Actions.fadeIn(0.33f)
 				));
 		tap.getColor().a = 0.0f;
+		al.setPosition(cornerLeftX() + 0, cornerLeftY() + 60);
 		al.addAction(Actions.sequence(
 				Actions.delay(1.0f),
 				Actions.fadeIn(0.33f),
@@ -268,6 +289,10 @@ public class Title1953 extends GameScreen {
 	public void show() {
 		super.show();
 		
+		addDude("effects", grain = new Dude(EggGame.R.spriteAsAnimatedSprite("grain"),
+				new AABB(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
+		grain.stretchSprite = true;
+		
 		addDude("background", new Background(EggGame.R.sprite("background")));
 		addDude("overlay", splash = new FLabel("1953", splashFont, new Vector2(0, Gdx.graphics.getHeight() + 100), Gdx.graphics.getWidth()));
 		
@@ -276,7 +301,7 @@ public class Title1953 extends GameScreen {
 		addDude("overlay", tap);
 		
 		String about = "Andrei Barsan, 2013\nsiegedog.com ";
-		al = new FLabel(about, small, new Vector2(0, 60), Gdx.graphics.getWidth());
+		al = new FLabel(about, small, new Vector2(), Gdx.graphics.getWidth());
 		addDude("overlay", al);
 		
 		winner = new FLabel("Level complete!", splashFont, new Vector2(-1500f, -1500f), Gdx.graphics.getWidth());
@@ -308,6 +333,9 @@ public class Title1953 extends GameScreen {
 		beatGameStats = new FLabel("", guiFont, new Vector2(), Gdx.graphics.getWidth());
 		addDude("overlay", beatGameStats);
 		
+		logo = new Dude(EggGame.R.spriteAsAnimatedSprite("logo"), new PointShape(0, 0));
+		addDude("overlay", logo);
+		
 		showTitle();
 		
 		GameInputHandler ih = new GameInputHandler(this);
@@ -337,6 +365,10 @@ public class Title1953 extends GameScreen {
 		super.render(delta);
 		layers.get("rays").clear();
 		Camera cam = stage.getCamera();
+		
+		grain.setX(cornerLeftX());
+		grain.setY(cornerLeftY());
+		
 		if(state == State.Gameplay) {
 			
 			timeLeft -= delta;
@@ -363,15 +395,18 @@ public class Title1953 extends GameScreen {
 	public void createPulse(float x, float y) {
 		final float PULSERADIUS = 300;
 		final float PR2 = PULSERADIUS * PULSERADIUS;
-		final float PULSEFORCE = 100;
+		final float PULSEFORCE_MIN = 25;
+		final float PULSEFORCE_MAX = 200;
 		System.out.println("PULSE @ " + x + ", " + y);
 		for(Actor actor : getLayer("main").getChildren()) {
 			if(actor instanceof Bouncie) {
-				Vector2 dir = new Vector2(actor.getX(), actor.getY());
+				Vector2 dir = new Vector2(actor.getX() + actor.getWidth() / 2.0f, actor.getY() + actor.getHeight() / 2.0f);
 				dir.sub(new Vector2(x, y));
 				if(dir.len2() < PR2) {
+					float power = Interpolation.linear.apply(PULSEFORCE_MAX, PULSEFORCE_MIN, dir.len() / PULSERADIUS);
 					dir.nor();
-					dir.mul(PULSEFORCE);
+					System.out.println("POWER: " + power);
+					dir.mul(power);
 					Bouncie b = (Bouncie)actor;
 					b.physics.velocity.add(dir.x, dir.y);
 				}

@@ -34,6 +34,7 @@ public class GameScreen implements Screen {
 		addLayer("background");
 		addLayer("rays");
 		addLayer("main");
+		addLayer("effects");
 		addLayer("overlay");
 	}
 	

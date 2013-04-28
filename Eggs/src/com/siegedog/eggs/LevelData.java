@@ -16,12 +16,14 @@ public class LevelData {
 	public int levelNumber;
 	public int winCondition;
 	public int meltdownThreshold;
+	public int par;
 	public float time;
 	
-	public LevelData(int levelNumber, int winCondition, int meltdownThreshold, float time) {
+	public LevelData(int levelNumber, int winCondition, int meltdownThreshold, int par, float time) {
 		this.levelNumber = levelNumber;
 		this.winCondition = winCondition;
 		this.meltdownThreshold = meltdownThreshold;
+		this.par = par;
 		this.time = time;
 	}
 

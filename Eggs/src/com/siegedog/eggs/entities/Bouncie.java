@@ -86,6 +86,7 @@ public abstract class Bouncie extends Dude {
 	
 	protected void onMergeComplete() {
 		mergeTarget.kill();
+		physics.velocity.mul(0.75f);
 	}
 	
 	/** Called only once, for the bouncie the player started the flick on.	 */
@@ -106,7 +107,10 @@ public abstract class Bouncie extends Dude {
 	public void act(float delta) {
 		super.act(delta);
 		
-		assert ! isDead();
+		if(isDead()) {
+			// Thank you libgdx for allowing such flexible actor management... </sarcasm>
+			return;
+		}
 		
 		switch(state) {
 		case Merging:
@@ -123,9 +127,9 @@ public abstract class Bouncie extends Dude {
 			bounceOnEdges();
 			
 			if(physics.velocity.len2() > NORMAL_SPEED2) {
-				physics.velocity.mul(0.9f);
+				physics.velocity.mul(0.9995f);
 			} else if(physics.velocity.len2() < MIN_SPEED2) {
-				physics.velocity.mul(1.1f);
+				physics.velocity.mul(1.0005f);
 			}
 			break;
 			

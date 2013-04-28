@@ -16,6 +16,8 @@ public class Dude extends Actor {
 	protected GameScreen screen;
 	protected String label = null;
 	
+	public boolean stretchSprite = false;
+	
 	private boolean dead = false;
 	
 	public PhysicsNode physics;
@@ -79,7 +81,6 @@ public class Dude extends Actor {
 			onDeath.run();
 		}
 		
-		System.out.println("Removing: " + this);
 		if(! remove()) {
 			Log.E("Failed removing actor.");
 		}
@@ -98,7 +99,11 @@ public class Dude extends Actor {
 		super.draw(batch, parentAlpha);
 
 		if(sprite != null) {
-			sprite.setPosition(getX(), getY());
+			if(stretchSprite) {
+				sprite.setBounds(getX() + getWidth() / 2, getY() + getHeight() / 2, getWidth(), getHeight());
+			} else {
+				sprite.setPosition(getX(), getY());
+			}
 			//sprite.setPosition(getX(), getY());
 			//sprite.setOrigin(getOriginX(), getOriginY());
 			sprite.setRotation(getRotation());
